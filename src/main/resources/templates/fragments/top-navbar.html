@@ -1,0 +1,121 @@
+<!-- Top Navbar -->
+<nav th:fragment="top-navbar" class="top-navbar">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center">
+      <!-- User Info -->
+      <div class="d-flex align-items-center gap-3">
+        <img src="https://ui-avatars.com/api/?name=Usuario+Demo&background=2c5bff&color=fff&size=128" alt="User Avatar"
+          class="user-avatar">
+        <div>
+          <p class="user-name">Hola, <strong
+                        th:text="${name}"></strong> <strong th:text="${lastname}"></strong></p>
+        </div>
+      </div>
+
+      <!-- Menu Button -->
+      <button class="menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
+        <i class="bi bi-three-dots-vertical"></i>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Offcanvas Menu -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="menuLateral">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Menú</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+
+  <div class="offcanvas-body d-flex flex-column">
+    <!-- Profile Section -->
+    <div class="profile-section">
+      <div class="position-relative d-inline-block">
+        <img src="https://ui-avatars.com/api/?name=Usuario+Demo&background=2c5bff&color=fff&size=256"
+          alt="Profile Avatar" class="profile-avatar-large">
+        <button class="edit-profile-btn" data-bs-toggle="modal" data-bs-target="#photoModal">
+          <i class="bi bi-plus text-white"></i>
+        </button>
+      </div>
+      <h5 class="mt-2 mb-0">Usuario Demo</h5>
+    </div>
+
+    <!-- Online Users Badge -->
+    <div class="online-badge">
+      <i class="bi bi-people-fill"></i>
+      <span>Usuarios Online</span>
+      <span class="online-count">1,234</span>
+    </div>
+
+    <!-- Menu Items -->
+    <ul class="menu-list">
+      <li>
+        <a href="#perfil">
+          <i class="bi bi-person-circle"></i>
+          Perfil
+        </a>
+      </li>
+      <li>
+        <a href="#cartera">
+          <i class="bi bi-wallet2"></i>
+          Cartera
+        </a>
+      </li>
+      <li>
+        <a href="#clases">
+          <i class="bi bi-calendar-check"></i>
+          Clases Inscritas
+        </a>
+      </li>
+      <li>
+        <a href="#configuracion">
+          <i class="bi bi-gear"></i>
+          Configuración
+        </a>
+      </li>
+    </ul>
+
+    <!-- Logout Section -->
+    <div class="logout-section">
+      <ul class="menu-list">
+        <li>
+          <a href="#logout" class="logout-btn">
+            <i class="bi bi-box-arrow-right"></i>
+            Cerrar Sesión
+          </a>
+        </li>
+      </ul>
+      <a href="#" class="btn visit-site-btn w-100">
+        <i class="bi bi-globe me-2"></i>
+        Visita nuestra página
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Photo Upload Modal -->
+<div class="modal fade" id="photoModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content photo-modal">
+      <div class="modal-header border-0">
+        <h5 class="modal-title">Cambiar Foto de Perfil</h5>
+        <button type="button" class="btn-close modal-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="https://ui-avatars.com/api/?name=Usuario+Demo&background=2c5bff&color=fff&size=256"
+          alt="Current Photo" class="profile-photo mb-3">
+
+        <form>
+          <div class="mb-3">
+            <label for="photoInput" class="form-label">Seleccionar nueva foto</label>
+            <input type="file" class="form-control" id="photoInput" accept="image/*">
+          </div>
+          <button type="submit" class="btn w-100 btn-upload">
+            <i class="bi bi-upload me-2"></i>
+            Subir Foto
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

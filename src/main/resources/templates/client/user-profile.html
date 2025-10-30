@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/user-profile.css">
+</head>
+
+<body>
+    <!-- Profile Header -->
+    <div class="profile-background">
+        <div class="profile-header">
+            <div class="profile-photo">
+                <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5bff&color=fff&size=128"
+                    alt="User Photo">
+            </div>
+            <div>
+                <p class="user-name-text">John Doe</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Plan Card -->
+    <div class="plan-card">
+        <span class="plan-badge">Plan Actual</span>
+        <h2 class="plan-name">Premium</h2>
+        <div class="plan-status">
+            <i class="bi bi-check-circle-fill"></i>
+            <span>Activo</span>
+        </div>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="info-cards-container">
+        <!-- ID Card -->
+        <div class="info-card">
+            <div class="card-icon-wrapper">
+                <i class="bi bi-person-badge" style="color: var(--primary-color); font-size: 24px;"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-label">ID de Usuario</div>
+                <div class="card-value">123456789</div>
+            </div>
+        </div>
+
+        <!-- Name Card -->
+        <div class="info-card">
+            <div class="card-icon-wrapper">
+                <i class="bi bi-person-circle" style="color: var(--primary-color); font-size: 24px;"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-label">Nombre Completo</div>
+                <div class="card-value">John Doe</div>
+            </div>
+        </div>
+
+        <!-- Email Card -->
+        <div class="info-card">
+            <div class="card-icon-wrapper">
+                <i class="bi bi-envelope-fill" style="color: var(--primary-color); font-size: 24px;"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-label">Correo Electrónico</div>
+                <div class="card-value">johndoe@example.com</div>
+            </div>
+        </div>
+
+        <!-- Phone Card (opcional) -->
+        <div class="info-card">
+            <div class="card-icon-wrapper">
+                <i class="bi bi-telephone-fill" style="color: var(--primary-color); font-size: 24px;"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-label">Teléfono</div>
+                <div class="card-value">+57 300 123 4567</div>
+            </div>
+        </div>
+
+        <!-- Member Since Card (opcional) -->
+        <div class="info-card">
+            <div class="card-icon-wrapper">
+                <i class="bi bi-calendar-check" style="color: var(--primary-color); font-size: 24px;"></i>
+            </div>
+            <div class="card-content">
+                <div class="card-label">Miembro Desde</div>
+                <div class="card-value">Enero 2024</div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Button -->
+        <button class="edit-profile-btn">
+            <i class="bi bi-pencil-square"></i>
+            Editar Perfil
+        </button>
+    </div>
+
+    <!-- Bottom Navbar -->
+    <div th:replace="fragments/bottom-navbar :: bottom-navbar"></div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

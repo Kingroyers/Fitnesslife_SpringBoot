@@ -1,0 +1,25 @@
+services:
+  mongo:
+    image: mongo:7.0
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - spring_net
+
+  redis:
+    image: redis:7.0
+    container_name: redis_server
+    ports:
+      - "6379:6379"
+    networks:
+      - spring_net
+
+networks:
+  spring_net:
+    driver: bridge
+
+volumes:
+  mongo_data:

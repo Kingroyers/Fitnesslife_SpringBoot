@@ -1,0 +1,263 @@
+/* Var */
+
+:root {
+    --bg-body: #1f212c;
+    --primary-color: #2c5bff;
+    --card-bg: #292c36;
+    --text-white: #ffffff;
+}
+
+body {
+    background: var(--bg-body);
+    min-height: 100vh;
+    color: var(--text-white);
+}
+
+/* Main Container */
+
+.acceso-container {
+    padding: 2rem 1.5rem 8rem 1.5rem;
+    min-height: calc(100vh - 80px);
+}
+
+/* Page Header */
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 0 0 1rem 0;
+}
+
+.page-divider {
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary-color) 0%, transparent 100%);
+    border: none;
+    margin: 0;
+}
+
+/* QR Card */
+
+.qr-card-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 0;
+}
+
+.qr-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
+    border-radius: 30px;
+    padding: 2.5rem 2rem;
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(44, 91, 255, 0.2);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.qr-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(44, 91, 255, 0.3);
+}
+
+.qr-card-header {
+    margin-bottom: 1.5rem;
+}
+
+.qr-card-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 0 0 0.5rem 0;
+}
+
+.qr-card-subtitle {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.qr-code-container {
+    background: white;
+    border-radius: 20px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    display: inline-block;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.qr-code-container img {
+    display: block;
+    width: 200px;
+    height: 200px;
+    max-width: 100%;
+}
+
+.qr-footer {
+    margin-top: 1.5rem;
+}
+
+.qr-footer-text {
+    font-size: 16px;
+    color: var(--primary-color);
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.qr-footer-text i {
+    font-size: 20px;
+    animation: scan 2s ease-in-out infinite;
+}
+
+@keyframes scan {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.qr-footer-info {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    margin: 0;
+}
+
+/* Info Badge */
+
+.info-badge {
+    background: rgba(44, 91, 255, 0.15);
+    border: 1px solid rgba(44, 91, 255, 0.3);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.info-badge i {
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+.info-badge-text {
+    text-align: left;
+    flex: 1;
+}
+
+.info-badge-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-white);
+    margin: 0 0 4px 0;
+}
+
+.info-badge-description {
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+/* Refresh Button */
+.refresh-qr-btn {
+    background: rgba(44, 91, 255, 0.15);
+    color: var(--primary-color);
+    border: 1px solid rgba(44, 91, 255, 0.3);
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.refresh-qr-btn:hover {
+    background: var(--primary-color);
+    color: var(--text-white);
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(44, 91, 255, 0.4);
+}
+
+.refresh-qr-btn i {
+    font-size: 18px;
+    transition: transform 0.3s ease;
+}
+
+.refresh-qr-btn:hover i {
+    transform: rotate(180deg);
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .acceso-container {
+        padding: 1.5rem 1rem 6rem 1rem;
+    }
+
+    .page-title {
+        font-size: 24px;
+    }
+
+    .qr-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .qr-card-title {
+        font-size: 20px;
+    }
+
+    .qr-code-container img {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+@media (max-width: 530px) {
+    .acceso-container {
+        padding: 1rem 0.75rem 6rem 0.75rem;
+    }
+
+    .page-title {
+        font-size: 22px;
+    }
+
+    .qr-card {
+        padding: 1.5rem 1rem;
+        border-radius: 20px;
+    }
+
+    .qr-card-title {
+        font-size: 18px;
+    }
+
+    .qr-code-container {
+        padding: 1rem;
+    }
+
+    .qr-code-container img {
+        width: 160px;
+        height: 160px;
+    }
+
+    .info-badge {
+        padding: 0.75rem 1rem;
+    }
+}

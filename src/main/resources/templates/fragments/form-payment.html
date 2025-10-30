@@ -1,0 +1,153 @@
+<!-- Componente Reutilizable: Formulario de Pago -->
+<div th:fragment="form-payment" class="payment-card">
+    <!-- Plan Summary -->
+    <div class="plan-summary">
+        <p class="plan-summary-title">Plan Seleccionado</p>
+        <h2 class="plan-summary-name" th:text="${nombrePlan}">Premium</h2>
+        <p class="plan-summary-price">
+            <span th:text="${precio}">$80.000</span>
+            <span class="plan-summary-currency">COP</span>
+        </p>
+    </div>
+
+    <!-- Payment Form -->
+    <form th:action="@{/pago/procesar}" method="POST" class="payment-form" id="paymentForm">
+        <input type="hidden" name="idPlan" th:value="${idPlan}">
+
+        <!-- Card Information Section -->
+        <h3 class="form-section-title">
+            Información de la Tarjeta
+        </h3>
+
+        <!-- Card Holder Name -->
+        <div class="form-group">
+            <label for="titular" class="form-label">
+                Nombre del Titular
+                <span class="form-label-required">*</span>
+            </label>
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="titular" 
+                    name="titular" 
+                    class="form-input"
+                    placeholder="Ej: Juan Pérez"
+                    maxlength="50"
+                    required>
+                <i class="bi bi-person input-icon"></i>
+            </div>
+            <p class="form-error">El nombre debe contener solo letras y espacios, mínimo 3 caracteres.</p>
+        </div>
+
+        <!-- Card Number -->
+        <div class="form-group">
+            <label for="numeroTarjeta" class="form-label">
+                Número de Tarjeta
+                <span class="form-label-required">*</span>
+            </label>
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="numeroTarjeta" 
+                    name="numeroTarjeta" 
+                    class="form-input with-icon"
+                    placeholder="1234 5678 9012 3456"
+                    maxlength="19"
+                    required>
+                <i class="bi bi-credit-card input-icon"></i>
+            </div>
+            <p class="form-error">El número de tarjeta debe contener 16 dígitos.</p>
+        </div>
+
+        <!-- Expiry Date and CVV -->
+        <div class="form-row">
+            <div class="form-group">
+                <label for="caducidad" class="form-label">
+                    Fecha de Caducidad
+                    <span class="form-label-required">*</span>
+                </label>
+                <input 
+                    type="month" 
+                    id="caducidad" 
+                    name="caducidad" 
+                    class="form-input"
+                    min="2025-01"
+                    required>
+                <p class="form-error">Fecha de caducidad inválida.</p>
+            </div>
+
+            <div class="form-group">
+                <label for="codigoSeguridad" class="form-label">
+                    CVV
+                    <span class="form-label-required">*</span>
+                </label>
+                <input 
+                    type="text" 
+                    id="codigoSeguridad" 
+                    name="codigoSeguridad" 
+                    class="form-input"
+                    placeholder="123"
+                    maxlength="4"
+                    required>
+                <p class="form-error">CVV debe contener 3-4 dígitos.</p>
+            </div>
+        </div>
+
+        <!-- ID Number -->
+        <div class="form-group">
+            <label for="identificacion" class="form-label">
+                Número de Identificación
+                <span class="form-label-required">*</span>
+            </label>
+            <div class="input-group">
+                <input 
+                    type="text" 
+                    id="identificacion" 
+                    name="identificacion" 
+                    class="form-input with-icon"
+                    placeholder="1234567890"
+                    maxlength="10"
+                    required>
+                <i class="bi bi-person-badge input-icon"></i>
+            </div>
+            <p class="form-error">La identificación debe contener entre 7 y 10 dígitos.</p>
+        </div>
+
+        <!-- Security Badge -->
+        <div class="security-badge">
+            <i class="bi bi-shield-check"></i>
+            <span>Pago 100% seguro y encriptado</span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="submit-btn">
+            <i class="bi bi-lock-fill"></i>
+            Pagar Ahora
+        </button>
+
+        <!-- Cancel Button -->
+        <a href="/planes" class="cancel-btn">
+            <i class="bi bi-arrow-left"></i>
+            Cancelar
+        </a>
+
+        <!-- Info Text -->
+        <p class="info-text">
+            <i class="bi bi-info-circle"></i>
+            Al confirmar el pago, aceptas nuestros términos y condiciones
+        </p>
+
+        <!-- Card Brands -->
+        <div class="card-brands">
+            <div class="card-brand-icon" title="Visa">
+                <i class="bi bi-credit-card"></i>
+            </div>
+            <div class="card-brand-icon" title="Mastercard">
+                <i class="bi bi-credit-card-2-back"></i>
+            </div>
+            <div class="card-brand-icon" title="American Express">
+                <i class="bi bi-credit-card-fill"></i>
+            </div>
+        </div>
+    </form>
+</div>

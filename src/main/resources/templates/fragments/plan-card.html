@@ -1,0 +1,108 @@
+<!-- Fragmento de planes -->
+<div th:fragment="plan-card" class="planes-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Planes</h1>
+    <hr class="page-divider">
+  </div>
+
+  <!-- Success Alert (opcional) -->
+  <div class="alert-custom success" th:if="${mensajeExito}">
+    <i class="bi bi-check-circle-fill"></i>
+    <span th:text="${mensajeExito}">Plan activado exitosamente</span>
+  </div>
+
+  <!-- Available Plans Section -->
+  <div class="plans-carousel-wrapper">
+    <h2 class="section-title">Planes Disponibles</h2>
+
+    <div class="plans-carousel">
+
+      <!-- Plan Card 1 - Básico -->
+      <div class="plan-card">
+        <div class="plan-card-header">
+          <h3 class="plan-name">Básico</h3>
+          <span class="plan-badge">Popular</span>
+        </div>
+
+        <div class="plan-benefits">
+          <p class="plan-benefits-title">Beneficios</p>
+          <ul class="plan-benefits-list">
+            <li><i class="bi bi-check-circle-fill"></i> Acceso al gimnasio</li>
+            <li><i class="bi bi-check-circle-fill"></i> Uso de equipos básicos</li>
+            <li><i class="bi bi-check-circle-fill"></i> 1 clase grupal semanal</li>
+            <li><i class="bi bi-check-circle-fill"></i> Casilleros disponibles</li>
+          </ul>
+        </div>
+
+        <div class="plan-price">
+          <p class="plan-price-label">Precio mensual</p>
+          <p class="plan-price-amount">$50.000 <span class="plan-price-currency">COP</span></p>
+        </div>
+
+        <a href="/planes/pago?id=1" class="plan-select-btn">
+          <i class="bi bi-arrow-right-circle"></i> Seleccionar Plan
+        </a>
+      </div>
+
+      <!-- Plan Card 2 - Premium -->
+      <div class="plan-card">
+        <div class="plan-card-header">
+          <h3 class="plan-name">Premium</h3>
+          <span class="plan-badge">Recomendado</span>
+        </div>
+
+        <div class="plan-benefits">
+          <p class="plan-benefits-title">Beneficios</p>
+          <ul class="plan-benefits-list">
+            <li><i class="bi bi-check-circle-fill"></i> Acceso ilimitado 24/7</li>
+            <li><i class="bi bi-check-circle-fill"></i> Todas las clases grupales</li>
+            <li><i class="bi bi-check-circle-fill"></i> 1 sesión de entrenamiento personal</li>
+            <li><i class="bi bi-check-circle-fill"></i> Plan nutricional básico</li>
+            <li><i class="bi bi-check-circle-fill"></i> Descuento en productos</li>
+          </ul>
+        </div>
+
+        <div class="plan-price">
+          <p class="plan-price-label">Precio mensual</p>
+          <p class="plan-price-amount">$80.000 <span class="plan-price-currency">COP</span></p>
+        </div>
+
+        <a href="/planes/pago?id=2" class="plan-select-btn">
+          <i class="bi bi-arrow-right-circle"></i> Seleccionar Plan
+        </a>
+      </div>
+
+      <!-- Plan Card 3 - Elite -->
+      <div class="plan-card">
+        <div class="plan-card-header">
+          <h3 class="plan-name">Elite</h3>
+          <span class="plan-badge">VIP</span>
+        </div>
+
+        <div class="plan-benefits">
+          <p class="plan-benefits-title">Beneficios</p>
+          <ul class="plan-benefits-list">
+            <li><i class="bi bi-check-circle-fill"></i> Todo de Premium</li>
+            <li><i class="bi bi-check-circle-fill"></i> 4 sesiones personalizadas/mes</li>
+            <li><i class="bi bi-check-circle-fill"></i> Plan nutricional completo</li>
+            <li><i class="bi bi-check-circle-fill"></i> Acceso a sauna y spa</li>
+            <li><i class="bi bi-check-circle-fill"></i> Evaluaciones mensuales</li>
+            <li><i class="bi bi-check-circle-fill"></i> Bebidas proteicas gratis</li>
+          </ul>
+        </div>
+
+        <div class="plan-price">
+          <p class="plan-price-label">Precio mensual</p>
+          <p class="plan-price-amount">$120.000 <span class="plan-price-currency">COP</span></p>
+        </div>
+
+        <a href="/planes/pago?id=3" class="plan-select-btn">
+          <i class="bi bi-arrow-right-circle"></i> Seleccionar Plan
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,479 @@
+/* === Variables === */
+:root {
+    --bg-body: #1f212c;
+    --primary-color: #2c5bff;
+    --card-bg: #292c36;
+    --text-white: #ffffff;
+}
+
+/* === Body Layout === */
+body {
+    background: var(--bg-body);
+    min-height: 100vh;
+    color: var(--text-white);
+    text-transform: capitalize;
+}
+
+/* === Main Container === */
+.dashboard-container {
+    padding: 2rem 1.5rem 8rem 1.5rem;
+    min-height: calc(100vh - 80px);
+}
+
+/* === Section Header === */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.section-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.section-link:hover {
+    gap: 10px;
+    color: #1e4ad9;
+}
+
+.section-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    margin: 0 0 1.5rem 0;
+}
+
+/* === Upcoming Classes Carousel === */
+.classes-carousel-wrapper {
+    margin-bottom: 3rem;
+}
+
+.classes-carousel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 1rem 0 1.5rem 0;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--primary-color) rgba(255, 255, 255, 0.1);
+}
+
+.classes-carousel::-webkit-scrollbar {
+    height: 8px;
+}
+
+.classes-carousel::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+}
+
+.classes-carousel::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* === Class Card === */
+.class-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
+    border-radius: 20px;
+    padding: 1.5rem;
+    min-width: 280px;
+    max-width: 320px;
+    flex-shrink: 0;
+    border: 1px solid rgba(44, 91, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.class-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color) 0%, #1e4ad9 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.class-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(44, 91, 255, 0.4);
+    border-color: rgba(44, 91, 255, 0.5);
+}
+
+.class-card:hover::before {
+    opacity: 1;
+}
+
+.class-card-header {
+    margin-bottom: 1rem;
+}
+
+.class-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 0 0 0.5rem 0;
+}
+
+.class-instructor {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.class-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.class-info-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.class-info-item i {
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+.class-action-btn {
+    background: var(--primary-color);
+    color: var(--text-white);
+    border: none;
+    border-radius: 12px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    font-size: 14px;
+    width: 100%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.class-action-btn:hover {
+    background: #1e4ad9;
+    transform: translateY(-2px);
+}
+
+/* === Workouts Grid === */
+.workouts-section {
+    margin-bottom: 3rem;
+}
+
+.workouts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+/* === Workout Card === */
+.workout-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(44, 91, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: var(--text-white);
+}
+
+.workout-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    background: linear-gradient(to left, rgba(44, 91, 255, 0.1) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.workout-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(44, 91, 255, 0.4);
+    border-color: rgba(44, 91, 255, 0.5);
+    color: var(--text-white);
+}
+
+.workout-content {
+    position: relative;
+    z-index: 2;
+}
+
+.workout-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 0 0 1rem 0;
+}
+
+.workout-stats {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: auto;
+}
+
+.workout-stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.workout-stat i {
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.workout-image {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 0 20px rgba(0, 0, 0, 0.5));
+    z-index: 1;
+}
+
+.workout-card:hover .workout-image {
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+/* === Team Section === */
+.team-section {
+    margin-bottom: 3rem;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+/* === Team Card === */
+.team-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
+    border-radius: 20px;
+    padding: 1.5rem;
+    border: 1px solid rgba(44, 91, 255, 0.2);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.team-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(44, 91, 255, 0.4);
+}
+
+.team-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    object-fit: cover;
+    margin: 0 auto 1rem;
+    background: rgba(44, 91, 255, 0.1);
+}
+
+.team-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-white);
+    margin: 0 0 0.25rem 0;
+}
+
+.team-role {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+.team-specialty {
+    font-size: 12px;
+    color: var(--primary-color);
+    margin: 0.5rem 0 0 0;
+}
+
+/* === Scheduled Classes Section === */
+.scheduled-section {
+    margin-bottom: 2rem;
+}
+
+.scheduled-carousel {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 1rem 0 1.5rem 0;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scheduled-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
+    border-radius: 20px;
+    padding: 1.5rem;
+    min-width: 280px;
+    flex-shrink: 0;
+    border: 1px solid rgba(132, 214, 90, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.scheduled-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #84d65a 0%, #4CAF50 100%);
+}
+
+.scheduled-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(132, 214, 90, 0.3);
+}
+
+.scheduled-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(132, 214, 90, 0.15);
+    color: #84d65a;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.scheduled-status-dot {
+    width: 6px;
+    height: 6px;
+    background: #84d65a;
+    border-radius: 50%;
+}
+
+/* === Empty State === */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+.empty-state-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    background: rgba(44, 91, 255, 0.1);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state-icon i {
+    font-size: 30px;
+    color: rgba(44, 91, 255, 0.5);
+}
+
+.empty-state-text {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    margin: 0;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1.5rem 1rem 6rem 1rem;
+    }
+
+    .section-title {
+        font-size: 18px;
+    }
+
+    .workouts-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .class-card,
+    .scheduled-card {
+        min-width: 260px;
+    }
+}
+
+@media (max-width: 530px) {
+    .dashboard-container {
+        padding: 1rem 0.75rem 6rem 0.75rem;
+    }
+
+    .section-title {
+        font-size: 16px;
+    }
+
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .class-card,
+    .scheduled-card {
+        min-width: 240px;
+    }
+
+    .workout-image {
+        width: 100px;
+        height: 100px;
+    }
+}
