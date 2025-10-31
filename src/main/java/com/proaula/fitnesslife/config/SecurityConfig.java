@@ -6,16 +6,19 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+
 import com.proaula.fitnesslife.service.CustomUserDetailsService;
 
 @Configuration
 public class SecurityConfig {
 
     @Autowired
-    private CustomUserDetailsService userDetailsService; // 👈 se inyecta tu servicio
+    private CustomUserDetailsService userDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -24,14 +27,13 @@ public class SecurityConfig {
                         .requestMatchers("/", "/index", "/login", "/register",
                                 "/css/**", "/js/**", "/img/**", "/fonts/**")
                         .permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/client/**").hasRole("CLIENT")
-                        .requestMatchers("/client/**").hasAnyRole("ADMIN", "CLIENT")
+                        .requestMatchers("/dashboard/**", "/admin/**").hasRole("ADMIN") // 👈 admin
+                        .requestMatchers("/client/**").hasRole("USER") // 👈 solo user
                         .anyRequest().authenticated())
 
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .loginProcessingUrl("/login") // el action del form POST
+                        .loginProcessingUrl("/login")
                         .usernameParameter("email")
                         .passwordParameter("password")
                         .successHandler((request, response, authentication) -> {
@@ -47,27 +49,30 @@ public class SecurityConfig {
                                 return;
                             }
 
-                            // fallback
                             response.sendRedirect(request.getContextPath() + "/home");
                         })
-
                         .failureUrl("/login?error=true")
                         .permitAll())
+
+                .sessionManagement(session -> session
+                        .invalidSessionUrl("/login?expired=true")
+                        .maximumSessions(1)
+                        .maxSessionsPreventsLogin(false)
+                        .sessionRegistry(sessionRegistry()))
 
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                         .permitAll())
-                // 👇 Desactiva CSRF solo si no usas formularios POST
+
                 .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
 
-    // 👇 Aquí se registra tu servicio de autenticación
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder = http
-                .getSharedObject(AuthenticationManagerBuilder.class);
+        AuthenticationManagerBuilder authenticationManagerBuilder =
+                http.getSharedObject(AuthenticationManagerBuilder.class);
 
         authenticationManagerBuilder
                 .userDetailsService(userDetailsService)
@@ -77,8 +82,12 @@ public class SecurityConfig {
     }
 
     @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
+    }
+
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
