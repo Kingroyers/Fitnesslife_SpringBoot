@@ -13,13 +13,14 @@ public class User {
     private String name;
     private String lastname;
     private String email;
-    private String password;// 🔒 Nueva propiedad
+    private String password;
     private String rol;
-    private String Plan; // ID del plan asociado
+    private String Plan;
+    private String qrCodePath;
 
     public User() {}
 
-    public User(Long identificacion, String name, String lastname, String email, String password, String Plan, String rol) {
+    public User(Long identificacion, String name, String lastname, String email, String password, String Plan, String rol, String qrCodePath) {
          this.rol = rol;
         this.identificacion = identificacion;
         this.name = name;
@@ -27,6 +28,7 @@ public class User {
         this.email = email;
         this.password = password;
         this.Plan = Plan;
+        this.qrCodePath = qrCodePath;
     }
 
 
@@ -93,6 +95,14 @@ public class User {
 
     public void setPlan(String Plan) {
         this.Plan = Plan;
+    }
+
+    public String getQrCodePath() {
+        return qrCodePath;
+    }
+
+    public void setQrCodePath(String qrCodePath) {
+        this.qrCodePath = qrCodePath;
     }
 }
 
