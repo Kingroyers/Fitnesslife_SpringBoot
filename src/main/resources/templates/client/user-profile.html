@@ -23,7 +23,7 @@
                     alt="User Photo">
             </div>
             <div>
-                <p class="user-name-text">John Doe</p>
+                <p class="user-name-text"><span th:text="${name} + ' ' + ${lastname}"></span></p>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
             </div>
             <div class="card-content">
                 <div class="card-label">ID de Usuario</div>
-                <div class="card-value">123456789</div>
+                <div class="card-value"><span th:text="${user.identification}"></span></div>
             </div>
         </div>
 
@@ -58,7 +58,7 @@
             </div>
             <div class="card-content">
                 <div class="card-label">Nombre Completo</div>
-                <div class="card-value">John Doe</div>
+                <div class="card-value"><span th:text="${user.name} + ' ' + ${user.lastname}"></span></div>
             </div>
         </div>
 
@@ -69,7 +69,7 @@
             </div>
             <div class="card-content">
                 <div class="card-label">Correo Electrónico</div>
-                <div class="card-value">johndoe@example.com</div>
+                <div class="card-value"><span th:text="${user.email}"></span></div>
             </div>
         </div>
 
@@ -80,7 +80,18 @@
             </div>
             <div class="card-content">
                 <div class="card-label">Teléfono</div>
-                <div class="card-value">+57 300 123 4567</div>
+                <div class="card-value"><span th:text="${user.phone}"></span></div>
+            </div>
+        </div>
+
+         <!-- tipo de sangre Card (opcional) -->
+        <div class="info-card">
+            <div class="card-icon-wrapper">
+                <img th:src="@{/img/icons/Blood.png}" alt="Tipo de sangre" style="width: 34px; height: 34px;">
+            </div>
+            <div class="card-content">
+                <div class="card-label">Tipo de sangre</div>
+                <div class="card-value"><span th:text="${user.bloodType}"></span></div>
             </div>
         </div>
 
@@ -91,7 +102,7 @@
             </div>
             <div class="card-content">
                 <div class="card-label">Miembro Desde</div>
-                <div class="card-value">Enero 2024</div>
+                <div class="card-value"><span th:text="${#dates.format(dateCreated, 'MMMM yyyy')}"></span></div>
             </div>
         </div>
 
