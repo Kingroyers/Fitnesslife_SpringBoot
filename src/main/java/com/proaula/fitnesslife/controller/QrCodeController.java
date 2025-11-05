@@ -4,6 +4,8 @@ import com.google.zxing.WriterException;
 import com.proaula.fitnesslife.model.User;
 import com.proaula.fitnesslife.repository.UserRepository;
 import com.proaula.fitnesslife.service.QrCodeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,134 +26,123 @@ import java.util.Optional;
 
 @Controller
 public class QrCodeController {
-    
+
+    private static final Logger logger = LoggerFactory.getLogger(QrCodeController.class);
+
     @Autowired
     private QrCodeService qrCodeService;
-    
+
     @Autowired
     private UserRepository userRepository;
 
-    /**
-     * Muestra la página del QR code
-     */
     @GetMapping("/qrcode")
     public String qrCodePage(Model model) {
         try {
-            // Obtener el usuario autenticado
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
-            
-            System.out.println("Email autenticado: " + email); // Debug
-            
+            logger.debug("Email autenticado: {}", email);
+
             Optional<User> userOpt = userRepository.findByEmail(email);
-            
+
             if (userOpt.isEmpty()) {
-                System.out.println("Usuario no encontrado con email: " + email); // Debug
+                logger.warn("Usuario no encontrado con email: {}", email);
                 model.addAttribute("error", "Usuario no encontrado");
                 return "error";
             }
-            
+
             User user = userOpt.get();
-            System.out.println("Usuario encontrado: " + user.getName() + ", ID: " + user.getIdentificacion()); // Debug
-            
-            // Verificar si el usuario ya tiene un QR generado
+            logger.info("Usuario encontrado: {} (ID: {})", user.getName(), user.getIdentification());
+
             if (!qrCodeService.qrCodeExists(user)) {
-                System.out.println("Generando QR para usuario: " + user.getIdentificacion()); // Debug
+                logger.info("Generando QR para usuario: {}", user.getIdentification());
                 try {
-                    // Generar el QR si no existe
                     qrCodeService.generateAndSaveQRCode(user);
-                    System.out.println("QR generado exitosamente"); // Debug
+                    logger.info("QR generado exitosamente para usuario: {}", user.getIdentification());
                 } catch (WriterException | IOException e) {
-                    System.err.println("Error al generar QR: " + e.getMessage()); // Debug
-                    e.printStackTrace();
+                    logger.error("Error al generar QR para usuario {}: {}", user.getIdentification(), e.getMessage(),
+                            e);
                     model.addAttribute("error", "Error al generar el código QR: " + e.getMessage());
                     return "error";
                 }
             } else {
-                System.out.println("QR ya existe para usuario: " + user.getIdentificacion()); // Debug
+                logger.debug("QR ya existe para usuario: {}", user.getIdentification());
             }
-            
+
             model.addAttribute("user", user);
-            System.out.println("Usuario agregado al modelo correctamente"); // Debug
+            logger.debug("Usuario agregado al modelo correctamente");
             return "client/qr-code";
-            
+
         } catch (Exception e) {
-            System.err.println("Error general en qrCodePage: " + e.getMessage()); // Debug
-            e.printStackTrace();
+            logger.error("Error inesperado en qrCodePage: {}", e.getMessage(), e);
             model.addAttribute("error", "Error inesperado: " + e.getMessage());
             return "error";
         }
     }
 
-    /**
-     * Endpoint para obtener la imagen del QR code del usuario autenticado
-     */
     @GetMapping(value = "/api/qr/image", produces = MediaType.IMAGE_PNG_VALUE)
     @ResponseBody
     public ResponseEntity<byte[]> getQRCodeImage() {
         try {
-            // Obtener el usuario autenticado
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
-            
+            logger.debug("Solicitando imagen QR para: {}", email);
+
             Optional<User> userOpt = userRepository.findByEmail(email);
-            
+
             if (userOpt.isEmpty()) {
+                logger.warn("Usuario no encontrado para imagen QR: {}", email);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
-            
+
             User user = userOpt.get();
-            
-            // Obtener la imagen del QR
             BufferedImage qrImage = qrCodeService.getQRCodeImage(user);
-            
+
             if (qrImage == null) {
-                // Si no existe, generarlo
+                logger.info("QR no encontrado, generando nuevo para usuario: {}", user.getIdentification());
                 qrCodeService.generateAndSaveQRCode(user);
                 qrImage = qrCodeService.getQRCodeImage(user);
             }
-            
-            // Convertir BufferedImage a byte array
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             ImageIO.write(qrImage, "png", baos);
             byte[] imageBytes = baos.toByteArray();
-            
+
+            logger.debug("QR convertido a imagen PNG correctamente");
             return ResponseEntity.ok()
                     .contentType(MediaType.IMAGE_PNG)
                     .body(imageBytes);
-                    
+
         } catch (IOException | WriterException e) {
+            logger.error("Error al obtener imagen QR: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    /**
-     * Endpoint para regenerar el QR code del usuario
-     */
     @PostMapping("/api/qr/refresh")
     @ResponseBody
     public ResponseEntity<?> refreshQRCode() {
         try {
-            // Obtener el usuario autenticado
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String email = authentication.getName();
-            
+            logger.debug("Solicitud de regeneración de QR para: {}", email);
+
             Optional<User> userOpt = userRepository.findByEmail(email);
-            
+
             if (userOpt.isEmpty()) {
+                logger.warn("Usuario no encontrado para regenerar QR: {}", email);
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("{\"error\": \"Usuario no encontrado\"}");
             }
-            
+
             User user = userOpt.get();
-            
-            // Regenerar el QR code
             qrCodeService.regenerateQRCode(user);
-            
+            logger.info("QR regenerado correctamente para usuario: {}", user.getIdentification());
+
             return ResponseEntity.ok()
                     .body("{\"success\": true, \"message\": \"Código QR actualizado correctamente\"}");
-                    
+
         } catch (WriterException | IOException e) {
+            logger.error("Error al regenerar QR: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("{\"error\": \"Error al regenerar el código QR\"}");
         }

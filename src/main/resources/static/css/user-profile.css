@@ -57,6 +57,7 @@ body {
     font-weight: 600;
     color: var(--text-white);
     margin: 0;
+    text-transform: capitalize;
 }
 
 /* Plan Card */
@@ -94,7 +95,6 @@ body {
 
 .plan-status {
     text-align: center;
-    color: #84d65a;
     font-size: 14px;
     display: flex;
     align-items: center;

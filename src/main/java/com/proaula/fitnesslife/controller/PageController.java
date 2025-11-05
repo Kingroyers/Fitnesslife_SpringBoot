@@ -1,93 +1,80 @@
 package com.proaula.fitnesslife.controller;
 
 import java.security.Principal;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.proaula.fitnesslife.repository.UserRepository;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import com.proaula.fitnesslife.service.UserService;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class PageController {
 
-    
+    private final UserService userService;
 
-    @Autowired
-    private UserRepository userRepository;
+    private static final String VIEW_INDEX = "index";
+    private static final String VIEW_LOGIN = "auth/login";
+    private static final String VIEW_HOME = "client/home";
+    private static final String VIEW_DASHBOARD = "admin/dashboard";
+    private static final String VIEW_PAYMENT = "client/payment";
+    private static final String VIEW_PLAN = "client/plan";
+    private static final String VIEW_QR_CODE = "client/qr-code";
+    private static final String VIEW_USER_PROFILE = "client/user-profile";
+
+    /**
+     * Este método se ejecuta ANTES de cada request en este controlador
+     * Carga automáticamente el usuario autenticado en el modelo
+     */
+    @ModelAttribute
+    public void addUserToModel(Model model, Principal principal) {
+        if (principal != null) {
+            String email = principal.getName();
+            userService.findByEmail(email).ifPresentOrElse(
+                user -> model.addAttribute("currentUser", user),
+                () -> model.addAttribute("error", "Usuario no encontrado")
+            );
+        }
+    }
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return VIEW_INDEX;
     }
 
     @GetMapping("/login")
     public String login() {
-        return "auth/login";
+        return VIEW_LOGIN;
     }
 
     @GetMapping("/home")
-    public String home(Model model, Principal principal) {
-        
-        if (principal != null) {
-            String email = principal.getName(); // Aquí tienes el correo del usuario autenticado
-
-            userRepository.findByEmail(email).ifPresentOrElse(user -> {
-                model.addAttribute("name", user.getName());
-                model.addAttribute("lastname", user.getLastname());
-                model.addAttribute("identificacion", user.getIdentificacion());
-                model.addAttribute("plan", user.getPlan());
-            }, () -> {
-                model.addAttribute("name", "Usuario no encontrado");
-            });
-
-        } else {
-            model.addAttribute("username", "Invitado");
-        }
-
-        return "client/home";
+    public String home() {
+        return VIEW_HOME;
     }
+
     @GetMapping("/dashboard")
-    public String dashboard(Model model, Principal principal) {
-
-        if (principal != null) {
-            String email = principal.getName(); // Aquí tienes el correo del usuario autenticado
-
-            userRepository.findByEmail(email).ifPresentOrElse(user -> {
-                model.addAttribute("name", user.getName());
-                model.addAttribute("lastname", user.getLastname());
-                model.addAttribute("identificacion", user.getIdentificacion());
-                model.addAttribute("plan", user.getPlan());
-            }, () -> {
-                model.addAttribute("name", "Usuario no encontrado");
-            });
-
-        } else {
-            model.addAttribute("username", "Invitado");
-        }
-
-        return "admin/dashboard";
+    public String dashboard() {
+        return VIEW_DASHBOARD;
     }
 
     @GetMapping("/payment")
     public String payment() {
-        return "client/payment";
+        return VIEW_PAYMENT;
     }
 
     @GetMapping("/plan")
     public String plan() {
-        return "client/plan";
+        return VIEW_PLAN;
     }
 
     @GetMapping("/qr-code")
     public String qrCode() {
-        return "client/qr-code";
+        return VIEW_QR_CODE;
     }
 
     @GetMapping("/user-profile")
     public String userProfile() {
-        return "client/user-profile";
+        return VIEW_USER_PROFILE;
     }
-
 }

@@ -19,11 +19,17 @@
     <div class="profile-background">
         <div class="profile-header">
             <div class="profile-photo">
-                <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5bff&color=fff&size=128"
-                    alt="User Photo">
+                <img th:if="${currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+                     th:src="${currentUser.photoProfile}"
+                     alt="User Photo">
+                <img th:unless="${currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+                     th:src="'https://ui-avatars.com/api/?name=' + ${currentUser.name} + '+' + ${currentUser.lastname} + '&background=2c5bff&color=fff&size=128'"
+                     alt="User Photo">
             </div>
             <div>
-                <p class="user-name-text">John Doe</p>
+                <p class="user-name-text">
+                    <span th:text="${currentUser.name} + ' ' + ${currentUser.lastname}"></span>
+                </p>
             </div>
         </div>
     </div>
@@ -31,10 +37,12 @@
     <!-- Plan Card -->
     <div class="plan-card">
         <span class="plan-badge">Plan Actual</span>
-        <h2 class="plan-name">Premium</h2>
-        <div class="plan-status">
-            <i class="bi bi-check-circle-fill"></i>
-            <span>Activo</span>
+        <h2 class="plan-name">
+            <span th:text="${currentUser.plan != null ? currentUser.plan : 'Sin plan'}"></span>
+        </h2>
+        <div class="plan-status" th:classappend="${currentUser.active} ? ' text-success' : ' text-danger'">
+            <i class="bi" th:classappend="${currentUser.active} ? ' bi-check-circle-fill' : ' bi-x-circle-fill'"></i>
+            <span th:text="${currentUser.active} ? 'Activo' : 'Inactivo'"></span>
         </div>
     </div>
 
@@ -47,7 +55,9 @@
             </div>
             <div class="card-content">
                 <div class="card-label">ID de Usuario</div>
-                <div class="card-value">123456789</div>
+                <div class="card-value">
+                    <span th:text="${currentUser.identification}"></span>
+                </div>
             </div>
         </div>
 
@@ -58,7 +68,9 @@
             </div>
             <div class="card-content">
                 <div class="card-label">Nombre Completo</div>
-                <div class="card-value">John Doe</div>
+                <div class="card-value">
+                    <span th:text="${currentUser.name} + ' ' + ${currentUser.lastname}"></span>
+                </div>
             </div>
         </div>
 
@@ -69,29 +81,48 @@
             </div>
             <div class="card-content">
                 <div class="card-label">Correo Electrónico</div>
-                <div class="card-value">johndoe@example.com</div>
+                <div class="card-value">
+                    <span th:text="${currentUser.email}"></span>
+                </div>
             </div>
         </div>
 
-        <!-- Phone Card (opcional) -->
+        <!-- Phone Card -->
         <div class="info-card">
             <div class="card-icon-wrapper">
                 <i class="bi bi-telephone-fill" style="color: var(--primary-color); font-size: 24px;"></i>
             </div>
             <div class="card-content">
                 <div class="card-label">Teléfono</div>
-                <div class="card-value">+57 300 123 4567</div>
+                <div class="card-value">
+                    <span th:text="${currentUser.phone != null ? currentUser.phone : 'No registrado'}"></span>
+                </div>
             </div>
         </div>
 
-        <!-- Member Since Card (opcional) -->
+        <!-- Tipo de sangre Card -->
+        <div class="info-card">
+            <div class="card-icon-wrapper">
+                <img th:src="@{/img/icons/Blood.png}" alt="Tipo de sangre" style="width: 34px; height: 34px;">
+            </div>
+            <div class="card-content">
+                <div class="card-label">Tipo de sangre</div>
+                <div class="card-value">
+                    <span th:text="${currentUser.bloodType != null ? currentUser.bloodType : 'No registrado'}"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Member Since Card -->
         <div class="info-card">
             <div class="card-icon-wrapper">
                 <i class="bi bi-calendar-check" style="color: var(--primary-color); font-size: 24px;"></i>
             </div>
             <div class="card-content">
                 <div class="card-label">Miembro Desde</div>
-                <div class="card-value">Enero 2024</div>
+                <div class="card-value">
+                    <span th:text="${currentUser.createdAt != null ? #temporals.format(currentUser.createdAt, 'MMMM yyyy') : 'Fecha no disponible'}"></span>
+                </div>
             </div>
         </div>
 

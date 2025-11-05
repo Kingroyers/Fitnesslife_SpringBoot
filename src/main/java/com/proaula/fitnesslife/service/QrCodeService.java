@@ -29,16 +29,16 @@ public class QrCodeService {
     private static final int QR_HEIGHT = 500;
 
     public String generateAndSaveQRCode(User user) throws WriterException, IOException {
-        String qrText = user.getIdentificacion().toString();
+        String qrText = user.getIdentification().toString();
 
-        String userDir = QR_BASE_DIR + File.separator + user.getIdentificacion();
+        String userDir = QR_BASE_DIR + File.separator + user.getIdentification();
         Path userDirPath = Paths.get(userDir);
 
         if (!Files.exists(userDirPath)) {
             Files.createDirectories(userDirPath);
         }
 
-        String qrFileName = user.getIdentificacion() + "_qr.png";
+        String qrFileName = user.getIdentification() + "_qr.png";
         String qrFilePath = userDir + File.separator + qrFileName;
 
         QRCodeWriter qrCodeWriter = new QRCodeWriter();

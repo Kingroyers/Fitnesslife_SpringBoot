@@ -4,11 +4,16 @@
     <div class="d-flex justify-content-between align-items-center">
       <!-- User Info -->
       <div class="d-flex align-items-center gap-3">
-        <img src="https://ui-avatars.com/api/?name=Usuario+Demo&background=2c5bff&color=fff&size=128" alt="User Avatar"
-          class="user-avatar">
+        <img th:if="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+          th:src="${currentUser.photoProfile}" alt="User Avatar" class="user-avatar">
+        <img
+          th:unless="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+          th:src="'https://ui-avatars.com/api/?name=' + ${currentUser.name} + '+' + ${currentUser.lastname} + '&background=2c5bff&color=fff&size=128'"
+          alt="User Avatar" class="user-avatar">
         <div>
-          <p class="user-name">Hola, <strong
-                        th:text="${name}"></strong> <strong th:text="${lastname}"></strong></p>
+          <p class="user-name">
+            Hola, <strong th:text="${currentUser.name}"></strong> <strong th:text="${currentUser.lastname}"></strong>
+          </p>
         </div>
       </div>
 
@@ -31,13 +36,19 @@
     <!-- Profile Section -->
     <div class="profile-section">
       <div class="position-relative d-inline-block">
-        <img src="https://ui-avatars.com/api/?name=Usuario+Demo&background=2c5bff&color=fff&size=256"
+        <img th:if="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+          th:src="${currentUser.photoProfile}" alt="Profile Avatar" class="profile-avatar-large">
+        <img
+          th:unless="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+          th:src="'https://ui-avatars.com/api/?name=' + ${currentUser.name} + '+' + ${currentUser.lastname} + '&background=2c5bff&color=fff&size=256'"
           alt="Profile Avatar" class="profile-avatar-large">
         <button class="edit-profile-btn" data-bs-toggle="modal" data-bs-target="#photoModal">
           <i class="bi bi-plus text-white"></i>
         </button>
       </div>
-      <h5 class="mt-2 mb-0">Usuario Demo</h5>
+      <h5 class="mt-2 mb-0">
+        <span th:text="${currentUser.name} + ' ' + ${currentUser.lastname}">Usuario Demo</span>
+      </h5>
     </div>
 
     <!-- Online Users Badge -->
@@ -102,7 +113,11 @@
         <button type="button" class="btn-close modal-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body text-center">
-        <img src="https://ui-avatars.com/api/?name=Usuario+Demo&background=2c5bff&color=fff&size=256"
+        <img th:if="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+          th:src="${currentUser.photoProfile}" alt="Current Photo" class="profile-photo mb-3">
+        <img
+          th:unless="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+          th:src="'https://ui-avatars.com/api/?name=' + ${currentUser.name} + '+' + ${currentUser.lastname} + '&background=2c5bff&color=fff&size=256'"
           alt="Current Photo" class="profile-photo mb-3">
 
         <form>
