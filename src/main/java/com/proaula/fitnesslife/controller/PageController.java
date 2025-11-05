@@ -2,23 +2,28 @@ package com.proaula.fitnesslife.controller;
 
 import java.security.Principal;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
-import java.util.Locale;
+import java.util.List;
 
+import com.proaula.fitnesslife.model.FunctionalTraining;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.proaula.fitnesslife.model.User;
 import com.proaula.fitnesslife.repository.UserRepository;
+import com.proaula.fitnesslife.service.FunctionalTrainingService;
 
 @Controller
 public class PageController {
 
     @Autowired
     private UserRepository userRepository;
+
+    private final FunctionalTrainingService service;
+
+    public PageController(FunctionalTrainingService service) {
+        this.service = service;
+    }
 
     @GetMapping("/")
     public String index() {
@@ -33,9 +38,13 @@ public class PageController {
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
 
+       List<FunctionalTraining> trainings = service.getAllTrainings();
+       
+             model.addAttribute("trainings", trainings); 
         if (principal != null) {
             String email = principal.getName(); // Aquí tienes el correo del usuario autenticado
-
+             
+            
             userRepository.findByEmail(email).ifPresentOrElse(user -> {
                 model.addAttribute("name", user.getName());
                 model.addAttribute("lastname", user.getLastname());

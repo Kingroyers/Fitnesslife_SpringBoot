@@ -12,8 +12,8 @@ public class MongoInitializer {
 
     @PostConstruct
     public void createCollectionsIfNotExist() {
-        if (!mongoTemplate.collectionExists("users")) {
-            mongoTemplate.createCollection("users");
+        if (!mongoTemplate.collectionExists("FunctionalTraining")) {
+            mongoTemplate.createCollection("FunctionalTraining");
             System.out.println("✅ Colección 'users' creada automáticamente");
         } else {
             System.out.println("ℹ️ Colección 'users' ya existe");

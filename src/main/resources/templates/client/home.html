@@ -20,7 +20,7 @@
 
     <!-- Dashboard Container -->
     <div class="dashboard-container">
-        
+
         <!-- Upcoming Classes Section -->
         <div class="classes-carousel-wrapper">
             <div class="section-header">
@@ -35,39 +35,42 @@
             <hr class="section-divider">
 
             <div class="classes-carousel">
-                <!-- Class Card 1 -->
+                <div class=""  th:each="training : ${trainings}">
+                      <!-- Class Card 1 -->
                 <div class="class-card">
                     <div class="class-card-header">
-                        <h3 class="class-name">Yoga Matutino</h3>
+                        <h3 class="class-name" th:text="${training.nameTraining}"></h3>
                         <p class="class-instructor">
                             <i class="bi bi-person-circle"></i>
-                            Instructor: María López
+                            Instructor: <span th:text="${training.instructor}"></span>
                         </p>
                     </div>
 
                     <div class="class-info">
                         <div class="class-info-item">
                             <i class="bi bi-calendar3"></i>
-                            <span>Lunes, 29 Octubre</span>
+                            <span th:text="${#dates.format(training.datetime, 'EEEE, d MMMM')}"></span>
                         </div>
                         <div class="class-info-item">
                             <i class="bi bi-clock"></i>
-                            <span>7:00 AM - 8:00 AM</span>
+                            <span th:text="${#dates.format(training.datetime, 'h:mm a')}"></span>
                         </div>
                         <div class="class-info-item">
                             <i class="bi bi-geo-alt"></i>
-                            <span>Sala 2</span>
+                            <span th:text="${training.room}"></span>
                         </div>
                         <div class="class-info-item">
                             <i class="bi bi-people"></i>
-                            <span>12/15 Inscritos</span>
+                            <span th:text="${#lists.size(training.userIds)} + ' Inscritos'"></span>
                         </div>
+                                  <button class="class-action-btn">Inscribirme</button>
+
                     </div>
-
-                    <button class="class-action-btn">Inscribirme</button>
                 </div>
+                  
+            </div>
 
-                <!-- Class Card 2 -->
+                <!-- Class Card 2
                 <div class="class-card">
                     <div class="class-card-header">
                         <h3 class="class-name">Spinning Intenso</h3>
@@ -99,7 +102,7 @@
                     <button class="class-action-btn">Inscribirme</button>
                 </div>
 
-                <!-- Class Card 3 -->
+                
                 <div class="class-card">
                     <div class="class-card-header">
                         <h3 class="class-name">Pilates</h3>
@@ -129,7 +132,7 @@
                     </div>
 
                     <button class="class-action-btn">Inscribirme</button>
-                </div>
+                </div> -->
             </div>
         </div>
 
@@ -230,9 +233,8 @@
             <div class="team-grid">
                 <!-- Trainer 1 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Maria+Lopez&background=2c5bff&color=fff&size=128" 
-                         alt="María López" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Maria+Lopez&background=2c5bff&color=fff&size=128"
+                        alt="María López" class="team-avatar">
                     <h3 class="team-name">María López</h3>
                     <p class="team-role">Entrenadora Personal</p>
                     <p class="team-specialty">Yoga & Pilates</p>
@@ -240,9 +242,8 @@
 
                 <!-- Trainer 2 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Carlos+Ruiz&background=2c5bff&color=fff&size=128" 
-                         alt="Carlos Ruiz" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Carlos+Ruiz&background=2c5bff&color=fff&size=128"
+                        alt="Carlos Ruiz" class="team-avatar">
                     <h3 class="team-name">Carlos Ruiz</h3>
                     <p class="team-role">Instructor</p>
                     <p class="team-specialty">Spinning & Cardio</p>
@@ -250,9 +251,8 @@
 
                 <!-- Trainer 3 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=2c5bff&color=fff&size=128" 
-                         alt="Ana García" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=2c5bff&color=fff&size=128"
+                        alt="Ana García" class="team-avatar">
                     <h3 class="team-name">Ana García</h3>
                     <p class="team-role">Nutricionista</p>
                     <p class="team-specialty">Planes Alimenticios</p>
@@ -260,9 +260,8 @@
 
                 <!-- Trainer 4 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5bff&color=fff&size=128" 
-                         alt="Juan Pérez" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5bff&color=fff&size=128"
+                        alt="Juan Pérez" class="team-avatar">
                     <h3 class="team-name">Juan Pérez</h3>
                     <p class="team-role">Entrenador</p>
                     <p class="team-specialty">Fuerza & Musculación</p>
