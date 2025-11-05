@@ -66,7 +66,6 @@ public class PageController {
                 model.addAttribute("phone", user.getPhone());
                 model.addAttribute("email", user.getEmail());
                 model.addAttribute("bloodType", user.getBloodType());
-                model.addAttribute("lastlogin", user.getLastlogin());
                 model.addAttribute("photoProfile", user.getPhotoProfile());
                 model.addAttribute("plan", user.getPlan());
             }, () -> {
@@ -103,11 +102,13 @@ public class PageController {
             String email = principal.getName();
 
             userRepository.findByEmail(email).ifPresentOrElse(user -> {
-                // 🕓 Formateamos la fecha aquí
+
                  Date dateCreated = Date.from(user.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant());
 
                 model.addAttribute("user", user);
-                model.addAttribute("dateCreated", dateCreated); // ✅ agregamos la fecha formateada
+                model.addAttribute("dateCreated", dateCreated); 
+                model.addAttribute("isActive", user.isActive());
+
             }, () -> {
                 model.addAttribute("error", "Usuario no encontrado");
             });

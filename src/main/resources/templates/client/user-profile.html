@@ -23,7 +23,7 @@
                     alt="User Photo">
             </div>
             <div>
-                <p class="user-name-text"><span th:text="${name} + ' ' + ${lastname}"></span></p>
+                <p class="user-name-text"><span th:text="${user.name} + ' ' + ${user.lastname}"></span></p>
             </div>
         </div>
     </div>
@@ -31,11 +31,14 @@
     <!-- Plan Card -->
     <div class="plan-card">
         <span class="plan-badge">Plan Actual</span>
-        <h2 class="plan-name">Premium</h2>
-        <div class="plan-status">
-            <i class="bi bi-check-circle-fill"></i>
-            <span>Activo</span>
+        <h2 class="plan-name"><span th:text="${user.plan}"></span></h2>
+        <div class="plan-status" th:classappend="${isActive} ? ' text-success' : ' text-danger'">
+            <i class="bi" th:classappend="${isActive} ? ' bi-check-circle-fill' : ' bi-x-circle-fill'"></i>
+            <span th:text="${isActive} ? 'Activo' : 'Inactivo'"></span>
         </div>
+
+
+
     </div>
 
     <!-- Info Cards -->
@@ -84,7 +87,7 @@
             </div>
         </div>
 
-         <!-- tipo de sangre Card (opcional) -->
+        <!-- tipo de sangre Card (opcional) -->
         <div class="info-card">
             <div class="card-icon-wrapper">
                 <img th:src="@{/img/icons/Blood.png}" alt="Tipo de sangre" style="width: 34px; height: 34px;">

@@ -25,7 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User
                 .withUsername(user.getEmail()) // El username será el email
                 .password(user.getPassword())
-                .roles(user.getRol()) // O puedes dejar .roles("USER") si solo tienes uno
+                .roles(user.getRole()) // O puedes dejar .roles("USER") si solo tienes uno
                 .build();
 
                 

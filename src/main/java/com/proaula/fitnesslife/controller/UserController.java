@@ -25,7 +25,7 @@ public class UserController {
             return "register";
         }
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRol("USER");
+        user.setRole("USER");
         userRepo.save(user);
 
         return "redirect:/login?registered";

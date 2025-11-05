@@ -1,13 +1,17 @@
 package com.proaula.fitnesslife.model;
 
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     private String id;
@@ -15,41 +19,51 @@ public class User {
     private Long identification;
     private String name;
     private String lastname;
+    private String sex;
+    private LocalDate birthDate;
+    private String bloodType;
 
-    @Indexed(unique = true)  
+    @Indexed(unique = true)
     private String email;
-  
+
     private String phone;
     private String password;
     private String photoProfile;
-    private String sex;
-    private String bloodType;
+    private String role;
+    private String plan;
     private boolean isActive;
-    private String rol;
-    private String plan; 
+    private String qrCodePath;
+
+    @CreatedDate
     private LocalDateTime createdAt;
-    private LocalDateTime lastlogin;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
+    private LocalDateTime lastLogin;
 
     public User() {}
 
-    public User(String id, Long identification, String name, String lastname, String email, LocalDateTime createdAt,
-            String phone, String password, String photoProfile, LocalDateTime lastlogin, String bloodType,
-            boolean isActive, String rol, String plan, String sex) {
+    public User(String id, Long identification, String name, String lastname, String sex, LocalDate birthDate,
+                String bloodType, String email, String phone, String password, String photoProfile,
+                String role, String plan, boolean isActive, String qrCodePath, LocalDateTime lastLogin) {
+
         this.id = id;
         this.identification = identification;
         this.name = name;
         this.lastname = lastname;
+        this.sex = sex;
+        this.birthDate = birthDate;
+        this.bloodType = bloodType;
         this.email = email;
-        this.createdAt =  LocalDateTime.now();
         this.phone = phone;
         this.password = password;
         this.photoProfile = photoProfile;
-        this.lastlogin = lastlogin;
-        this.bloodType = bloodType;
-        this.isActive = true;
-        this.rol = "USER";
+        this.role = "USER";
         this.plan = plan;
-        this.sex = sex;
+        this.isActive = true;
+        this.qrCodePath = qrCodePath;
+        this.lastLogin = lastLogin;
     }
 
     public String getId() {
@@ -84,20 +98,36 @@ public class User {
         this.lastname = lastname;
     }
 
+    public String getSex() {
+        return sex;
+    }
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getBloodType() {
+        return bloodType;
+    }
+
+    public void setBloodType(String bloodType) {
+        this.bloodType = bloodType;
+    }
+
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 
     public String getPhone() {
@@ -124,36 +154,12 @@ public class User {
         this.photoProfile = photoProfile;
     }
 
-    public LocalDateTime getLastlogin() {
-        return lastlogin;
+    public String getRole() {
+        return role;
     }
 
-    public void setLastlogin(LocalDateTime lastlogin) {
-        this.lastlogin = lastlogin;
-    }
-
-    public String getBloodType() {
-        return bloodType;
-    }
-
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
-    }
-
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean isActive) {
-        this.isActive = isActive;
-    }
-
-    public String getRol() {
-        return rol;
-    }
-
-    public void setRol(String rol) {
-        this.rol = rol;
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getPlan() {
@@ -164,16 +170,43 @@ public class User {
         this.plan = plan;
     }
 
-    public String getSex() {
-        return sex;
+    public boolean isActive() {
+        return isActive;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
-    
+    public String getQrCodePath() {
+        return qrCodePath;
+    }
 
-       
+    public void setQrCodePath(String qrCodePath) {
+        this.qrCodePath = qrCodePath;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getLastLogin() {
+        return lastLogin;
+    }
+
+    public void setLastLogin(LocalDateTime lastLogin) {
+        this.lastLogin = lastLogin;
+    }
 }
-
