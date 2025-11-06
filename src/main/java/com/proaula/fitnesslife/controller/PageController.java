@@ -19,7 +19,6 @@ public class PageController {
     private static final String VIEW_HOME = "client/home";
     private static final String VIEW_DASHBOARD = "admin/dashboard";
     private static final String VIEW_PAYMENT = "client/payment";
-    private static final String VIEW_PLAN = "client/plan";
     private static final String VIEW_QR_CODE = "client/qr-code";
     private static final String VIEW_USER_PROFILE = "client/user-profile";
 
@@ -61,11 +60,6 @@ public class PageController {
     @GetMapping("/payment")
     public String payment() {
         return VIEW_PAYMENT;
-    }
-
-    @GetMapping("/plan")
-    public String plan() {
-        return VIEW_PLAN;
     }
 
     @GetMapping("/qr-code")
