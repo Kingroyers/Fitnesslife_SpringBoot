@@ -41,8 +41,14 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#comments">Comentarios</a>
                         </li>
-                        <li class="nav-item register">
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <a class="nav-link" href="/home">Panel Usuario</a>
+                        </li>
+                        <li class="nav-item register" sec:authorize="!isAuthenticated()">
                             <a class="nav-link" th:href="@{/login}">Login</a>
+                        </li>
+                        <li class="nav-item" sec:authorize="isAuthenticated()">
+                            <a class="btn btn-primary" href="/logout">Cerrar sesión</a>
                         </li>
                     </ul>
                 </div>
@@ -431,7 +437,8 @@
                 <hr class="mb-4">
                 <div class="text-center mb-2">
                     <p>© 2025 Fitness Life. Todos los derechos reservados.<br>
-                        Desarrollado por <a href="#">Samuel Alzate</a>, <a href="#">Eder Arévalo</a>, <a href="#">Jesús Calle</a> y <a href="#">Antonio Royero</a>.
+                        Desarrollado por <a href="#">Samuel Alzate</a>, <a href="#">Eder Arévalo</a>, <a href="#">Jesús
+                            Calle</a> y <a href="#">Antonio Royero</a>.
                     </p>
                 </div>
                 <div class="text-center">

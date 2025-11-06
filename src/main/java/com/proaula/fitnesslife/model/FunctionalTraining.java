@@ -33,7 +33,7 @@ public class FunctionalTraining {
     private String room;
 
     // Relación con usuarios inscritos
-    private List<String> userIds = new ArrayList<>();
+    private List<Long> userIds = new ArrayList<>();
 
     public FunctionalTraining() {
     }
@@ -41,7 +41,7 @@ public class FunctionalTraining {
     public FunctionalTraining(String id, int idFunctionalTraining, String nameTraining, String instructor,
             String description,
             int maximumCapacity, String duration, String status, Date createdAt, Date datetime, String room,
-            List<String> userIds) {
+            List<Long> userIds) {
         this.id = id;
         this.idFunctionalTraining = idFunctionalTraining;
         this.nameTraining = nameTraining;
@@ -141,14 +141,14 @@ public class FunctionalTraining {
     }
 
     public void setRoom(String room) {
-        this.room = room;
+        this.room = room;   
     }
 
-    public List<String> getUserIds() {
+    public List<Long> getUserIds() {
         return userIds;
     }
 
-    public void setUserIds(List<String> userIds) {
+    public void setUserIds(List<Long> userIds) {
         this.userIds = userIds;
     }
 }

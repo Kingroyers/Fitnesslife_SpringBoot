@@ -1,9 +1,10 @@
 package com.proaula.fitnesslife.service;
 
 import com.proaula.fitnesslife.model.FunctionalTraining;
+import com.proaula.fitnesslife.model.User;
 import com.proaula.fitnesslife.repository.FunctionalTrainingRepository;
+import com.proaula.fitnesslife.repository.UserRepository;
 import org.springframework.stereotype.Service;
-
 
 import java.util.List;
 import java.util.Optional;
@@ -12,9 +13,11 @@ import java.util.Optional;
 public class FunctionalTrainingService {
 
     private final FunctionalTrainingRepository repository;
+    private final UserRepository userRepository;
 
-    public FunctionalTrainingService(FunctionalTrainingRepository repository) {
+    public FunctionalTrainingService(FunctionalTrainingRepository repository, UserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     public List<FunctionalTraining> getAllTrainings() {
@@ -30,8 +33,8 @@ public class FunctionalTrainingService {
     }
 
     public FunctionalTraining createTraining(FunctionalTraining training) {
-        // Si quieres asegurar unicidad por idFunctionalTraining
-        if(repository.existsByIdFunctionalTraining(training.getIdFunctionalTraining())) {
+        // Asegurar unicidad por idFunctionalTraining
+        if (repository.existsByIdFunctionalTraining(training.getIdFunctionalTraining())) {
             throw new IllegalArgumentException("El idFunctionalTraining ya existe");
         }
         return repository.save(training);
@@ -47,12 +50,25 @@ public class FunctionalTrainingService {
             training.setStatus(updatedTraining.getStatus());
             training.setDatetime(updatedTraining.getDatetime());
             training.setRoom(updatedTraining.getRoom());
-           
             return repository.save(training);
         }).orElseThrow(() -> new IllegalArgumentException("Training not found"));
     }
 
     public void deleteTraining(String id) {
         repository.deleteById(id);
+    }
+
+    // ✅ Nuevo método: cancelar inscripción
+    public void cancelarInscripcion(int idFunctionalTraining, String emailUsuario) {
+        User user = userRepository.findByEmail(emailUsuario)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        FunctionalTraining training = repository.findByIdFunctionalTraining(idFunctionalTraining)
+                .orElseThrow(() -> new RuntimeException("Clase no encontrada"));
+
+        if (training.getUserIds() != null && training.getUserIds().contains(user.getIdentification())) {
+            training.getUserIds().remove(user.getIdentification());
+            repository.save(training);
+        }
     }
 }

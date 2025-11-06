@@ -35,336 +35,251 @@
             <hr class="section-divider">
 
             <div class="classes-carousel">
-                <div class=""  th:each="training : ${trainings}">
-                      <!-- Class Card 1 -->
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3 class="class-name" th:text="${training.nameTraining}"></h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Instructor: <span th:text="${training.instructor}"></span>
-                        </p>
-                    </div>
+                <div th:each="training : ${trainings}">
+                    <div class="class-card">
+                        <div class="class-card-header">
+                            <h3 class="class-name" th:text="${training.nameTraining}"></h3>
+                            <p class="class-instructor">
+                                <i class="bi bi-person-circle"></i>
+                                Instructor: <span th:text="${training.instructor}"></span>
+                            </p>
+                        </div>
 
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span th:text="${#dates.format(training.datetime, 'EEEE, d MMMM')}"></span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span th:text="${#dates.format(training.datetime, 'h:mm a')}"></span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span th:text="${training.room}"></span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-people"></i>
-                            <span th:text="${#lists.size(training.userIds)} + ' Inscritos'"></span>
-                        </div>
-                                  <button class="class-action-btn">Inscribirme</button>
-
-                    </div>
-                </div>
-                  
-            </div>
-
-                <!-- Class Card 2
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3 class="class-name">Spinning Intenso</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Instructor: Carlos Ruiz
-                        </p>
-                    </div>
-
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Martes, 30 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>6:00 PM - 7:00 PM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 1</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-people"></i>
-                            <span>8/20 Inscritos</span>
-                        </div>
-                    </div>
-
-                    <button class="class-action-btn">Inscribirme</button>
-                </div>
-
-                
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3 class="class-name">Pilates</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Instructor: Ana García
-                        </p>
-                    </div>
-
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Miércoles, 31 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>9:00 AM - 10:00 AM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 3</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-people"></i>
-                            <span>5/10 Inscritos</span>
-                        </div>
-                    </div>
-
-                    <button class="class-action-btn">Inscribirme</button>
-                </div> -->
-            </div>
-        </div>
-
-        <!-- Our Collection (Workouts) Section -->
-        <div class="workouts-section">
-            <div class="section-header">
-                <h2 class="section-title">
-                    Nuestra Colección
-                </h2>
-            </div>
-            <hr class="section-divider">
-
-            <div class="workouts-grid">
-                <!-- Workout Card 1 -->
-                <a href="https://www.youtube.com/watch?v=oCtrksNCiKk" target="_blank" class="workout-card">
-                    <div class="workout-content">
-                        <h3 class="workout-title">Espalda y Hombros</h3>
-                        <div class="workout-stats">
-                            <div class="workout-stat">
+                        <div class="class-info">
+                            <div class="class-info-item">
+                                <i class="bi bi-calendar3"></i>
+                                <span th:text="${#dates.format(training.datetime, 'EEEE, d MMMM')}"></span>
+                            </div>
+                            <div class="class-info-item">
                                 <i class="bi bi-clock"></i>
-                                <span>5:08m</span>
+                                <span th:text="${#dates.format(training.datetime, 'h:mm a')}"></span>
                             </div>
-                            <div class="workout-stat">
-                                <i class="bi bi-star-fill"></i>
-                                <span>4.5</span>
+                            <div class="class-info-item">
+                                <i class="bi bi-geo-alt"></i>
+                                <span th:text="${training.room}"></span>
                             </div>
+                            <div class="class-info-item">
+                                <i class="bi bi-people"></i>
+                                <span th:text="${#lists.size(training.userIds)} + ' Inscritos'"></span>
+                            </div>
+
+                            <!-- Botón solo si el usuario NO está inscrito -->
+                            <form th:if="${!training.userIds.contains(identificacion)}"
+                                th:action="@{/inscribirme/{id}(id=${training.idFunctionalTraining})}" method="post">
+                                <button class="class-action-btn">Inscribirme</button>
+                            </form>
+
+                            <!-- Texto si ya está inscrito -->
+                            <button th:if="${training.userIds.contains(identificacion)}" class="class-action-btn"
+                                style="background: #28a745; opacity: 0.7; cursor: not-allowed;" disabled>
+                                Ya inscrito
+                            </button>
                         </div>
                     </div>
-                    <img src="/img/class1.png" alt="Espalda" class="workout-image">
-                </a>
+                </div>
+            </div>
 
-                <!-- Workout Card 2 -->
-                <a href="https://www.youtube.com/watch?v=VB09kLgJDo0" target="_blank" class="workout-card">
-                    <div class="workout-content">
-                        <h3 class="workout-title">Pecho y Abdomen</h3>
-                        <div class="workout-stats">
-                            <div class="workout-stat">
-                                <i class="bi bi-clock"></i>
-                                <span>4:53m</span>
-                            </div>
-                            <div class="workout-stat">
-                                <i class="bi bi-star-fill"></i>
-                                <span>4.0</span>
+
+            <!-- Our Collection (Workouts) Section -->
+            <div class="workouts-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        Nuestra Colección
+                    </h2>
+                </div>
+                <hr class="section-divider">
+
+                <div class="workouts-grid">
+                    <!-- Workout Card 1 -->
+                    <a href="https://www.youtube.com/watch?v=oCtrksNCiKk" target="_blank" class="workout-card">
+                        <div class="workout-content">
+                            <h3 class="workout-title">Espalda y Hombros</h3>
+                            <div class="workout-stats">
+                                <div class="workout-stat">
+                                    <i class="bi bi-clock"></i>
+                                    <span>5:08m</span>
+                                </div>
+                                <div class="workout-stat">
+                                    <i class="bi bi-star-fill"></i>
+                                    <span>4.5</span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <img src="/img/class2.png" alt="Abdomen" class="workout-image">
-                </a>
+                        <img src="/img/class1.png" alt="Espalda" class="workout-image">
+                    </a>
 
-                <!-- Workout Card 3 -->
-                <a href="https://www.youtube.com/watch?v=_hkUNgX9e54" target="_blank" class="workout-card">
-                    <div class="workout-content">
-                        <h3 class="workout-title">Brazo</h3>
-                        <div class="workout-stats">
-                            <div class="workout-stat">
-                                <i class="bi bi-clock"></i>
-                                <span>8:18m</span>
-                            </div>
-                            <div class="workout-stat">
-                                <i class="bi bi-star-fill"></i>
-                                <span>5.0</span>
-                            </div>
-                        </div>
-                    </div>
-                    <img src="/img/class3.png" alt="Biceps" class="workout-image">
-                </a>
-
-                <!-- Workout Card 4 -->
-                <a href="https://www.youtube.com/watch?v=LFR7BPbLmTc" target="_blank" class="workout-card">
-                    <div class="workout-content">
-                        <h3 class="workout-title">Pierna y Glúteos</h3>
-                        <div class="workout-stats">
-                            <div class="workout-stat">
-                                <i class="bi bi-clock"></i>
-                                <span>7:13m</span>
-                            </div>
-                            <div class="workout-stat">
-                                <i class="bi bi-star-fill"></i>
-                                <span>4.5</span>
+                    <!-- Workout Card 2 -->
+                    <a href="https://www.youtube.com/watch?v=VB09kLgJDo0" target="_blank" class="workout-card">
+                        <div class="workout-content">
+                            <h3 class="workout-title">Pecho y Abdomen</h3>
+                            <div class="workout-stats">
+                                <div class="workout-stat">
+                                    <i class="bi bi-clock"></i>
+                                    <span>4:53m</span>
+                                </div>
+                                <div class="workout-stat">
+                                    <i class="bi bi-star-fill"></i>
+                                    <span>4.0</span>
+                                </div>
                             </div>
                         </div>
+                        <img src="/img/class2.png" alt="Abdomen" class="workout-image">
+                    </a>
+
+                    <!-- Workout Card 3 -->
+                    <a href="https://www.youtube.com/watch?v=_hkUNgX9e54" target="_blank" class="workout-card">
+                        <div class="workout-content">
+                            <h3 class="workout-title">Brazo</h3>
+                            <div class="workout-stats">
+                                <div class="workout-stat">
+                                    <i class="bi bi-clock"></i>
+                                    <span>8:18m</span>
+                                </div>
+                                <div class="workout-stat">
+                                    <i class="bi bi-star-fill"></i>
+                                    <span>5.0</span>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="/img/class3.png" alt="Biceps" class="workout-image">
+                    </a>
+
+                    <!-- Workout Card 4 -->
+                    <a href="https://www.youtube.com/watch?v=LFR7BPbLmTc" target="_blank" class="workout-card">
+                        <div class="workout-content">
+                            <h3 class="workout-title">Pierna y Glúteos</h3>
+                            <div class="workout-stats">
+                                <div class="workout-stat">
+                                    <i class="bi bi-clock"></i>
+                                    <span>7:13m</span>
+                                </div>
+                                <div class="workout-stat">
+                                    <i class="bi bi-star-fill"></i>
+                                    <span>4.5</span>
+                                </div>
+                            </div>
+                        </div>
+                        <img src="/img/class4.png" alt="Pierna" class="workout-image">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Our Team Section -->
+            <div class="team-section">
+                <div class="section-header">
+                    <h2 class="section-title">
+                        <i class="bi bi-people"></i>
+                        Nuestro Equipo
+                    </h2>
+                </div>
+                <hr class="section-divider">
+
+                <div class="team-grid">
+                    <!-- Trainer 1 -->
+                    <div class="team-card">
+                        <img src="https://ui-avatars.com/api/?name=Maria+Lopez&background=2c5bff&color=fff&size=128"
+                            alt="María López" class="team-avatar">
+                        <h3 class="team-name">María López</h3>
+                        <p class="team-role">Entrenadora Personal</p>
+                        <p class="team-specialty">Yoga & Pilates</p>
                     </div>
-                    <img src="/img/class4.png" alt="Pierna" class="workout-image">
-                </a>
-            </div>
-        </div>
 
-        <!-- Our Team Section -->
-        <div class="team-section">
-            <div class="section-header">
-                <h2 class="section-title">
-                    <i class="bi bi-people"></i>
-                    Nuestro Equipo
-                </h2>
-            </div>
-            <hr class="section-divider">
+                    <!-- Trainer 2 -->
+                    <div class="team-card">
+                        <img src="https://ui-avatars.com/api/?name=Carlos+Ruiz&background=2c5bff&color=fff&size=128"
+                            alt="Carlos Ruiz" class="team-avatar">
+                        <h3 class="team-name">Carlos Ruiz</h3>
+                        <p class="team-role">Instructor</p>
+                        <p class="team-specialty">Spinning & Cardio</p>
+                    </div>
 
-            <div class="team-grid">
-                <!-- Trainer 1 -->
-                <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Maria+Lopez&background=2c5bff&color=fff&size=128"
-                        alt="María López" class="team-avatar">
-                    <h3 class="team-name">María López</h3>
-                    <p class="team-role">Entrenadora Personal</p>
-                    <p class="team-specialty">Yoga & Pilates</p>
-                </div>
+                    <!-- Trainer 3 -->
+                    <div class="team-card">
+                        <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=2c5bff&color=fff&size=128"
+                            alt="Ana García" class="team-avatar">
+                        <h3 class="team-name">Ana García</h3>
+                        <p class="team-role">Nutricionista</p>
+                        <p class="team-specialty">Planes Alimenticios</p>
+                    </div>
 
-                <!-- Trainer 2 -->
-                <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Carlos+Ruiz&background=2c5bff&color=fff&size=128"
-                        alt="Carlos Ruiz" class="team-avatar">
-                    <h3 class="team-name">Carlos Ruiz</h3>
-                    <p class="team-role">Instructor</p>
-                    <p class="team-specialty">Spinning & Cardio</p>
-                </div>
-
-                <!-- Trainer 3 -->
-                <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=2c5bff&color=fff&size=128"
-                        alt="Ana García" class="team-avatar">
-                    <h3 class="team-name">Ana García</h3>
-                    <p class="team-role">Nutricionista</p>
-                    <p class="team-specialty">Planes Alimenticios</p>
-                </div>
-
-                <!-- Trainer 4 -->
-                <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5bff&color=fff&size=128"
-                        alt="Juan Pérez" class="team-avatar">
-                    <h3 class="team-name">Juan Pérez</h3>
-                    <p class="team-role">Entrenador</p>
-                    <p class="team-specialty">Fuerza & Musculación</p>
+                    <!-- Trainer 4 -->
+                    <div class="team-card">
+                        <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5bff&color=fff&size=128"
+                            alt="Juan Pérez" class="team-avatar">
+                        <h3 class="team-name">Juan Pérez</h3>
+                        <p class="team-role">Entrenador</p>
+                        <p class="team-specialty">Fuerza & Musculación</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- My Scheduled Classes Section -->
-        <div class="scheduled-section">
-            <div class="section-header">
-                <h2 class="section-title" id="clases-agendadas">
-                    <i class="bi bi-bookmark-check"></i>
-                    Mis Clases Agendadas
-                </h2>
-            </div>
-            <hr class="section-divider">
-
-            <div class="scheduled-carousel">
-                <!-- Scheduled Card 1 -->
-                <div class="scheduled-card">
+            <!-- My Scheduled Classes Section -->
+            <div class="scheduled-carousel" id="clases">
+                <div class="scheduled-card" th:each="confirmedClass : ${confirmedClasses}">
                     <span class="scheduled-status">
                         <span class="scheduled-status-dot"></span>
                         Confirmada
                     </span>
 
                     <div class="class-card-header">
-                        <h3 class="class-name">Yoga Matutino</h3>
+                        <h3 class="class-name" th:text="${confirmedClass.nameTraining}"></h3>
                         <p class="class-instructor">
                             <i class="bi bi-person-circle"></i>
-                            María López
+                            <span th:text="${confirmedClass.instructor}"></span>
                         </p>
                     </div>
 
                     <div class="class-info">
                         <div class="class-info-item">
                             <i class="bi bi-calendar3"></i>
-                            <span>Lunes, 29 Octubre</span>
+                            <span th:text="${#dates.format(confirmedClass.datetime, 'EEEE, d MMMM')}"></span>
                         </div>
                         <div class="class-info-item">
                             <i class="bi bi-clock"></i>
-                            <span>7:00 AM - 8:00 AM</span>
+                            <span th:text="${#dates.format(confirmedClass.datetime, 'h:mm a')}"></span>
                         </div>
                         <div class="class-info-item">
                             <i class="bi bi-geo-alt"></i>
-                            <span>Sala 2</span>
+                            <span th:text="${confirmedClass.room}"></span>
                         </div>
+
+                        <form th:action="@{/cancelarInscripcion/{id}(id=${confirmedClass.idFunctionalTraining})}"
+                            method="post">
+                            <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
+                        </form>
+
                     </div>
-
-                    <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
-                </div>
-
-                <!-- Scheduled Card 2 -->
-                <div class="scheduled-card">
-                    <span class="scheduled-status">
-                        <span class="scheduled-status-dot"></span>
-                        Confirmada
-                    </span>
-
-                    <div class="class-card-header">
-                        <h3 class="class-name">Spinning Intenso</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Carlos Ruiz
-                        </p>
-                    </div>
-
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Martes, 30 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>6:00 PM - 7:00 PM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 1</span>
-                        </div>
-                    </div>
-
-                    <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
                 </div>
             </div>
 
-            <!-- Empty State (if no scheduled classes) -->
-            <!--
-            <div class="empty-state">
-                <div class="empty-state-icon">
-                    <i class="bi bi-calendar-x"></i>
-                </div>
-                <p class="empty-state-text">No tienes clases agendadas aún</p>
-            </div>
-            -->
-        </div>
 
-    </div>
+            <!-- Bottom Navbar -->
+            <div th:replace="fragments/bottom-navbar :: bottom-navbar"></div>
 
-    <!-- Bottom Navbar -->
-    <div th:replace="fragments/bottom-navbar :: bottom-navbar"></div>
+            <!-- Bootstrap JS -->
+            <script th:src="@{js/bootstrap.bundle.min.js}"></script>
+            <script th:src="@{js/sweetalert2.all.min.js}"></script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+            
+            <script th:inline="javascript">
+                /*<![CDATA[*/
+                const urlParams = new URLSearchParams(window.location.search);
+                const success = urlParams.get('success');
+
+                if (success) {
+                    Swal.fire({
+                        title: success,
+                        text: "Operación realizada correctamente",
+                        icon: "success",
+                        confirmButtonText: "Aceptar",
+                        confirmButtonColor: "#3085d6",
+                        position: "center"
+                    });
+                }
+                /*]]>*/
+            </script>
+
+
 </body>
 
 </html>

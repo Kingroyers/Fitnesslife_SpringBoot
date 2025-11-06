@@ -38,19 +38,24 @@ public class PageController {
     @GetMapping("/home")
     public String home(Model model, Principal principal) {
 
-       List<FunctionalTraining> trainings = service.getAllTrainings();
-       
-             model.addAttribute("trainings", trainings); 
+        List<FunctionalTraining> trainings = service.getAllTrainings();
+        model.addAttribute("trainings", trainings);
+
         if (principal != null) {
             String email = principal.getName(); // Aquí tienes el correo del usuario autenticado
-             
-            
+
             userRepository.findByEmail(email).ifPresentOrElse(user -> {
                 model.addAttribute("name", user.getName());
                 model.addAttribute("lastname", user.getLastname());
                 model.addAttribute("identificacion", user.getIdentification());
-
                 model.addAttribute("plan", user.getPlan());
+
+                List<FunctionalTraining> confirmedClasses = trainings.stream()
+                        .filter(t -> t.getUserIds() != null && t.getUserIds().contains(user.getIdentification()))
+                        .toList();
+
+                model.addAttribute("confirmedClasses", confirmedClasses);
+
             }, () -> {
                 model.addAttribute("name", "Usuario no encontrado");
             });
@@ -112,10 +117,10 @@ public class PageController {
 
             userRepository.findByEmail(email).ifPresentOrElse(user -> {
 
-                 Date dateCreated = Date.from(user.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant());
+                Date dateCreated = Date.from(user.getCreatedAt().atZone(ZoneId.systemDefault()).toInstant());
 
                 model.addAttribute("user", user);
-                model.addAttribute("dateCreated", dateCreated); 
+                model.addAttribute("dateCreated", dateCreated);
                 model.addAttribute("isActive", user.isActive());
 
             }, () -> {

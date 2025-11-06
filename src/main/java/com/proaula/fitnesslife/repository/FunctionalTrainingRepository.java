@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface FunctionalTrainingRepository extends MongoRepository<FunctionalTraining, String> {
     
+    Optional<FunctionalTraining> findByIdFunctionalTraining(String id);
     Optional<FunctionalTraining> findByIdFunctionalTraining(int idFunctionalTraining);
     
     boolean existsByIdFunctionalTraining(int idFunctionalTraining);
