@@ -20,7 +20,7 @@
 
     <!-- Dashboard Container -->
     <div class="dashboard-container">
-        
+
         <!-- Upcoming Classes Section -->
         <div class="classes-carousel-wrapper">
             <div class="section-header">
@@ -35,100 +35,47 @@
             <hr class="section-divider">
 
             <div class="classes-carousel">
-                <!-- Class Card 1 -->
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3 class="class-name">Yoga Matutino</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Instructor: María López
-                        </p>
-                    </div>
+                <div th:each="training : ${trainings}">
+                    <div class="class-card">
+                        <div class="class-card-header">
+                            <h3 class="class-name" th:text="${training.nameTraining}"></h3>
+                            <p class="class-instructor">
+                                <i class="bi bi-person-circle"></i>
+                                Instructor: <span th:text="${training.instructor}"></span>
+                            </p>
+                        </div>
 
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Lunes, 29 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>7:00 AM - 8:00 AM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 2</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-people"></i>
-                            <span>12/15 Inscritos</span>
-                        </div>
-                    </div>
+                        <div class="class-info">
+                            <div class="class-info-item">
+                                <i class="bi bi-calendar3"></i>
+                                <span th:text="${#dates.format(training.datetime, 'EEEE, d MMMM')}"></span>
+                            </div>
+                            <div class="class-info-item">
+                                <i class="bi bi-clock"></i>
+                                <span th:text="${#dates.format(training.datetime, 'h:mm a')}"></span>
+                            </div>
+                            <div class="class-info-item">
+                                <i class="bi bi-geo-alt"></i>
+                                <span th:text="${training.room}"></span>
+                            </div>
+                            <div class="class-info-item">
+                                <i class="bi bi-people"></i>
+                                <span th:text="${#lists.size(training.userIds)} + ' Inscritos'"></span>
+                            </div>
 
-                    <button class="class-action-btn">Inscribirme</button>
-                </div>
+                            <!-- Botón solo si el usuario NO está inscrito -->
+                            <form th:if="${!training.userIds.contains(identificacion)}"
+                                th:action="@{/inscribirme/{id}(id=${training.idFunctionalTraining})}" method="post">
+                                <button class="class-action-btn">Inscribirme</button>
+                            </form>
 
-                <!-- Class Card 2 -->
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3 class="class-name">Spinning Intenso</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Instructor: Carlos Ruiz
-                        </p>
-                    </div>
-
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Martes, 30 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>6:00 PM - 7:00 PM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 1</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-people"></i>
-                            <span>8/20 Inscritos</span>
+                            <!-- Texto si ya está inscrito -->
+                            <button th:if="${training.userIds.contains(identificacion)}" class="class-action-btn"
+                                style="background: #28a745; opacity: 0.7; cursor: not-allowed;" disabled>
+                                Ya inscrito
+                            </button>
                         </div>
                     </div>
-
-                    <button class="class-action-btn">Inscribirme</button>
-                </div>
-
-                <!-- Class Card 3 -->
-                <div class="class-card">
-                    <div class="class-card-header">
-                        <h3 class="class-name">Pilates</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Instructor: Ana García
-                        </p>
-                    </div>
-
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Miércoles, 31 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>9:00 AM - 10:00 AM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 3</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-people"></i>
-                            <span>5/10 Inscritos</span>
-                        </div>
-                    </div>
-
-                    <button class="class-action-btn">Inscribirme</button>
                 </div>
             </div>
         </div>
@@ -221,6 +168,7 @@
         <div class="team-section">
             <div class="section-header">
                 <h2 class="section-title">
+                    <i class="bi bi-people"></i>
                     Nuestro Equipo
                 </h2>
             </div>
@@ -229,9 +177,8 @@
             <div class="team-grid">
                 <!-- Trainer 1 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Maria+Lopez&background=2c5bff&color=fff&size=128" 
-                         alt="María López" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Maria+Lopez&background=2c5bff&color=fff&size=128"
+                        alt="María López" class="team-avatar">
                     <h3 class="team-name">María López</h3>
                     <p class="team-role">Entrenadora Personal</p>
                     <p class="team-specialty">Yoga & Pilates</p>
@@ -239,9 +186,8 @@
 
                 <!-- Trainer 2 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Carlos+Ruiz&background=2c5bff&color=fff&size=128" 
-                         alt="Carlos Ruiz" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Carlos+Ruiz&background=2c5bff&color=fff&size=128"
+                        alt="Carlos Ruiz" class="team-avatar">
                     <h3 class="team-name">Carlos Ruiz</h3>
                     <p class="team-role">Instructor</p>
                     <p class="team-specialty">Spinning & Cardio</p>
@@ -249,9 +195,8 @@
 
                 <!-- Trainer 3 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=2c5bff&color=fff&size=128" 
-                         alt="Ana García" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=2c5bff&color=fff&size=128"
+                        alt="Ana García" class="team-avatar">
                     <h3 class="team-name">Ana García</h3>
                     <p class="team-role">Nutricionista</p>
                     <p class="team-specialty">Planes Alimenticios</p>
@@ -259,9 +204,8 @@
 
                 <!-- Trainer 4 -->
                 <div class="team-card">
-                    <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5bff&color=fff&size=128" 
-                         alt="Juan Pérez" 
-                         class="team-avatar">
+                    <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5bff&color=fff&size=128"
+                        alt="Juan Pérez" class="team-avatar">
                     <h3 class="team-name">Juan Pérez</h3>
                     <p class="team-role">Entrenador</p>
                     <p class="team-specialty">Fuerza & Musculación</p>
@@ -270,91 +214,42 @@
         </div>
 
         <!-- My Scheduled Classes Section -->
-        <div class="scheduled-section">
-            <div class="section-header">
-                <h2 class="section-title" id="clases-agendadas">
-                    Mis Clases Agendadas
-                </h2>
-            </div>
-            <hr class="section-divider">
+        <div class="scheduled-carousel" id="clases">
+            <div class="scheduled-card" th:each="confirmedClass : ${confirmedClasses}">
+                <span class="scheduled-status">
+                    <span class="scheduled-status-dot"></span>
+                    Confirmada
+                </span>
 
-            <div class="scheduled-carousel">
-                <!-- Scheduled Card 1 -->
-                <div class="scheduled-card">
-                    <span class="scheduled-status">
-                        <span class="scheduled-status-dot"></span>
-                        Confirmada
-                    </span>
-
-                    <div class="class-card-header">
-                        <h3 class="class-name">Yoga Matutino</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            María López
-                        </p>
-                    </div>
-
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Lunes, 29 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>7:00 AM - 8:00 AM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 2</span>
-                        </div>
-                    </div>
-
-                    <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
+                <div class="class-card-header">
+                    <h3 class="class-name" th:text="${confirmedClass.nameTraining}"></h3>
+                    <p class="class-instructor">
+                        <i class="bi bi-person-circle"></i>
+                        <span th:text="${confirmedClass.instructor}"></span>
+                    </p>
                 </div>
 
-                <!-- Scheduled Card 2 -->
-                <div class="scheduled-card">
-                    <span class="scheduled-status">
-                        <span class="scheduled-status-dot"></span>
-                        Confirmada
-                    </span>
-
-                    <div class="class-card-header">
-                        <h3 class="class-name">Spinning Intenso</h3>
-                        <p class="class-instructor">
-                            <i class="bi bi-person-circle"></i>
-                            Carlos Ruiz
-                        </p>
+                <div class="class-info">
+                    <div class="class-info-item">
+                        <i class="bi bi-calendar3"></i>
+                        <span th:text="${#dates.format(confirmedClass.datetime, 'EEEE, d MMMM')}"></span>
+                    </div>
+                    <div class="class-info-item">
+                        <i class="bi bi-clock"></i>
+                        <span th:text="${#dates.format(confirmedClass.datetime, 'h:mm a')}"></span>
+                    </div>
+                    <div class="class-info-item">
+                        <i class="bi bi-geo-alt"></i>
+                        <span th:text="${confirmedClass.room}"></span>
                     </div>
 
-                    <div class="class-info">
-                        <div class="class-info-item">
-                            <i class="bi bi-calendar3"></i>
-                            <span>Martes, 30 Octubre</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-clock"></i>
-                            <span>6:00 PM - 7:00 PM</span>
-                        </div>
-                        <div class="class-info-item">
-                            <i class="bi bi-geo-alt"></i>
-                            <span>Sala 1</span>
-                        </div>
-                    </div>
+                    <form th:action="@{/cancelarInscripcion/{id}(id=${confirmedClass.idFunctionalTraining})}"
+                        method="post">
+                        <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
+                    </form>
 
-                    <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
                 </div>
             </div>
-
-            <!-- Empty State (if no scheduled classes) -->
-            <!--
-            <div class="empty-state">
-                <div class="empty-state-icon">
-                    <i class="bi bi-calendar-x"></i>
-                </div>
-                <p class="empty-state-text">No tienes clases agendadas aún</p>
-            </div>
-            -->
         </div>
 
     </div>

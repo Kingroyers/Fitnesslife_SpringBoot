@@ -5,15 +5,19 @@ import com.proaula.fitnesslife.service.QrCodeService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import com.proaula.fitnesslife.model.FunctionalTraining;
 import com.proaula.fitnesslife.model.User;
+import com.proaula.fitnesslife.repository.FunctionalTrainingRepository;
 import com.proaula.fitnesslife.repository.UserRepository;
+import com.proaula.fitnesslife.service.FunctionalTrainingService;
 
 import java.io.IOException;
 
@@ -26,6 +30,12 @@ public class UserController {
 
     @Autowired
     private QrCodeService qrCodeService;
+
+    @Autowired
+    private FunctionalTrainingRepository trainingRepo;
+    
+    @Autowired
+    private FunctionalTrainingService functionalTrainingService;
 
     public UserController(UserRepository userRepo, PasswordEncoder encoder) {
         this.userRepo = userRepo;
@@ -48,4 +58,28 @@ public class UserController {
         }
         return "redirect:/login?registered";
     }
+
+    @PostMapping("/inscribirme/{idFunctionalTraining}") // inscribirme a una clase
+    public String inscribirme(@PathVariable int idFunctionalTraining, Principal principal) {
+
+        User user = userRepo.findByEmail(principal.getName()).orElseThrow();
+
+        FunctionalTraining training = trainingRepo.findByIdFunctionalTraining(idFunctionalTraining).orElseThrow();
+
+        if (training.getUserIds().contains(user.getIdentification())) {
+            return "redirect:/home?error=Ya inscrito";
+        }
+
+        training.getUserIds().add(user.getIdentification());
+        trainingRepo.save(training);
+
+        return "redirect:/home?success=Inscrito";
+    }
+
+    @PostMapping("/cancelarInscripcion/{id}")
+    public String cancelarInscripcion(@PathVariable int id, Principal principal) {
+        functionalTrainingService.cancelarInscripcion(id, principal.getName());
+        return "redirect:/home?success=Cancelada";
+    }
+
 }
