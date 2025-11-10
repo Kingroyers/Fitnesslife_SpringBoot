@@ -25,10 +25,10 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index", "/login", "/register",
-                                "/css/**", "/js/**", "/img/**", "/fonts/**")
+                                "/css/**", "/js/**", "/img/**", "/fonts/**", "/payment/confirmation", "/payment/response", "/api/payment/status/**")
                         .permitAll()
-                        .requestMatchers("/dashboard/**", "/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/client/**").hasRole("USER") 
+                        .requestMatchers("/dashboard/**", "/admin/**").hasRole("ADMIN") // 👈 admin
+                        .requestMatchers("/client/**", "/api/plan/**").hasRole("USER") // 👈 solo user
                         .anyRequest().authenticated())
 
                 .formLogin(form -> form

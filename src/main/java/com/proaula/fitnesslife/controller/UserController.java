@@ -1,6 +1,5 @@
 package com.proaula.fitnesslife.controller;
 
-import com.google.zxing.WriterException;
 import com.proaula.fitnesslife.service.QrCodeService;
 
 import org.slf4j.Logger;
@@ -18,8 +17,6 @@ import com.proaula.fitnesslife.model.User;
 import com.proaula.fitnesslife.repository.FunctionalTrainingRepository;
 import com.proaula.fitnesslife.repository.UserRepository;
 import com.proaula.fitnesslife.service.FunctionalTrainingService;
-
-import java.io.IOException;
 
 @Controller
 public class UserController {

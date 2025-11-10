@@ -2,7 +2,6 @@ package com.proaula.fitnesslife.config;
 
 import com.proaula.fitnesslife.service.UserService;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.ui.Model;

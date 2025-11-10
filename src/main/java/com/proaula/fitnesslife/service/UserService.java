@@ -26,4 +26,20 @@ public class UserService {
         return findByEmail(email)
             .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado: " + email));
     }
+
+    public Optional<User> findById(String id) {
+        log.debug("Buscando usuario con ID: {}", id);
+        return userRepository.findById(id);
+    }
+
+    public User getUserByIdOrThrow(String id) {
+        return findById(id)
+            .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con ID: " + id));
+    }
+
+    @Transactional
+    public User save(User user) {
+        log.debug("Guardando usuario: {}", user.getEmail());
+        return userRepository.save(user);
+    }
 }

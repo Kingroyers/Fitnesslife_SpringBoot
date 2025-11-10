@@ -1,8 +1,6 @@
-<!-- Top Navbar -->
 <nav th:fragment="top-navbar" class="top-navbar">
   <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center">
-      <!-- User Info -->
       <div class="d-flex align-items-center gap-3">
         <img th:if="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
           th:src="${currentUser.photoProfile}" alt="User Avatar" class="user-avatar">
@@ -17,7 +15,6 @@
         </div>
       </div>
 
-      <!-- Menu Button -->
       <button class="menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
         <i class="bi bi-three-dots-vertical"></i>
       </button>
@@ -25,7 +22,6 @@
   </div>
 </nav>
 
-<!-- Offcanvas Menu -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="menuLateral">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title">Menú</h5>
@@ -33,7 +29,6 @@
   </div>
 
   <div class="offcanvas-body d-flex flex-column">
-    <!-- Profile Section -->
     <div class="profile-section">
       <div class="position-relative d-inline-block">
         <img th:if="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
@@ -51,14 +46,12 @@
       </h5>
     </div>
 
-    <!-- Online Users Badge -->
     <div class="online-badge">
       <i class="bi bi-people-fill"></i>
       <span>Usuarios Online</span>
       <span class="online-count">1,234</span>
     </div>
 
-    <!-- Menu Items -->
     <ul class="menu-list">
       <li>
         <a href="#perfil">
@@ -86,7 +79,6 @@
       </li>
     </ul>
 
-    <!-- Logout Section -->
     <div class="logout-section">
       <ul class="menu-list">
         <li>
@@ -104,7 +96,6 @@
   </div>
 </div>
 
-<!-- Photo Upload Modal -->
 <div class="modal fade" id="photoModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content photo-modal">
