@@ -1,0 +1,245 @@
+/* Var */
+
+:root {
+    --bg-body: #1f212c;
+    --primary-color: #2c5bff;
+    --success-color: #84d65a;
+    --card-bg: #292c36;
+    --text-white: #ffffff;
+}
+
+body {
+    background: var(--bg-body);
+    min-height: 100vh;
+    color: var(--text-white);
+}
+
+/* Main Container */
+
+.response-container {
+    padding: 2rem 1.5rem 8rem 1.5rem;
+    min-height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Response Card */
+
+.response-card {
+    background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    max-width: 500px;
+    width: 100%;
+    border: 2px solid rgba(44, 91, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.response-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--success-color) 0%, #4CAF50 100%);
+}
+
+/* Success Icon */
+
+.response-icon-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.response-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    animation: scaleIn 0.5s ease-out;
+}
+
+.response-icon.success {
+    background: rgba(132, 214, 90, 0.15);
+    border: 3px solid var(--success-color);
+}
+
+.response-icon i {
+    font-size: 48px;
+    color: var(--success-color);
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Title */
+
+.response-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-white);
+    text-align: center;
+    margin: 0 0 2rem 0;
+}
+
+/* Transaction Details */
+
+.transaction-details {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 16px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-row.total-row {
+    padding-top: 1.25rem;
+    margin-top: 0.5rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+    border-bottom: none;
+}
+
+.detail-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.6);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+}
+
+.detail-label i {
+    color: var(--primary-color);
+    font-size: 16px;
+}
+
+.detail-value {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-white);
+    text-align: right;
+    max-width: 60%;
+    word-break: break-word;
+}
+
+.detail-value.status-accepted {
+    color: var(--success-color);
+}
+
+.detail-value.total-value {
+    font-size: 20px;
+    color: var(--success-color);
+}
+
+/* Return Button */
+
+.return-btn {
+    background: var(--primary-color);
+    color: var(--text-white);
+    border: none;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    width: 100%;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.return-btn:hover {
+    background: #1e4ad9;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(44, 91, 255, 0.4);
+    color: var(--text-white);
+}
+
+.return-btn i {
+    font-size: 20px;
+}
+
+/* Responsive */
+
+@media (max-width: 768px) {
+    .response-container {
+        padding: 1.5rem 1rem 6rem 1rem;
+    }
+
+    .response-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .response-title {
+        font-size: 22px;
+    }
+
+    .response-icon {
+        width: 70px;
+        height: 70px;
+    }
+
+    .response-icon i {
+        font-size: 40px;
+    }
+}
+
+@media (max-width: 530px) {
+    .response-container {
+        padding: 1rem 0.75rem 6rem 0.75rem;
+    }
+
+    .response-card {
+        padding: 1.5rem 1.25rem;
+    }
+
+    .response-title {
+        font-size: 20px;
+        margin-bottom: 1.5rem;
+    }
+
+    .transaction-details {
+        padding: 1.25rem;
+    }
+
+    .detail-label,
+    .detail-value {
+        font-size: 13px;
+    }
+
+    .detail-value.total-value {
+        font-size: 18px;
+    }
+}
