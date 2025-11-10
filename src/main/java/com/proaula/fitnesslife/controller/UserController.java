@@ -33,7 +33,7 @@ public class UserController {
 
     @Autowired
     private FunctionalTrainingRepository trainingRepo;
-    
+
     @Autowired
     private FunctionalTrainingService functionalTrainingService;
 
@@ -44,18 +44,26 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(@ModelAttribute User user, Model model) {
+
         if (userRepo.findByEmail(user.getEmail()).isPresent()) {
             model.addAttribute("error", "El usuario ya existe");
             return "register";
         }
+
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRole("USER");
-        User savedUser = userRepo.save(user);
-        try {
-            qrCodeService.generateAndSaveQRCode(savedUser);
-        } catch (WriterException | IOException e) {
-            logger.error("Error al generar QR code para el usuario: {}", e.getMessage());
-        }
+        user.setActive(true);
+
+        user.setSex("");
+        user.setBirthDate(null);
+        user.setBloodType("");
+        user.setPhotoProfile("");
+        user.setPlan("");
+        user.setQrCodePath("");
+        user.setLastLogin(null);
+
+        userRepo.save(user);
+
         return "redirect:/login?registered";
     }
 
@@ -80,6 +88,22 @@ public class UserController {
     public String cancelarInscripcion(@PathVariable int id, Principal principal) {
         functionalTrainingService.cancelarInscripcion(id, principal.getName());
         return "redirect:/home?success=Cancelada";
+    }
+
+    @PostMapping("/actualizarUserPerfil")
+    public String actualizarPerfil(@ModelAttribute User userForm, Principal principal) {
+        User user = userRepo.findByEmail(principal.getName()).orElseThrow();
+
+        // Solo actualizamos los campos que se pueden editar
+        user.setName(userForm.getName());
+        user.setLastname(userForm.getLastname());
+        user.setPhone(userForm.getPhone());
+        user.setSex(userForm.getSex());
+        user.setBirthDate(userForm.getBirthDate());
+        user.setBloodType(userForm.getBloodType());
+
+        userRepo.save(user);
+        return "redirect:/user-profile";
     }
 
 }

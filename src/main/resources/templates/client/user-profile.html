@@ -20,11 +20,10 @@
         <div class="profile-header">
             <div class="profile-photo">
                 <img th:if="${currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
-                     th:src="${currentUser.photoProfile}"
-                     alt="User Photo">
+                    th:src="${currentUser.photoProfile}" alt="User Photo">
                 <img th:unless="${currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
-                     th:src="'https://ui-avatars.com/api/?name=' + ${currentUser.name} + '+' + ${currentUser.lastname} + '&background=2c5bff&color=fff&size=128'"
-                     alt="User Photo">
+                    th:src="'https://ui-avatars.com/api/?name=' + ${currentUser.name} + '+' + ${currentUser.lastname} + '&background=2c5bff&color=fff&size=128'"
+                    alt="User Photo">
             </div>
             <div>
                 <p class="user-name-text">
@@ -47,91 +46,163 @@
     </div>
 
     <!-- Info Cards -->
-    <div class="info-cards-container">
-        <!-- ID Card -->
-        <div class="info-card">
-            <div class="card-icon-wrapper">
-                <i class="bi bi-person-badge" style="color: var(--primary-color); font-size: 24px;"></i>
-            </div>
-            <div class="card-content">
-                <div class="card-label">ID de Usuario</div>
-                <div class="card-value">
-                    <span th:text="${currentUser.identification}"></span>
+    <form action="/actualizarUserPerfil" method="post">
+        <div class="info-cards-container">
+            <!-- ID Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <i class="bi bi-person-badge" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">ID de Usuario</div>
+                    <div class="card-value">
+                        <span th:text="${currentUser.identification}" class="view-mode"></span>
+                        <input type="text" th:value="${currentUser.identification}" class="edit-mode form-control"
+                            readonly style="display:none; outline: 0; border: none;">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Name Card -->
-        <div class="info-card">
-            <div class="card-icon-wrapper">
-                <i class="bi bi-person-circle" style="color: var(--primary-color); font-size: 24px;"></i>
-            </div>
-            <div class="card-content">
-                <div class="card-label">Nombre Completo</div>
-                <div class="card-value">
-                    <span th:text="${currentUser.name} + ' ' + ${currentUser.lastname}"></span>
+            <!-- Name Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <i class="bi bi-person-circle" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">Nombre Completo</div>
+                    <div class="card-value">
+                        <span th:text="${currentUser.name} + ' ' + ${currentUser.lastname}" class="view-mode"></span>
+                        <input type="text" th:value="${currentUser.name}" name="name"
+                            class="edit-mode form-control" style="display:none;">
+                        <input type="text" th:value="${currentUser.lastname}" name="lastname"
+                            class="edit-mode form-control" style="display:none;">
+                    </div>
+
                 </div>
             </div>
-        </div>
 
-        <!-- Email Card -->
-        <div class="info-card">
-            <div class="card-icon-wrapper">
-                <i class="bi bi-envelope-fill" style="color: var(--primary-color); font-size: 24px;"></i>
-            </div>
-            <div class="card-content">
-                <div class="card-label">Correo Electrónico</div>
-                <div class="card-value">
-                    <span th:text="${currentUser.email}"></span>
+            <!-- Email Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <i class="bi bi-envelope-fill" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">Correo Electrónico</div>
+                    <div class="card-value">
+                        <span th:text="${currentUser.email}" class="view-mode"></span>
+                        <input type="email" th:value="${currentUser.email}" class="edit-mode form-control" readonly
+                            style="display:none;">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Phone Card -->
-        <div class="info-card">
-            <div class="card-icon-wrapper">
-                <i class="bi bi-telephone-fill" style="color: var(--primary-color); font-size: 24px;"></i>
-            </div>
-            <div class="card-content">
-                <div class="card-label">Teléfono</div>
-                <div class="card-value">
-                    <span th:text="${currentUser.phone != null ? currentUser.phone : 'No registrado'}"></span>
+            <!-- Phone Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <i class="bi bi-telephone-fill" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">Teléfono</div>
+                    <div class="card-value">
+                        <span th:text="${currentUser.phone != null ? currentUser.phone : 'No registrado'}"
+                            class="view-mode"></span>
+                        <input type="text" th:value="${currentUser.phone}" name="phone" class="edit-mode form-control"
+                            style="display:none;">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tipo de sangre Card -->
-        <div class="info-card">
-            <div class="card-icon-wrapper">
-                <img th:src="@{/img/icons/Blood.png}" alt="Tipo de sangre" style="width: 34px; height: 34px;">
-            </div>
-            <div class="card-content">
-                <div class="card-label">Tipo de sangre</div>
-                <div class="card-value">
-                    <span th:text="${currentUser.bloodType != null ? currentUser.bloodType : 'No registrado'}"></span>
+            <!-- Tipo de sangre Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <img th:src="@{/img/icons/Blood.png}" alt="Tipo de sangre" style="width: 34px; height: 34px;">
+                </div>
+                <div class="card-content">
+                    <div class="card-label">Tipo de sangre</div>
+                    <div class="card-value">
+                        <span th:text="${currentUser.bloodType != null ? currentUser.bloodType : 'No registrado'}"
+                            class="view-mode"></span>
+                        <input type="text" th:value="${currentUser.bloodType}" name="bloodType"
+                            class="edit-mode form-control" style="display:none;">
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Member Since Card -->
-        <div class="info-card">
-            <div class="card-icon-wrapper">
-                <i class="bi bi-calendar-check" style="color: var(--primary-color); font-size: 24px;"></i>
-            </div>
-            <div class="card-content">
-                <div class="card-label">Miembro Desde</div>
-                <div class="card-value">
-                    <span th:text="${currentUser.createdAt != null ? #temporals.format(currentUser.createdAt, 'MMMM yyyy') : 'Fecha no disponible'}"></span>
+            <!-- Birthday Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <i class="bi bi-cake" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">Día de nacimiento</div>
+                    <div class="card-value">
+                        <span
+                            th:text="${currentUser.birthDate != null ? #temporals.format(currentUser.birthDate, 'dd/MM/yyyy') : 'No registrado'}"
+                            class="view-mode"></span>
+                        <input type="date" th:value="${currentUser.birthDate}" name="birthDate"
+                            class="edit-mode form-control" style="display:none;">
+                    </div>
                 </div>
             </div>
-        </div>
+             <!-- Birthday Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <i class="bi bi-gender-ambiguous" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">Genero</div>
+                    <div class="card-value">
+                        <span
+                            th:text="${currentUser.sex != null ? currentUser.sex : 'No registrado'}"
+                            class="view-mode"></span>
+                        <input type="text" th:value="${currentUser.sex}" name="sex"
+                            class="edit-mode form-control" style="display:none;">
+                    </div>
+                </div>
+            </div>
 
-        <!-- Edit Profile Button -->
-        <button class="edit-profile-btn">
-            <i class="bi bi-pencil-square"></i>
-            Editar Perfil
-        </button>
-    </div>
+            <!-- Member Since Card -->
+            <div class="info-card">
+                <div class="card-icon-wrapper">
+                    <i class="bi bi-calendar-check" style="color: var(--primary-color); font-size: 24px;"></i>
+                </div>
+                <div class="card-content">
+                    <div class="card-label">Miembro Desde</div>
+                    <div class="card-value">
+                        <span
+                            th:text="${currentUser.createdAt != null ? #temporals.format(currentUser.createdAt, 'MMMM yyyy') : 'Fecha no disponible'}"
+                            class="view-mode"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="d-flex justify-content-center mt-3">
+                <button type="button" id="editBtn" class="edit-profile-btn">
+                    <i class="bi bi-pencil-square"></i> Editar Perfil
+                </button>
+                <button type="submit" id="saveBtn" class="edit-profile-btn ms-2"
+                    style="background-color:#28a745; display:none;">
+                    <i class="bi bi-check2-circle"></i> Guardar
+                </button>
+            </div>
+
+        </div>
+    </form>
+
+
+    <script>
+        const editBtn = document.getElementById('editBtn');
+        const saveBtn = document.getElementById('saveBtn');
+
+        editBtn.addEventListener('click', () => {
+            document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
+            editBtn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+        });
+    </script>
+
 
     <!-- Bottom Navbar -->
     <div th:replace="fragments/bottom-navbar :: bottom-navbar"></div>

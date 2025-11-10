@@ -40,7 +40,9 @@
                             </p>
                         </div>
                     </form>
-                    <form action="#" class="sign-up-form">
+
+                    <!--registration form-->
+                    <form action="/register" method="post" class="sign-up-form">
                         <div class="logo">
                             <img src="/img/logo-fitnesslife.png" alt="Logo">
                         </div>
@@ -51,10 +53,14 @@
                             <a href="#" class="toggle">Iniciar sesión</a>
                         </div>
 
-                        <div class="actual-form">
+                        <div class="actual-form mt-5">
                             <div class="input-wrap">
-                                <input type="text" name="nombre" class="input-field" required>
-                                <label>Nombre completo</label>
+                                <input type="text" name="name" class="input-field" required>
+                                <label>Nombre</label>
+                            </div>
+                            <div class="input-wrap">
+                                <input type="text" name="lastname" class="input-field" required>
+                                <label>Apellido</label>
                             </div>
                             <div class="input-wrap">
                                 <input type="text" name="identification" class="input-field" required>
@@ -65,11 +71,11 @@
                                 <label>Celular</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="text" minlength="4" class="input-field" required>
+                                <input type="text" minlength="4" name="email" class="input-field" required>
                                 <label>Email</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="password" minlength="4" class="input-field" required>
+                                <input type="password" minlength="4" name="password" class="input-field" required>
                                 <label>Contraseña</label>
                             </div>
                             <input type="submit" value="Registrarse" class="sign-btn">

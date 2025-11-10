@@ -29,7 +29,6 @@ public class PageController {
     private static final String VIEW_INDEX = "index";
     private static final String VIEW_LOGIN = "auth/login";
     private static final String VIEW_HOME = "client/home";
-    private static final String VIEW_DASHBOARD = "admin/dashboard";
     private static final String VIEW_PAYMENT = "client/payment";
     private static final String VIEW_QR_CODE = "client/qr-code";
     private static final String VIEW_USER_PROFILE = "client/user-profile";
@@ -74,6 +73,7 @@ public class PageController {
                 model.addAttribute("lastname", user.getLastname());
                 model.addAttribute("identificacion", user.getIdentification());
                 model.addAttribute("plan", user.getPlan());
+                model.addAttribute("role", user.getRole());
 
                 List<FunctionalTraining> confirmedClasses = trainings.stream()
                         .filter(t -> t.getUserIds() != null && t.getUserIds().contains(user.getIdentification()))
@@ -89,11 +89,6 @@ public class PageController {
         }
 
         return VIEW_HOME;
-    }
-
-    @GetMapping("/dashboard")
-    public String dashboard() {
-        return VIEW_DASHBOARD;
     }
 
     @GetMapping("/payment")
