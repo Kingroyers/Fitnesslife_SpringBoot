@@ -103,11 +103,6 @@ form.sign-up-form {
     align-items: center;
 }
 
-.logo {
-    display: flex;
-    align-items: center;
-}
-
 .logo img {
     width: 150px;
     margin-right: 0.3rem;
@@ -141,7 +136,20 @@ form.sign-up-form {
 .input-wrap {
     position: relative;
     height: 37px;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+}
+
+.input-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    height: 37px;
+}
+
+.input-wrap.half {
+    flex: 1;
+    position: relative;
+    height: 100%;
 }
 
 .input-field {
@@ -314,7 +322,45 @@ main.sign-up-mode .carousel {
     width: 1.1rem;
     background-color: #ffff;
     border-radius: 1rem;
+}
 
+/* Form Validation Styles */
+
+.form__group-correct {
+    border-bottom: 2px solid #28a745 !important;
+}
+
+.form__group-incorrect {
+    border-bottom: 2px solid #dc3545 !important;
+}
+
+.form__input-error {
+    font-size: 0.65rem;
+    color: #dc3545;
+    margin-top: 0.15rem;
+    display: none;
+    position: absolute;
+    bottom: -1.5rem;
+    left: 0;
+    width: 100%;
+    line-height: 1.1;
+}
+
+.form__input-error-active {
+    display: block;
+}
+
+/* Success message */
+
+.form__message-success {
+    font-size: 0.875rem;
+    color: #28a745;
+    display: none;
+    margin-top: 1rem;
+}
+
+.form__message-success-active {
+    display: block;
 }
 
 /* Responsive */
@@ -382,5 +428,9 @@ main.sign-up-mode .carousel {
 
     form {
         padding: 1rem 2rem 1.5rem;
+    }
+
+    .form__input-error {
+        font-size: 0.6rem;
     }
 }

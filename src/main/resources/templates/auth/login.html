@@ -26,11 +26,13 @@
 
                         <div class="actual-form">
                             <div class="input-wrap">
-                                <input type="email" name="email" minlength="4" class="input-field" required>
+                                <input type="email" name="email" minlength="4" class="input-field" autocomplete="email"
+                                    required>
                                 <label>Email</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="password" name="password" minlength="4" class="input-field" required>
+                                <input type="password" name="password" minlength="4" class="input-field"
+                                    autocomplete="current-password" required>
                                 <label>Contraseña</label>
                             </div>
                             <input type="submit" value="Iniciar Sesión" class="sign-btn">
@@ -63,19 +65,17 @@
                                 <label>Apellido</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="text" name="identification" class="input-field" required>
+                                <input type="text" name="identification" class="input-field" autocomplete="off"
+                                    pattern="[0-9]*" inputmode="numeric" required>
                                 <label>Identificación</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="text" name="phone" class="input-field" required>
-                                <label>Celular</label>
-                            </div>
-                            <div class="input-wrap">
-                                <input type="text" minlength="4" name="email" class="input-field" required>
+                                <input type="email" name="email" class="input-field" autocomplete="email" required>
                                 <label>Email</label>
                             </div>
                             <div class="input-wrap">
-                                <input type="password" minlength="4" name="password" class="input-field" required>
+                                <input type="password" name="password" class="input-field" autocomplete="new-password"
+                                    required>
                                 <label>Contraseña</label>
                             </div>
                             <input type="submit" value="Registrarse" class="sign-btn">
@@ -111,7 +111,10 @@
             </div>
         </div>
     </main>
+
     <script src="/js/login-ui.js"></script>
+
+    <script src="/js/form-validation.js"></script>
 </body>
 
 </html>
