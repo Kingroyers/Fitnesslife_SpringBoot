@@ -3,6 +3,8 @@
   background: linear-gradient(180deg, #1a1c2e 0%, #23254a 100%);
   color: white;
   width: 250px;
+  height: 100%;
+
   transition: all 0.3s ease;
 }
 
