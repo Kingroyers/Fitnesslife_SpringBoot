@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Usuarios</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap-icons.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/Dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/UserTable.css}">
+    <link rel="stylesheet" th:href="@{/css/functionalTrinincrud.css}">
+    
+</head>
+
+<body>
+
+    <div class="d-flex flex-column flex-md-row vh-100">
+
+        <div th:replace="layouts/navdashboard.html :: sidebar"></div>
+
+        <div class="container-fluid p-4 scroll-container" style=" overflow: scroll;">
+            <div class="container">
+                <div class="container-custom">
+                    <div class="header-section d-flex justify-content-between align-items-center p-4">
+                        <div>
+                            <h2><i class="fas fa-users me-2"></i>Gestión de Usuarios</h2>
+                            <p class="mb-0">Administra y visualiza todos los usuarios del sistema</p>
+                        </div>
+
+                    </div>
+
+                    <div class="table-section">
+
+                        <div class="table-responsive"  style="height: 70vh; overflow: scroll;">
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Identificación</th>
+                                        <th>Contacto</th>
+                                        <th>Género</th>
+                                        <th>Tipo Sangre</th>
+                                        <th>Rol</th>
+                                        <th>Plan</th>
+                                        <th>Estado</th>
+                                        <th>Registro</th>
+                                        <th>Actualizado</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- 🔹 Iterar sobre los usuarios -->
+                                    <tr th:each="user : ${users}">
+                                        <td>
+                                            <div class="user-info">
+                                                <img th:src="@{'https://i.pravatar.cc/150?img=' + ${user.hashCode() % 70}}"
+                                                    alt="Avatar" class="avatar">
+                                                <div class="user-details">
+                                                    <h6 th:text="${user.name} + ' ' + ${user.lastname}"></h6>
+                                                    <small th:text="${user.email}"></small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong th:text="${user.identification}"></strong>
+                                        </td>
+                                        <td>
+                                            <div>
+                                                <i class="fas fa-phone me-1 text-muted"></i>
+                                                <span class="date-text" th:text="${user.phone}"></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <i class="fas"
+                                                th:classappend="${user.sex == 'Masculino'} ? 'fa-mars text-primary' : 'fa-venus text-danger'"></i>
+                                            <span th:text="${user.sex}"></span>
+                                        </td>
+                                        <td>
+                                            <span class="blood-type">
+                                                <i class="fas fa-tint"></i>
+                                                <span th:text="${user.bloodType}"></span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="role-badge" th:text="${user.role}">
+                                            </span>
+
+
+                                        </td>
+                                        <td><span class="plan-badge" th:text="${user.plan}"></span></td>
+
+                                        <td>
+                                            <span
+                                                th:classappend="${user.active} ? 'badge-status badge-active' : 'badge-status badge-inactive'"
+                                                th:text="${user.active} ? 'Activo' : 'Inactivo'"></span>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <span class="badge bg-light text-dark fw-normal"
+                                                    th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm') : 'Sin registro'}"></span>
+                                            </div>
+                                        </td>
+
+                                        <td>
+                                            <div class="d-flex flex-column">
+                                                <span class="badge bg-light text-dark fw-normal"
+                                                    th:text="${user.updatedAt != null ? #temporals.format(user.updatedAt, 'dd/MM/yyyy HH:mm') : 'Nunca'}"></span>
+                                            </div>
+                                        </td>
+
+                                        </td>
+                                        <td class="text-center action-buttons">
+                                            <button class="btn btn-qr btn-sm" title="Ver QR">
+                                                <i class="fas fa-qrcode"></i>
+                                            </button>
+                                            <button id="btnEditar" class="btn btn-edit btn-sm btnEditar" title="Editar">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="post"
+                                                style="display:inline;">
+                                                <button type="submit" class="btn btn-delete btn-sm" title="Eliminar"
+                                                    onclick="return confirm('¿Eliminar este usuario?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <div class="text-muted">
+                                Cantidad de usuarios
+                                <strong th:text="${users.size()}"></strong>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Modal para Editar Rol -->
+    <div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editRoleModalLabel">
+                        <i class="fas fa-user-edit me-2"></i>Editar Rol de Usuario
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editRoleForm" th:action="@{/update-role}" method="post">
+                    <div class="modal-body">
+                        <input type="hidden" id="userId" name="id"> <!-- 👈 Cambiado a name="id" -->
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Usuario</label>
+                            <div class="user-info-modal">
+                                <img id="userAvatar" src="" alt="Avatar" class="avatar me-2"
+                                    style="width: 40px; height: 40px; border-radius: 50%;">
+                                <div>
+                                    <div id="userName" class="fw-semibold"></div>
+                                    <small id="userEmail" class="text-muted"></small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="userRole" class="form-label fw-bold">
+                                <i class="fas fa-user-tag me-1"></i>Rol
+                            </label>
+                            <select id="userRole" name="role" class="form-select" required>
+                                <option th:each="rol : ${roles}" th:value="${rol.nombre}" th:text="${rol.nombre}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="alert alert-info mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <small>Solo se actualizará el rol del usuario. Los demás datos permanecerán sin
+                                cambios.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap JS (con Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/UserTable.js}"></script>
+
+
+    <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+
+</body>
+
+</html>

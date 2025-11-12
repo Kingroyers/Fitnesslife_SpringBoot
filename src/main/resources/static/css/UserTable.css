@@ -1,0 +1,308 @@
+.container-custom {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  overflow: hidden;
+}
+
+.scroll-container {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #002a5650 #f7fafc;
+}
+
+.header-section {
+  background: linear-gradient(90deg, #2e1c7c, #040e83);
+  color: white;
+  padding: 50px 40px;
+}
+
+.header-section h2 {
+  margin: 0;
+  font-weight: 600;
+  font-size: 28px;
+}
+
+.header-section p {
+  margin: 5px 0 0 0;
+  opacity: 0.9;
+}
+
+.table-section {
+  padding: 30px 40px;
+}
+
+.search-filter-bar {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+  flex-wrap: wrap;
+}
+
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-box input {
+  padding-left: 45px;
+  border-radius: 50px;
+  border: 2px solid #e0e0e0;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+.search-box input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.search-box i {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+}
+
+.filter-select {
+  border-radius: 50px;
+  border: 2px solid #e0e0e0;
+  padding: 8px 20px;
+  min-width: 150px;
+}
+
+.table-custom {
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-custom thead th {
+  background: #f8f9fa;
+  color: #495057;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 0.5px;
+  border: none;
+  padding: 15px;
+}
+
+.table-custom tbody tr {
+  transition: all 0.3s;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.table-custom tbody tr:hover {
+  background-color: #f8f9ff;
+  transform: scale(1.01);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+}
+
+.table-custom tbody td {
+  padding: 18px 15px;
+  vertical-align: middle;
+  border: none;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-details h6 {
+  margin: 0;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.user-details small {
+  color: #7f8c8d;
+  font-size: 12px;
+  display: block;
+}
+
+.badge-status {
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-active {
+  background: #d4edda;
+  color: #155724;
+}
+
+.badge-inactive {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.role-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  background: #e3f2fd;
+  color: #1976d2;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.plan-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  background: #fff3e0;
+  color: #f57c00;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.plan-badge.premium {
+  background: linear-gradient(135deg, #ffd89b 0%, #19547b 100%);
+  color: white;
+}
+
+.blood-type {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  background: #ffebee;
+  color: #c62828;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.action-buttons .btn {
+  padding: 6px 12px;
+  margin: 0 3px;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.btn-view {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: none;
+}
+
+.btn-view:hover {
+  background: #1976d2;
+  color: white;
+}
+
+.btn-edit {
+  background: #fff3e0;
+  color: #f57c00;
+  border: none;
+}
+
+.btn-edit:hover {
+  background: #f57c00;
+  color: white;
+}
+
+.btn-delete {
+  background: #ffebee;
+  color: #c62828;
+  border: none;
+}
+
+.btn-delete:hover {
+  background: #c62828;
+  color: white;
+}
+
+.btn-qr {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border: none;
+}
+
+.btn-qr:hover {
+  background: #7b1fa2;
+  color: white;
+}
+
+.btn-add {
+  background: white;
+  color: #667eea;
+  border: 2px solid white;
+  padding: 10px 30px;
+  border-radius: 50px;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.btn-add:hover {
+  background: transparent;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.info-icon {
+  cursor: pointer;
+  color: #999;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.info-icon:hover {
+  color: #667eea;
+}
+
+.date-text {
+  color: #6c757d;
+  font-size: 13px;
+}
+
+.sex-icon {
+  margin-right: 3px;
+}
+
+@media (max-width: 768px) {
+  .table-section {
+    padding: 20px;
+    overflow-x: auto;
+  }
+
+  .header-section {
+    padding: 20px;
+  }
+
+  .search-filter-bar {
+    flex-direction: column;
+  }
+
+  .search-box,
+  .filter-select {
+    width: 100%;
+  }
+}
+
+.user-info-modal {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
