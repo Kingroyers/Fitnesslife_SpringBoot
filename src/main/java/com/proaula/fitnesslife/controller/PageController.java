@@ -1,7 +1,13 @@
 package com.proaula.fitnesslife.controller;
 
 import java.security.Principal;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +20,8 @@ import com.proaula.fitnesslife.model.User;
 import com.proaula.fitnesslife.repository.UserRepository;
 import com.proaula.fitnesslife.service.FunctionalTrainingService;
 import com.proaula.fitnesslife.service.UserService;
+
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -32,6 +40,7 @@ public class PageController {
     private static final String VIEW_HOME = "client/home";
     private static final String VIEW_QR_CODE = "client/qr-code";
     private static final String VIEW_USER_PROFILE = "client/user-profile";
+    private static final String VIEW_TRAINER = "trainer/trainer-profile";
 
     /**
      * Este método se ejecuta ANTES de cada request en este controlador
@@ -58,19 +67,45 @@ public class PageController {
     }
 
     @GetMapping("/home")
-    public String home(Model model, Principal principal) {
+    public String home(Model model, Principal principal) {  
+
+        service.actualizarEstados();
+        LocalDate hoy = LocalDate.now(ZoneId.systemDefault());
 
         String email = principal.getName();
         User user = userRepository.findByEmail(email).orElse(null);
 
         if (user != null) {
             model.addAttribute("identification", user.getIdentification());
+
             List<FunctionalTraining> misClases = service.getTrainingsByUser(email);
-            model.addAttribute("confirmedClasses", misClases);
+            List<FunctionalTraining> misClasesHoy = misClases.stream()
+                    .filter(t -> {
+                        LocalDate fechaClase = t.getDatetime()
+                                .toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
+                        return fechaClase.isEqual(hoy);
+                    })
+                    .toList();
+            model.addAttribute("confirmedClasses", misClasesHoy);
         } else {
             model.addAttribute("identification", null);
         }
-        model.addAttribute("trainings", service.getAllTrainings());
+
+        List<FunctionalTraining> todasLasClases = service.getAllTrainings();
+
+        List<FunctionalTraining> clasesDeHoy = todasLasClases.stream()
+                .filter(t -> t.getDatetime() != null) // Evita errores de null
+                .filter(t -> {
+                    LocalDate fechaClase = t.getDatetime().toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+                    return fechaClase.isEqual(hoy);
+                })
+                .toList();
+
+        model.addAttribute("trainings", clasesDeHoy);
 
         return VIEW_HOME;
     }
@@ -84,4 +119,44 @@ public class PageController {
     public String userProfile() {
         return VIEW_USER_PROFILE;
     }
+
+    @GetMapping("/trainer-profile")
+    public String trainerProfile(Principal principal, Model model) {
+
+        service.actualizarEstados();
+
+        User trainer = userRepository.findByEmail(principal.getName()).orElse(null);
+
+        String nombreCompleto = trainer.getName() + " " + trainer.getLastname();
+        ZonedDateTime ahora = ZonedDateTime.now(ZoneId.systemDefault());
+        LocalDate hoy = ahora.toLocalDate();
+
+        List<FunctionalTraining> todas = service.getAllTrainings().stream()
+                .filter(c -> c.getDatetime() != null)
+                .filter(c -> c.getInstructor().equalsIgnoreCase(nombreCompleto))
+                .toList();
+
+        // Filtrar clases según fecha
+        List<FunctionalTraining> clasesHoy = todas.stream()
+                .filter(c -> c.getDatetime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(hoy))
+                .toList();
+
+        List<FunctionalTraining> historial = todas.stream()
+                .filter(c -> c.getDatetime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isBefore(hoy))
+                .sorted(Comparator.comparing(FunctionalTraining::getDatetime).reversed())
+                .toList();
+
+        List<FunctionalTraining> proximasClases = todas.stream()
+                .filter(c -> c.getDatetime().toInstant().atZone(ZoneId.systemDefault()).isAfter(ahora))
+                .sorted(Comparator.comparing(c -> c.getDatetime().toInstant().atZone(ZoneId.systemDefault())))
+                .toList();
+
+        model.addAttribute("trainer", trainer);
+        model.addAttribute("clasesHoy", clasesHoy);
+        model.addAttribute("historialClases", historial);
+        model.addAttribute("proximasClases", proximasClases);
+
+        return VIEW_TRAINER;
+    }
+
 }

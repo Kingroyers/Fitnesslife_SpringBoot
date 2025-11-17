@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -20,10 +23,12 @@ public class FunctionalTrainingController {
 
     @GetMapping
     public String listTrainings(Model model) {
+            service.actualizarEstados(); 
         List<FunctionalTraining> trainings = service.getAllTrainings();
+        
         model.addAttribute("training", trainings);
 
-        return "admin/functionalTrainingCrud"; 
+        return "admin/functionalTrainingCrud";
     }
 
     // crear nuevo entrenamiento
@@ -81,5 +86,7 @@ public class FunctionalTrainingController {
 
         return "redirect:/admin/functionalTraining";
     }
+
+    
 
 }

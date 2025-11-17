@@ -20,25 +20,24 @@
         <div th:replace="fragments/navdashboard.html :: sidebar"></div>
 
         <!-- Contenido principal -->
-        <div class="container-fluid" style=" overflow: scroll;">
-            <div class="container position-relative">
-                <div class="header-section">
+        <!-- Main Content -->
+        <div class="flex-fill overflow-auto">
+            <div class="main-container">
+
+                <!-- Header -->
+                <div class="page-header">
                     <div class="row align-items-center">
                         <div class="col-md-8">
-                            <h1 class="header-title">Gestión de Clases</h1>
-                            <p class="header-subtitle">Administra y organiza todas tus clases</p>
+                            <h1><i class="bi bi-calendar-check me-3"></i>Gestión de Clases</h1>
+                            <p>Administra y organiza todas tus clases funcionales</p>
                         </div>
                         <div class="col-md-4 text-md-end mt-3 mt-md-0">
-                            <button class="btn btn-new-class shadow-sm" data-bs-toggle="modal"
-                                data-bs-target="#formModal">
-                                <i class="bi bi-plus-lg me-2"></i> Nueva Clase
+                            <button class="btn-new-class" data-bs-toggle="modal" data-bs-target="#formModal">
+                                <i class="bi bi-plus-lg me-2"></i>Nueva Clase
                             </button>
                         </div>
                     </div>
                 </div>
-
-
-
 
 
                 <!-- Modal crear -->
@@ -116,17 +115,21 @@
                     </div>
                 </div>
 
+                <div class="section-divider">
+                    <h3 style="color: var( --primary-color);"><i class="bi bi-calendar-day me-2"></i>Clases de Hoy</h3>
+                    <div class="line"></div>
+                    <span class="section-badge" th:text="${#lists.size(clases)} + ' clases'">0 clases</span>
+                </div>
 
-                <div class="d-flex flex-wrap justify-content-center  mb-5" style="gap: 4px; ">
-                    <div th:each="training : ${trainings}">
+                <!-- CLASES DE HOY -->
+                <div class="classes-grid" style="gap: 4px;">
+                    <div th:each="training : ${clases}">
+
                         <div class="">
                             <div class="">
-
                                 <form id="updateForm-[[${training.id}]]" th:action="@{/trainings/update}" method="post"
                                     th:object="${training}" class="training-form" style="min-width: 300px;">
-
                                     <input type="hidden" name="id" th:value="${training.id}">
-
 
                                     <div class="class-card">
                                         <div class="card-header-gradient gradient-1">
@@ -207,7 +210,121 @@
                                                 onclick="return confirm('¿Eliminar este entrenamiento?')">
                                                 <i class="bi bi-trash"></i>
                                             </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
+                <div class="empty-state" th:if="${#lists.isEmpty(clases)}">
+                    <i class="bi bi-calendar-x"></i>
+                    <h4>No hay clases programadas para hoy</h4>
+                    <p>Crea una nueva clase para comenzar</p>
+                </div>
+
+                <div class="section-divider">
+                    <h3 style="color: var( --primary-color);"><i class="bi bi-calendar-range me-2"></i>Todas las Clases
+                    </h3>
+                    <div class="line"></div>
+                    <span class="section-badge" th:text="${#lists.size(trainings)} + ' clases'">0 clases</span>
+                </div>
+
+                <!-- TODAS LAS CLASES -->
+                <div class="classes-grid" style="gap: 4px; ">
+                    <div th:each="training : ${trainings}">
+                        <div class="">
+                            <div class="">
+
+                                <form id="updateForm-[[${training.id}]]" th:action="@{/trainings/update}" method="post"
+                                    th:object="${training}" class="training-form" style="min-width: 300px;">
+
+                                    <input type="hidden" name="id" th:value="${training.id}">
+
+                                    <div class="class-card">
+                                        <div class="card-header-gradient gradient-1">
+                                            <span class="class-title view-mode"
+                                                th:text="${training.nameTraining}"></span>
+                                            <input type="text" name="nameTraining" th:value="${training.nameTraining}"
+                                                class="edit-mode form-control" style="display:none;">
+
+                                            <div class="class-instructor mt-2">
+                                                <i class="bi bi-person-fill me-2"></i>
+                                                <span class="view-mode" th:text="${training.instructor}"></span>
+                                                <input type="text" name="instructor" th:value="${training.instructor}"
+                                                    class="edit-mode form-control" style="display:none;">
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body">
+                                            <!-- Fecha -->
+                                            <div class="info-item mb-2">
+                                                <div class="info-icon icon-blue"><i class="bi bi-calendar-event"></i>
+                                                </div>
+                                                <!-- FORMATO MEJORADO PARA MOSTRAR -->
+                                                <span class="view-mode"
+                                                    th:text="${training.datetime != null ? #dates.format(training.datetime, 'dd/MM/yyyy') : 'Sin fecha'}"></span>
+                                                <!-- FORMATO PARA INPUT DATE (debe ser yyyy-MM-dd) -->
+                                                <input type="date" name="date"
+                                                    th:value="${training.datetime != null ? #dates.format(training.datetime, 'yyyy-MM-dd') : ''}"
+                                                    class="edit-mode form-control" style="display:none;">
+                                            </div>
+
+                                            <!-- Hora -->
+                                            <div class="info-item mb-2">
+                                                <div class="info-icon icon-purple"><i class="bi bi-clock"></i></div>
+                                                <!-- FORMATO MEJORADO PARA MOSTRAR -->
+                                                <span class="view-mode"
+                                                    th:text="${training.datetime != null ? #dates.format(training.datetime, 'HH:mm') : 'Sin hora'}"></span>
+                                                <!-- FORMATO PARA INPUT TIME (debe ser HH:mm) -->
+                                                <input type="time" name="time"
+                                                    th:value="${training.datetime != null ? #dates.format(training.datetime, 'HH:mm') : ''}"
+                                                    class="edit-mode form-control" style="display:none;">
+                                            </div>
+
+                                            <!-- Sala -->
+                                            <div class="info-item mb-2">
+                                                <div class="info-icon icon-green"><i class="bi bi-geo-alt-fill"></i>
+                                                </div>
+                                                <span class="view-mode" th:text="${training.room}"></span>
+                                                <input type="text" name="room" th:value="${training.room}"
+                                                    class="edit-mode form-control" style="display:none;">
+                                            </div>
+
+                                            <!-- Progreso -->
+                                            <div class="progress-section mt-3">
+                                                <div class="progress-label">
+                                                    <span class="progress-label-text">Inscritos</span>
+                                                    <span class="progress-label-count"
+                                                        th:text="${training.userIds != null ? #lists.size(training.userIds) + '/' + training.maximumCapacity : '0/' + training.maximumCapacity}"></span>
+                                                </div>
+                                                <div class="progress">
+                                                    <div class="progress-bar gradient-1"
+                                                        th:style="${training.userIds != null ? 'width: ' + (#lists.size(training.userIds) * 100 / training.maximumCapacity) + '%' : 'width: 0%'}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="action-buttons p-2 d-flex justify-content-between">
+                                            <button type="button" class="btn btn-edit">
+                                                <i class="bi bi-pencil me-2"></i>Editar
+                                            </button>
+                                            <button type="submit" class="btn btn-primary edit-mode"
+                                                style="display:none;">
+                                                <i class="bi bi-check2-circle me-2"></i>Guardar
+                                            </button>
+                                            <button type="button" class="btn btn-cancel edit-mode btn-secondary"
+                                                style="display:none;">
+                                                <i class="bi bi-x-circle me-2"></i>Cancelar
+                                            </button>
+
+                                            <button type="submit" class="btn btn-danger btn-sm"
+                                                th:formaction="@{/trainings/delete/{id}(id=${training.id})}"
+                                                onclick="return confirm('¿Eliminar este entrenamiento?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
                                         </div>
                                     </div>
 

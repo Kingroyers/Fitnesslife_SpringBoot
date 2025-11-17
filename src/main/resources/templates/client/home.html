@@ -41,7 +41,8 @@
 
             <div class="classes-carousel">
                 <div th:each="training : ${trainings}">
-                    <div class="class-card">
+                    <div class="class-card" style="min-height: 335px;">
+
                         <div class="class-card-header">
                             <h3 class="class-name" th:text="${training.nameTraining}"></h3>
                             <p class="class-instructor">
@@ -55,35 +56,61 @@
                                 <i class="bi bi-calendar3"></i>
                                 <span th:text="${#dates.format(training.datetime, 'EEEE, d MMMM')}"></span>
                             </div>
+
                             <div class="class-info-item">
                                 <i class="bi bi-clock"></i>
                                 <span th:text="${#dates.format(training.datetime, 'h:mm a')}"></span>
                             </div>
+
                             <div class="class-info-item">
                                 <i class="bi bi-geo-alt"></i>
                                 <span th:text="${training.room}"></span>
                             </div>
+
                             <div class="class-info-item">
                                 <i class="bi bi-people"></i>
                                 <span th:text="${#lists.size(training.userIds)} + ' Inscritos'"></span>
                             </div>
 
-                            <!-- Botón solo si el usuario NO está inscrito -->
-                            <form th:if="${!training.userIds.contains(identification)}"
-                                th:action="@{/inscribirme/{id}(id=${training.idFunctionalTraining})}" method="post">
-                                <button class="class-action-btn">Inscribirme</button>
-                            </form>
+                            <div th:if="${#lists.size(training.userIds) >= training.maximumCapacity}">
+                                <button class="class-action-btn"
+                                    style="background: #ff5050; cursor: not-allowed; opacity: .8;" disabled>
+                                    Clase llena
+                                </button>
+                            </div>
 
-                            <!-- Texto si ya está inscrito -->
-                            <button th:if="${training.userIds.contains(identification)}" class="class-action-btn"
-                                style="background: #28a745; opacity: 0.7; cursor: not-allowed;" disabled>
-                                Ya inscrito
-                            </button>
+                            <div
+                                th:if="${#lists.size(training.userIds) < training.maximumCapacity and training.status != 'Inactive'}">
 
+
+                                <!--  No mostrar botones si ya finalizó -->
+                                <div th:if="${training.status != 'Inactive'}">
+
+                                    <!-- Botón solo si NO está inscrito -->
+                                    <form th:if="${!training.userIds.contains(identification)}"
+                                        th:action="@{/inscribirme/{id}(id=${training.idFunctionalTraining})}"
+                                        method="post">
+                                        <button class="class-action-btn">Inscribirme</button>
+                                    </form>
+
+                                    <!-- Texto si ya está inscrito -->
+                                    <button th:if="${training.userIds.contains(identification)}"
+                                        class="class-action-btn"
+                                        style="background: #28a745; opacity: 0.7; cursor: not-allowed;" disabled>
+                                        Ya inscrito
+                                    </button>
+                                </div>
+                            </div>
+                            <div th:if="${training.status == 'Inactive'}"
+                                class="badge bg-danger bg-opacity-10 border border-danger text-danger fw-bold py-3 px-3 user-select-none"
+                                style="margin-top: 15px; cursor: not-allowed; pointer-events: none; border-radius: 10px;">
+                                <i class="bi bi-x-circle-fill me-2"></i>Clase finalizada
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
         </div>
 
         <!-- Our Collection (Workouts) Section -->
@@ -248,11 +275,18 @@
                         <span th:text="${confirmedClass.room}"></span>
                     </div>
 
-                    <form th:action="@{/cancelarInscripcion/{id}(id=${confirmedClass.idFunctionalTraining})}"
-                        method="post">
-                        <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
-                    </form>
+                    <div th:if="${confirmedClass.status != 'Inactive'}">
 
+                        <form th:action="@{/cancelarInscripcion/{id}(id=${confirmedClass.idFunctionalTraining})}"
+                            method="post">
+                            <button class="class-action-btn" style="background: #ff4757;">Cancelar</button>
+                        </form>
+                    </div>
+
+                    <div class="btn btn-outline-success" style="cursor: no-drop;">
+                        <i class="bi bi-check-circle-fill"></i>
+                        Completada
+                    </div>
                 </div>
             </div>
         </div>

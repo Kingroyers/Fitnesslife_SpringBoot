@@ -1,5 +1,8 @@
 package com.proaula.fitnesslife.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,8 +59,23 @@ public class DashboardController {
     // esto funciona para cargar la vista de entrenamientos funcionales
     @GetMapping("/admin/functionalTraining")
     public String functionalTraining(Model model) {
-        model.addAttribute("currentPage", "clases");
         List<FunctionalTraining> trainings = service.getAllTrainings();
+        LocalDate hoy = LocalDate.now(ZoneId.systemDefault());
+
+        // Filtrar clases de hoy
+        List<FunctionalTraining> clasesDeHoy = trainings.stream()
+                .filter(t -> t.getDatetime() != null)
+                .filter(t -> {
+                    LocalDate fechaClase = t.getDatetime().toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDate();
+                    return fechaClase.isEqual(hoy);
+                })
+                .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
+                .toList();
+
+        model.addAttribute("currentPage", "clases");
+        model.addAttribute("clases", clasesDeHoy);
         model.addAttribute("trainings", trainings);
         model.addAttribute("training", new FunctionalTraining());
 

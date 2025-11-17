@@ -6,6 +6,8 @@ import com.proaula.fitnesslife.repository.FunctionalTrainingRepository;
 import com.proaula.fitnesslife.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,12 +35,14 @@ public class FunctionalTrainingService {
     }
 
     public FunctionalTraining createTraining(FunctionalTraining training) {
-        
-        long count = repository.count(); 
+
+        long count = repository.count();
         training.setIdFunctionalTraining((int) count + 1);
-        training.setStatus("Active"); 
-        // if (repository.existsByIdFunctionalTraining(training.getIdFunctionalTraining())) {
-        //     throw new IllegalArgumentException("El idFunctionalTraining ya existe");
+        training.setStatus("Active");
+        // if
+        // (repository.existsByIdFunctionalTraining(training.getIdFunctionalTraining()))
+        // {
+        // throw new IllegalArgumentException("El idFunctionalTraining ya existe");
         // }
         return repository.save(training);
     }
@@ -79,7 +83,7 @@ public class FunctionalTrainingService {
         return repository.findByIdFunctionalTraining(idFunctional).orElse(null);
     }
 
-    //  Nuevo método: obtener solo las clases donde el usuario está inscrito
+    // Nuevo método: obtener solo las clases donde el usuario está inscrito
     public List<FunctionalTraining> getTrainingsByUser(String emailUsuario) {
         User user = userRepository.findByEmail(emailUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -92,5 +96,22 @@ public class FunctionalTrainingService {
                         training.getUserIds().contains(user.getIdentification()))
                 .toList();
     }
-    
+
+    public void actualizarEstados() {
+        List<FunctionalTraining> clases = repository.findAll();
+        LocalDateTime ahora = LocalDateTime.now();
+
+        clases.forEach(c -> {
+            LocalDateTime fechaClase = c.getDatetime()
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+
+            if (fechaClase.isBefore(ahora) && !"Inactive".equals(c.getStatus())) {
+                c.setStatus("Inactive");
+                repository.save(c);
+            }
+        });
+    }
+
 }

@@ -27,7 +27,8 @@ public class SecurityConfig {
                         .requestMatchers("/", "/index", "/login", "/register",
                                 "/css/**", "/js/**", "/img/**", "/fonts/**", "/payment/confirmation", "/payment/response", "/api/payment/status/**")
                         .permitAll()
-                        .requestMatchers("/dashboard/**", "/admin/**").hasRole("ADMIN") // 👈 admin
+                        .requestMatchers("/dashboard/**", "/admin/**, /trainer/**").hasRole("ADMIN") // 👈 admin
+                        .requestMatchers("/client/**", "/trainer/**").hasRole("TRAINER") // 👈 admin
                         .requestMatchers("/client/**", "/api/plan/**").hasRole("USER") // 👈 solo user
                         .anyRequest().authenticated())
 
