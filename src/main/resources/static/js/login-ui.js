@@ -38,7 +38,6 @@ bullets.forEach((bullet) => {
     bullet.addEventListener("click", moveSlider);
 });
 
-// Carousel automático
 let currentSlide = 1;
 const totalSlides = 3;
 
@@ -48,21 +47,17 @@ function autoSlide() {
         currentSlide = 1;
     }
 
-    // Simular click en el bullet correspondiente
     const currentBullet = document.querySelector(`.bullets span[data-value="${currentSlide}"]`);
     if (currentBullet) {
         moveSlider.call(currentBullet);
     }
 }
 
-// Iniciar el carousel automático cada 3 segundos
 const carouselInterval = setInterval(autoSlide, 3000);
 
-// Pausar el carousel automático cuando el usuario hace click manual
 bullets.forEach((bullet) => {
     bullet.addEventListener("click", () => {
         clearInterval(carouselInterval);
-        // Reiniciar el carousel automático después de 5 segundos de inactividad
         setTimeout(() => {
             currentSlide = parseInt(bullet.dataset.value);
             setInterval(autoSlide, 3000);

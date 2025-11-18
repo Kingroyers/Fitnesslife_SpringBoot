@@ -2,11 +2,9 @@ function refreshQR() {
     const qrImage = document.getElementById('qrCodeImage');
     const refreshBtn = document.querySelector('.refresh-qr-btn');
 
-    // Deshabilitar botón y mostrar loading
     refreshBtn.disabled = true;
     refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise spinner-border spinner-border-sm"></i> Actualizando...';
 
-    // Llamada al backend para regenerar el QR
     fetch('/api/qr/refresh', {
         method: 'POST',
         headers: {
@@ -15,10 +13,7 @@ function refreshQR() {
     })
         .then(response => {
             if (response.ok) {
-                // Actualizar la imagen añadiendo un timestamp para forzar la recarga
                 qrImage.src = '/api/qr/image?t=' + new Date().getTime();
-
-                // Mostrar mensaje de éxito
                 showAlert('Código QR actualizado correctamente', 'success');
             } else {
                 showAlert('Error al actualizar el código QR', 'danger');
@@ -29,7 +24,6 @@ function refreshQR() {
             showAlert('Error de conexión al actualizar el código QR', 'danger');
         })
         .finally(() => {
-            // Rehabilitar botón
             refreshBtn.disabled = false;
             refreshBtn.innerHTML = '<i class="bi bi-arrow-clockwise"></i> Actualizar Código';
         });
@@ -45,7 +39,6 @@ function showAlert(message, type) {
             `;
     document.body.appendChild(alertDiv);
 
-    // Auto-cerrar después de 3 segundos
     setTimeout(() => {
         alertDiv.remove();
     }, 3000);
