@@ -37,11 +37,15 @@ public class FunctionalTrainingController {
     }
 
     @PostMapping("/delete/{id}")
-    public String deleteTraining(@PathVariable String id) {
-        service.deleteTraining(id);
-
-        return "redirect:/admin/functionalTraining?deleted";
-    }
+public String deleteTraining(
+        @PathVariable String id,
+        @RequestParam(required = false, defaultValue = "hoy") String filtro,
+        @RequestParam(defaultValue = "0") int page) {
+    
+    service.deleteTraining(id);
+    
+    return "redirect:/admin/functionalTraining?filtro=" + filtro + "&page=" + page;
+}
 
     @GetMapping("/api/{id}")
     @ResponseBody
