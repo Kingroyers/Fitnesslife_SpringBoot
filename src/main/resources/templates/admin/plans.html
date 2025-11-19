@@ -141,21 +141,25 @@
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">
-                                    Nombre del Plan
+                                    Nombre del Plan *
                                 </label>
-                                <input type="text" name="planName" class="form-control" required />
+                                <input type="text" name="planName" class="form-control" required
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]{3,40}$"
+                                    title="Debe tener entre 3 y 40 caracteres. Solo letras, números y espacios." />
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">
-                                    Precio
+                                    Precio *
                                 </label>
-                                <input type="number" name="price" step="0.01" class="form-control" required />
+                                <input type="number" name="price" step="0.01" class="form-control" required
+                                    pattern="^[0-9]+(\.[0-9]{1,2})?$"
+                                    title="Ingrese un precio válido. Ejemplos: 35000 o 35.50" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">
-                                    Moneda
+                                    Moneda *
                                 </label>
                                 <select name="currency" class="form-select" required>
                                     <option value="COP">COP</option>
@@ -165,13 +169,15 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">
-                                    Duración (días)
+                                    Duración (días) *
                                 </label>
-                                <input type="number" name="durationDays" class="form-control" required />
+                                <input type="number" name="durationDays" class="form-control" required min="2" max="3"
+                                    pattern="^\d{2,3}$"
+                                    title="Debe tener entre 2 y 3 dígitos (por ejemplo: 30, 60, 120)." />
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">
-                                    Badge
+                                    Badge *
                                 </label>
                                 <select name="badge" class="form-select" required>
                                     <option value="Básico">Básico</option>
@@ -182,10 +188,12 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label fw-bold">
-                                Beneficios (uno por línea)
+                                Beneficios (uno por línea) *
                             </label>
                             <textarea name="benefitsText" class="form-control" rows="5"
-                                placeholder="Ingrese cada beneficio en una línea nueva" required></textarea>
+                                placeholder="Ingrese cada beneficio en una línea nueva" required
+                                pattern="^(?:[^\n]{3,100}\n?)+$"
+                                title="Cada línea debe tener entre 3 y 100 caracteres."></textarea>
                             <small class="text-muted">Separe cada beneficio con un salto de línea</small>
                         </div>
                     </div>
@@ -219,14 +227,17 @@
                                 <label class="form-label fw-bold">
                                     Nombre del Plan
                                 </label>
-                                <input type="text" id="editPlanName" name="planName" class="form-control" required />
+                                <input type="text" id="editPlanName" name="planName" class="form-control" required
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ0-9\s]{3,40}$"
+                                    title="Debe tener entre 3 y 40 caracteres. Solo letras, números y espacios." />
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label fw-bold">
                                     Precio
                                 </label>
                                 <input type="number" id="editPrice" name="price" step="0.01" class="form-control"
-                                    required />
+                                    required pattern="^[0-9]+(\.[0-9]{1,2})?$"
+                                    title="Ingrese un precio válido. Ejemplos: 35000 o 35.50" />
                             </div>
                         </div>
                         <div class="row">
@@ -245,7 +256,8 @@
                                     Duración (días)
                                 </label>
                                 <input type="number" id="editDurationDays" name="durationDays" class="form-control"
-                                    required />
+                                    required min="2" max="3" pattern="^\d{2,3}$"
+                                    title="Debe tener entre 2 y 3 dígitos (por ejemplo: 30, 60, 120)." />
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label fw-bold">
@@ -263,7 +275,9 @@
                                 Beneficios (uno por línea)
                             </label>
                             <textarea id="editBenefitsText" name="benefitsText" class="form-control" rows="5"
-                                placeholder="Ingrese cada beneficio en una línea nueva" required></textarea>
+                                placeholder="Ingrese cada beneficio en una línea nueva" required
+                                pattern="^(?:[^\n]{3,100}\n?)+$"
+                                title="Cada línea debe tener entre 3 y 100 caracteres.">></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">

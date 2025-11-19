@@ -12,29 +12,64 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/Dashboard.css}">
     <link rel="stylesheet" th:href="@{/css/UserTable.css}">
-    <link rel="stylesheet" th:href="@{/css/functionalTrinincrud.css}">
-
 </head>
 
 <body>
     <div class="d-flex flex-column flex-md-row vh-100">
+        <div th:replace="~{fragments/navdashboard.html :: sidebar}"></div>
 
-        <div th:replace="fragments/navdashboard.html :: sidebar"></div>
-
-        <div class="container-fluid p-4 scroll-container" style=" overflow: scroll;">
+        <div class="container-fluid p-4 scroll-container" style="overflow: scroll;">
             <div class="container">
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
                 <div class="container-custom">
                     <div class="header-section d-flex justify-content-between align-items-center p-4">
                         <div>
                             <h2>Gestión de Usuarios</h2>
                             <p class="mb-0">Administra y visualiza todos los usuarios del sistema</p>
                         </div>
-
+                        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#createUserModal">
+                            <i class="fas fa-plus me-2"></i>Nuevo Usuario
+                        </button>
                     </div>
 
                     <div class="table-section">
+                        <!-- Filtros -->
+                        <form method="get" action="/admin/userTable" class="search-filter-bar mb-3">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Buscar por nombre, email o identificación..." th:value="${searchTerm}">
+                            </div>
+                            <select name="role" class="filter-select form-select">
+                                <option value="">Todos los roles</option>
+                                <option value="ADMIN" th:selected="${roleFilter == 'ADMIN'}">Admin</option>
+                                <option value="USER" th:selected="${roleFilter == 'USER'}">Usuario</option>
+                                <option value="TRAINER" th:selected="${roleFilter == 'TRAINER'}">Entrenador</option>
+                            </select>
+                            <select name="status" class="filter-select form-select">
+                                <option value="">Todos los estados</option>
+                                <option value="active" th:selected="${statusFilter == 'active'}">Activo</option>
+                                <option value="inactive" th:selected="${statusFilter == 'inactive'}">Inactivo</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-1"></i>Filtrar
+                            </button>
+                            <a th:href="@{/admin/userTable}" class="btn btn-secondary">
+                                <i class="fas fa-times me-1"></i>Limpiar
+                            </a>
+                        </form>
 
-                        <div class="table-responsive" style="height: 70vh; overflow: scroll;">
+                        <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
                             <table class="table table-custom">
                                 <thead>
                                     <tr>
@@ -47,7 +82,6 @@
                                         <th>Plan</th>
                                         <th>Estado</th>
                                         <th>Registro</th>
-                                        <th>Actualizado</th>
                                         <th class="text-center">Acciones</th>
                                     </tr>
                                 </thead>
@@ -55,12 +89,11 @@
                                     <tr th:each="user : ${users}">
                                         <td>
                                             <div class="user-info">
-                                                <img th:if="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
-                                                    th:src="${currentUser.photoProfile}" alt="User Avatar"
-                                                    class="user-avatar">
-                                                <img th:unless="${currentUser != null and user.photoProfile != null and !user.photoProfile.isEmpty()}"
+                                                <img th:if="${user.photoProfile != null and !user.photoProfile.isEmpty()}"
+                                                    th:src="${user.photoProfile}" alt="User Avatar" class="avatar">
+                                                <img th:unless="${user.photoProfile != null and !user.photoProfile.isEmpty()}"
                                                     th:src="'https://ui-avatars.com/api/?name=' + ${user.name} + '+' + ${user.lastname} + '&background=2c5bff&color=fff&size=128'"
-                                                    alt="User Avatar" class="user-avatar">
+                                                    alt="User Avatar" class="avatar">
                                                 <div class="user-details">
                                                     <h6 th:text="${user.name} + ' ' + ${user.lastname}"></h6>
                                                     <small th:text="${user.email}"></small>
@@ -68,7 +101,8 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <strong class="badge bg-light text-dark fw-normal" th:text="${user.identification}"></strong>
+                                            <strong class="badge bg-light text-dark fw-normal"
+                                                th:text="${user.identification}"></strong>
                                         </td>
                                         <td>
                                             <div>
@@ -88,43 +122,34 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <span class="role-badge" th:text="${user.role}">
-                                            </span>
-
-
+                                            <span class="role-badge" th:text="${user.role}"></span>
                                         </td>
                                         <td><span class="plan-badge" th:text="${user.plan}"></span></td>
-
                                         <td>
                                             <span
                                                 th:classappend="${user.active} ? 'badge-status badge-active' : 'badge-status badge-inactive'"
                                                 th:text="${user.active} ? 'Activo' : 'Inactivo'"></span>
                                         </td>
-
                                         <td>
                                             <div class="d-flex flex-column">
                                                 <span class="badge bg-light text-dark fw-normal"
                                                     th:text="${user.createdAt != null ? #temporals.format(user.createdAt, 'dd/MM/yyyy HH:mm') : 'Sin registro'}"></span>
                                             </div>
                                         </td>
-
-                                        <td>
-                                            <div class="d-flex flex-column">
-                                                <span class="badge bg-light text-dark fw-normal"
-                                                    th:text="${user.updatedAt != null ? #temporals.format(user.updatedAt, 'dd/MM/yyyy HH:mm') : 'Nunca'}"></span>
-                                            </div>
-                                        </td>
-
-                                        </td>
                                         <td class="text-center action-buttons">
                                             <button class="btn btn-qr btn-sm" title="Ver QR">
                                                 <i class="fas fa-qrcode"></i>
                                             </button>
-                                            <button id="btnEditar" class="btn btn-edit btn-sm btnEditar" title="Editar">
+                                            <button class="btn btn-edit btn-sm btnEditar" title="Editar"
+                                                th:attr="data-user-id=${user.id}">
                                                 <i class="fas fa-edit"></i>
                                             </button>
                                             <form th:action="@{/admin/users/delete/{id}(id=${user.id})}" method="post"
                                                 style="display:inline;">
+                                                <input type="hidden" name="page" th:value="${currentPage}" />
+                                                <input type="hidden" name="roleFilter" th:value="${roleFilter}" />
+                                                <input type="hidden" name="statusFilter" th:value="${statusFilter}" />
+                                                <input type="hidden" name="search" th:value="${searchTerm}" />
                                                 <button type="submit" class="btn btn-delete btn-sm" title="Eliminar"
                                                     onclick="return confirm('¿Eliminar este usuario?')">
                                                     <i class="fas fa-trash"></i>
@@ -136,59 +161,280 @@
                             </table>
                         </div>
 
-
                         <div class="d-flex justify-content-between align-items-center mt-4">
                             <div class="text-muted">
-                                Cantidad de usuarios
-                                <strong th:text="${users.size()}"></strong>
+                                Mostrando <strong th:text="${users.size()}"></strong> de
+                                <strong th:text="${totalItems}"></strong> usuarios
                             </div>
-                        </div>
 
+                            <nav th:if="${totalPages > 1}">
+                                <ul class="pagination mb-0">
+                                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/userTable(page=0, role=${roleFilter}, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/userTable(page=${currentPage - 1}, role=${roleFilter}, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                        th:if="${i >= currentPage - 2 && i <= currentPage + 2}"
+                                        th:classappend="${i == currentPage} ? 'active'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/userTable(page=${i}, role=${roleFilter}, status=${statusFilter}, search=${searchTerm})}"
+                                            th:text="${i + 1}">1</a>
+                                    </li>
+                                    <li class="page-item"
+                                        th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/userTable(page=${currentPage + 1}, role=${roleFilter}, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    </li>
+                                    <li class="page-item"
+                                        th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/userTable(page=${totalPages - 1}, role=${roleFilter}, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+    <div class="modal fade" id="createUserModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editRoleModalLabel">
-                        Editar Rol de Usuario
+                    <h5 class="modal-title">
+                        Crear Nuevo Usuario
                     </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form id="editRoleForm" th:action="@{/update-role}" method="post">
+                <form th:action="@{/admin/users/create}" method="post">
+                    <input type="hidden" name="page" th:value="${currentPage}" />
+                    <input type="hidden" name="roleFilter" th:value="${roleFilter}" />
+                    <input type="hidden" name="statusFilter" th:value="${statusFilter}" />
+                    <input type="hidden" name="search" th:value="${searchTerm}" />
                     <div class="modal-body">
-                        <input type="hidden" id="userId" name="id">
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold">Usuario</label>
-                            <div class="user-info-modal">
-                                <img id="userAvatar" src="" alt="Avatar" class="avatar me-2"
-                                    style="width: 40px; height: 40px; border-radius: 50%;">
-                                <div>
-                                    <div id="userName" class="fw-semibold"></div>
-                                    <small id="userEmail" class="text-muted"></small>
-                                </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Nombre *
+                                </label>
+                                <input type="text" name="name" class="form-control" required
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,30}$"
+                                    title="Solo letras, mínimo 2 y máximo 30 caracteres." />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Apellido *
+                                </label>
+                                <input type="text" name="lastname" class="form-control" required
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,30}$"
+                                    title="Solo letras, mínimo 2 y máximo 30 caracteres." />
                             </div>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="userRole" class="form-label fw-bold">
-                                Rol
-                            </label>
-                            <select id="userRole" name="role" class="form-select" required>
-                                <option th:each="rol : ${roles}" th:value="${rol.nombre}" th:text="${rol.nombre}">
-                                </option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Email *
+                                </label>
+                                <input type="email" name="email" class="form-control" required
+                                    pattern="^[\\w\\.-]+@[\\w\\.-]+\\.[A-Za-z]{2,}$"
+                                    title="Ingrese un correo válido. Ej: usuario@correo.com" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Contraseña *
+                                </label>
+                                <input type="password" name="password" class="form-control" required
+                                    pattern="^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d!@#$%^&*()_+\\-=]{8,}$"
+                                    title="Debe tener mínimo 8 caracteres, incluir letras y números." />
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Identificación *
+                                </label>
+                                <input type="number" name="identification" class="form-control" required
+                                    pattern="^[0-9]{6,12}$" title="Solo números. Entre 6 y 12 dígitos." />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Teléfono
+                                </label>
+                                <input type="text" name="phone" class="form-control" pattern="^[0-9]{10}$"
+                                    title="Debe tener exactamente 10 dígitos numéricos." />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Género
+                                </label>
+                                <select name="sex" class="form-select">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Tipo de Sangre *
+                                </label>
+                                <select name="bloodType" class="form-select">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Rol
+                                </label>
+                                <select name="role" class="form-select">
+                                    <option value="USER">Usuario</option>
+                                    <option value="ADMIN">Admin</option>
+                                    <option value="TRAINER">Entrenador</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Fecha Nacimiento
+                                </label>
+                                <input type="date" name="birthDate" class="form-control" required max="2010-12-31"
+                                    title="Debes tener al menos 15 años para registrarte." />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Crear Usuario
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-                        <div class="alert alert-info mb-0">
-                            <i class="fas fa-info-circle me-2"></i>
-                            <small>Solo se actualizará el rol del usuario. Los demás datos permanecerán sin
-                                cambios.</small>
+    <div class="modal fade" id="editUserModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Editar Usuario
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editUserForm" method="post">
+                    <input type="hidden" name="page" th:value="${currentPage}" />
+                    <input type="hidden" name="roleFilter" th:value="${roleFilter}" />
+                    <input type="hidden" name="statusFilter" th:value="${statusFilter}" />
+                    <input type="hidden" name="search" th:value="${searchTerm}" />
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Nombre *</label>
+                                <input type="text" id="editName" name="name" class="form-control" required
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,30}$"
+                                    title="Solo letras, mínimo 2 y máximo 30 caracteres." />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Apellido *</label>
+                                <input type="text" id="editLastname" name="lastname" class="form-control" required
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,30}$"
+                                    title="Solo letras, mínimo 2 y máximo 30 caracteres." />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Email *</label>
+                                <input type="email" id="editEmail" name="email" class="form-control" required
+                                    pattern="^[\\w\\.-]+@[\\w\\.-]+\\.[A-Za-z]{2,}$"
+                                    title="Ingrese un correo válido. Ej: usuario@correo.com" />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">Identificación *</label>
+                                <input type="number" id="editIdentification" name="identification" class="form-control"
+                                    required pattern="^[0-9]{6,12}$" title="Solo números. Entre 6 y 12 dígitos." />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Teléfono</label>
+                                <input type="text" id="editPhone" name="phone" class="form-control"
+                                    pattern="^[0-9]{10}$" title="Debe tener exactamente 10 dígitos numéricos." />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Género</label>
+                                <select id="editSex" name="sex" class="form-select">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="Masculino">Masculino</option>
+                                    <option value="Femenino">Femenino</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Tipo de Sangre</label>
+                                <select id="editBloodType" name="bloodType" class="form-select">
+                                    <option value="">Seleccionar...</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Rol</label>
+                                <select id="editRole" name="role" class="form-select">
+                                    <option value="USER">Usuario</option>
+                                    <option value="ADMIN">Admin</option>
+                                    <option value="TRAINER">Entrenador</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Plan</label>
+                                <input type="text" id="editPlan" name="plan" class="form-control"
+                                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñ\s]{2,30}$"
+                                    title="Solo letras, mínimo 2 y máximo 30 caracteres." />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">Estado</label>
+                                <select id="editActive" name="active" class="form-select">
+                                    <option value="true">Activo</option>
+                                    <option value="false">Inactivo</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Fecha de Nacimiento *</label>
+                            <input type="date" id="editBirthDate" name="birthDate" class="form-control" required
+                                max="2010-12-31" title="Debes tener al menos 15 años para registrarte." />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -205,9 +451,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
     <script th:src="@{/js/UserTable.js}"></script>
-
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 
