@@ -1,5 +1,7 @@
 package com.proaula.fitnesslife.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,5 +43,22 @@ public class UserService {
     public User save(User user) {
         log.debug("Guardando usuario: {}", user.getEmail());
         return userRepository.save(user);
+    }
+
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+
+    public void updateUserRole(String id, String role) {
+
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+        
+        user.setRole(role);
+        user.setUpdatedAt(LocalDateTime.now()); // Actualizar fecha de modificación
+        
+        userRepository.save(user);
     }
 }

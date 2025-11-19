@@ -8,6 +8,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Document(collection = "functionalTrainings")
 public class FunctionalTraining {
@@ -28,6 +29,7 @@ public class FunctionalTraining {
     @CreatedDate
     private Date createdAt;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date datetime;
 
     private String room;

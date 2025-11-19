@@ -1,8 +1,10 @@
 /* === Sidebar moderna === */
 .sidebar {
-  background: linear-gradient(180deg, #1a1c2e 0%, #23254a 100%);
+  background: linear-gradient(180deg, #17192b 0%, #1e2048 100%);
   color: white;
   width: 250px;
+  height: 100%;
+
   transition: all 0.3s ease;
 }
 
@@ -29,9 +31,15 @@
 
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
-  background: linear-gradient(90deg, #5b3ee0, #8774f2);
+  background: linear-gradient(90deg, #2e1c7c, #040e83);
   color: #fff;
 }
+
+.nav-link.active{
+  
+  border-radius: 10px 10px 70px 10px;
+}
+
 
 .sidebar .nav-link i {
   font-size: 1.3rem;

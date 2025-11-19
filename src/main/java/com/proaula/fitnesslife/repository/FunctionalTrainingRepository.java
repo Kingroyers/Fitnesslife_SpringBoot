@@ -11,6 +11,9 @@ public interface FunctionalTrainingRepository extends MongoRepository<Functional
     
     Optional<FunctionalTraining> findByIdFunctionalTraining(String id);
     Optional<FunctionalTraining> findByIdFunctionalTraining(int idFunctionalTraining);
+    void deleteByIdFunctionalTraining(int idFunctionalTraining);
+    
+
     
     boolean existsByIdFunctionalTraining(int idFunctionalTraining);
 }
