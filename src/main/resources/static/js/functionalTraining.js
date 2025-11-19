@@ -31,7 +31,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
 function mostrarFormulario() {
     document.getElementById("Formulario").classList.remove("d-none");
 }

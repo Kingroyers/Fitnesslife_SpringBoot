@@ -91,7 +91,6 @@ public class DashboardController {
         List<FunctionalTraining> trainings = service.getAllTrainings();
         LocalDate hoy = LocalDate.now(ZoneId.systemDefault());
 
-        // Clases de hoy (para la vista resumida)
         List<FunctionalTraining> clasesDeHoy = trainings.stream()
                 .filter(t -> t.getDatetime() != null)
                 .filter(t -> {
@@ -103,10 +102,9 @@ public class DashboardController {
                 .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
                 .toList();
 
-        // FILTRO - El problema está aquí
         List<FunctionalTraining> clasesFiltradas;
 
-        if ("todas".equals(filtro)) { // CAMBIA ESTO - debe ser "todas" primero
+        if ("todas".equals(filtro)) {
             clasesFiltradas = trainings.stream()
                     .filter(t -> t.getDatetime() != null)
                     .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
@@ -125,7 +123,7 @@ public class DashboardController {
                     })
                     .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
                     .toList();
-        } else { // "mes"
+        } else {
             LocalDate finMes = hoy.plusMonths(1);
             clasesFiltradas = trainings.stream()
                     .filter(t -> t.getDatetime() != null)
@@ -139,7 +137,6 @@ public class DashboardController {
                     .toList();
         }
 
-        // PAGINACIÓN
         int total = clasesFiltradas.size();
         int totalPages = (int) Math.ceil((double) total / size);
         int start = page * size;
