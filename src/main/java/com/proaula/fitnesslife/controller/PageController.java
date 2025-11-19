@@ -67,7 +67,7 @@ public class PageController {
     }
 
     @GetMapping("/home")
-    public String home(Model model, Principal principal) {  
+    public String home(Model model, Principal principal) {
 
         service.actualizarEstados();
         LocalDate hoy = LocalDate.now(ZoneId.systemDefault());

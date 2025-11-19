@@ -10,6 +10,8 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Document(collection = "functionalTrainings")
 public class FunctionalTraining {
 
@@ -26,9 +28,11 @@ public class FunctionalTraining {
     private String duration;
     private String status;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", timezone = "UTC")
     @CreatedDate
     private Date createdAt;
 
+    
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date datetime;
 

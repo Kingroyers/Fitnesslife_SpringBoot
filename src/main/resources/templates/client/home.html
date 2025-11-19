@@ -275,7 +275,7 @@
                         <span th:text="${confirmedClass.room}"></span>
                     </div>
 
-                    <div th:if="${confirmedClass.status != 'Inactive'}">
+                    <div th:if="${confirmedClass.status == 'Active'}">
 
                         <form th:action="@{/cancelarInscripcion/{id}(id=${confirmedClass.idFunctionalTraining})}"
                             method="post">
@@ -283,10 +283,13 @@
                         </form>
                     </div>
 
-                    <div class="btn btn-outline-success" style="cursor: no-drop;">
-                        <i class="bi bi-check-circle-fill"></i>
-                        Completada
+                    <div th:if="${confirmedClass.status != 'Active'}">
+                        <div class="btn btn-outline-success" style="cursor: no-drop;">
+                            <i class="bi bi-check-circle-fill"></i>
+                            Completada
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
