@@ -14,9 +14,9 @@
 //     public void createCollectionsIfNotExist() {
 //         if (!mongoTemplate.collectionExists("")) {
 //             mongoTemplate.createCollection("");
-//             System.out.println("✅ Colección 'users' creada automáticamente");
+//             System.out.println("Colección 'users' creada automáticamente");
 //         } else {
-//             System.out.println("ℹ️ Colección 'users' ya existe");
+//             System.out.println("ℹColección 'users' ya existe");
 //         }
 //     }
 // }

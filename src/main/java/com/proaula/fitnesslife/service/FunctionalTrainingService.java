@@ -65,7 +65,6 @@ public class FunctionalTrainingService {
         repository.deleteById(id);
     }
 
-    // cancelar inscripción
     public void cancelarInscripcion(int idFunctionalTraining, String emailUsuario) {
         User user = userRepository.findByEmail(emailUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
@@ -83,14 +82,12 @@ public class FunctionalTrainingService {
         return repository.findByIdFunctionalTraining(idFunctional).orElse(null);
     }
 
-    // Nuevo método: obtener solo las clases donde el usuario está inscrito
     public List<FunctionalTraining> getTrainingsByUser(String emailUsuario) {
         User user = userRepository.findByEmail(emailUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
         List<FunctionalTraining> allTrainings = repository.findAll();
 
-        // Filtrar solo las clases donde el usuario esté inscrito
         return allTrainings.stream()
                 .filter(training -> training.getUserIds() != null &&
                         training.getUserIds().contains(user.getIdentification()))
@@ -113,5 +110,4 @@ public class FunctionalTrainingService {
             }
         });
     }
-
 }

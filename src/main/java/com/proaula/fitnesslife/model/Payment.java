@@ -17,23 +17,23 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Document(collection = "payments")
 public class Payment {
-    
+
     @Id
     private String id;
-    
+
     @DBRef
     private User user;
-    
+
     @DBRef
     private Plan plan;
-    
+
     private String externalInvoice;
     private Double amount;
     private String currency;
     private String status;
     private LocalDateTime validFrom;
     private LocalDateTime validUntil;
-    
+
     private String transactionId;
     private String approvalCode;
     private String bankName;
@@ -42,18 +42,18 @@ public class Payment {
     private String responseText;
     private String responseReason;
     private String signature;
-    
+
     @CreatedDate
     private LocalDateTime createdAt;
     private LocalDateTime transactionDate;
-    
+
     public boolean isActive() {
         if (validFrom == null || validUntil == null) {
             return false;
         }
         LocalDateTime now = LocalDateTime.now();
-        return "ACCEPTED".equals(status) && 
-               now.isAfter(validFrom) && 
-               now.isBefore(validUntil);
+        return "ACCEPTED".equals(status) &&
+                now.isAfter(validFrom) &&
+                now.isBefore(validUntil);
     }
 }

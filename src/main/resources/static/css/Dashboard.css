@@ -1,11 +1,20 @@
-/* === Sidebar moderna === */
+:root {
+  --bg-body: #1f212c;
+  --primary-color: #2c5bff;
+  --card-bg: #292c36;
+  --text-white: #ffffff;
+}
+
 .sidebar {
-  background: linear-gradient(180deg, #17192b 0%, #1e2048 100%);
-  color: white;
+  background: linear-gradient(180deg,
+      var(--card-bg) 0%,
+      #0f1535 50%,
+      var(--primary-color) 100%);
+  color: var(--text-white);
   width: 250px;
   height: 100%;
-
   transition: all 0.3s ease;
+  flex-shrink: 0;
 }
 
 .sidebar-header .logo-circle {
@@ -35,11 +44,9 @@
   color: #fff;
 }
 
-.nav-link.active{
-  
+.nav-link.active {
   border-radius: 10px 10px 70px 10px;
 }
-
 
 .sidebar .nav-link i {
   font-size: 1.3rem;
@@ -49,15 +56,32 @@
   font-size: 0.9rem;
 }
 
+.powerbi-container {
+  background: #1c1e2a;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  flex-grow: 1;
+}
+
+.powerbi-container iframe {
+  width: 100%;
+  height: calc(100% + 100px);
+  border: none;
+  display: block;
+  margin-bottom: -100px;
+}
+
 .grid {
   display: grid;
-  width: 100%;   /* 100% del ancho de la ventana */
-  height: 90vh;  /* 80% del alto de la ventana */
+  width: 100%;
+  height: 90vh;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(6, 1fr);
   gap: 8px;
-  align-items: stretch;    /* Asegura que cada celda se expanda */
-  justify-items: stretch;  /* Asegura que cada celda se expanda */
+  align-items: stretch;
+  justify-items: stretch;
   box-sizing: border-box;
 }
 
@@ -77,14 +101,40 @@
   display: none;
 }
 
-/* Posiciones base */
-.item-0 { grid-column: 1; grid-row: 1 / span 3; }
-.item-1 { grid-column: 1; grid-row: 4 / span 3; }
-.item-2 { grid-column: 2; grid-row: 1 / span 2; }
-.item-3 { grid-column: 2; grid-row: 3 / span 2; }
-.item-4 { grid-column: 2; grid-row: 5 / span 2; }
-.item-5 { grid-column: 3; grid-row: 1 / span 4; }
-.item-6 { grid-column: 3; grid-row: 5 / span 2; }
+.item-0 {
+  grid-column: 1;
+  grid-row: 1 / span 3;
+}
+
+.item-1 {
+  grid-column: 1;
+  grid-row: 4 / span 3;
+}
+
+.item-2 {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+.item-3 {
+  grid-column: 2;
+  grid-row: 3 / span 2;
+}
+
+.item-4 {
+  grid-column: 2;
+  grid-row: 5 / span 2;
+}
+
+.item-5 {
+  grid-column: 3;
+  grid-row: 1 / span 4;
+}
+
+.item-6 {
+  grid-column: 3;
+  grid-row: 5 / span 2;
+}
 
 @media (min-width: 768px) {
   .grid {
@@ -93,20 +143,50 @@
     gap: 8px;
   }
 
-  .mobile-only { display: none; }
-  .desktop-only { display: block; }
+  .mobile-only {
+    display: none;
+  }
 
-  /* Mismo layout para desktop */
-  .item-0 { grid-column: 1; grid-row: 1 / span 3; }
-  .item-1 { grid-column: 1; grid-row: 4 / span 3; }
-  .item-2 { grid-column: 2; grid-row: 1 / span 2; }
-  .item-3 { grid-column: 2; grid-row: 3 / span 2; }
-  .item-4 { grid-column: 2; grid-row: 5 / span 2; }
-  .item-5 { grid-column: 3; grid-row: 1 / span 4; }
-  .item-6 { grid-column: 3; grid-row: 5 / span 2; }
+  .desktop-only {
+    display: block;
+  }
+
+  .item-0 {
+    grid-column: 1;
+    grid-row: 1 / span 3;
+  }
+
+  .item-1 {
+    grid-column: 1;
+    grid-row: 4 / span 3;
+  }
+
+  .item-2 {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .item-3 {
+    grid-column: 2;
+    grid-row: 3 / span 2;
+  }
+
+  .item-4 {
+    grid-column: 2;
+    grid-row: 5 / span 2;
+  }
+
+  .item-5 {
+    grid-column: 3;
+    grid-row: 1 / span 4;
+  }
+
+  .item-6 {
+    grid-column: 3;
+    grid-row: 5 / span 2;
+  }
 }
 
-/* === Versión móvil === */
 @media (max-width: 768px) {
   .sidebar {
     position: fixed;
@@ -119,7 +199,6 @@
     justify-content: space-around;
     align-items: center;
     z-index: 1030;
-    
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     background: linear-gradient(90deg, #1a1c2e, #23254a);
   }
@@ -139,9 +218,21 @@
     font-size: 0.75rem;
   }
 
-  main {
-    margin-bottom: 70px; /* espacio para menú inferior */
+  main,
+  .powerbi-container {
+    margin-bottom: 70px;
+    height: calc(100vh - 70px);
   }
 
+  .powerbi-container iframe {
+    height: calc(100% + 50px);
+    margin-bottom: -50px;
+  }
 }
 
+body,
+html {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}

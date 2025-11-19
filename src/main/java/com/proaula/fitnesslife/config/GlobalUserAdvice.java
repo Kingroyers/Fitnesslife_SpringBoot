@@ -11,7 +11,6 @@ public class GlobalUserAdvice {
 
     private final UserService userService;
 
-    // Constructor manual
     public GlobalUserAdvice(UserService userService) {
         this.userService = userService;
     }
@@ -20,7 +19,7 @@ public class GlobalUserAdvice {
     public void addCurrentUser(Model model, Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             userService.findByEmail(authentication.getName())
-                       .ifPresent(user -> model.addAttribute("currentUser", user));
+                    .ifPresent(user -> model.addAttribute("currentUser", user));
         }
     }
 }

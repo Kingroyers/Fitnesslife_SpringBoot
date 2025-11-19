@@ -7,8 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.List;
 
 @Controller
@@ -23,15 +21,14 @@ public class FunctionalTrainingController {
 
     @GetMapping
     public String listTrainings(Model model) {
-            service.actualizarEstados(); 
+        service.actualizarEstados();
         List<FunctionalTraining> trainings = service.getAllTrainings();
-        
+
         model.addAttribute("training", trainings);
 
         return "admin/functionalTrainingCrud";
     }
 
-    // crear nuevo entrenamiento
     @PostMapping("/save")
     public String saveTraining(@ModelAttribute FunctionalTraining training) {
         service.createTraining(training);
@@ -46,7 +43,6 @@ public class FunctionalTrainingController {
         return "redirect:/admin/functionalTraining?deleted";
     }
 
-    // CONSULTA JSON OPCIONAL (por si lo necesitas en JavaScript)
     @GetMapping("/api/{id}")
     @ResponseBody
     public ResponseEntity<FunctionalTraining> getTrainingById(@PathVariable String id) {
@@ -55,7 +51,6 @@ public class FunctionalTrainingController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    // ACTUALIZAR ENTRENAMIENTO
     @PostMapping("/update")
     public String updateTrainingPost(
             @RequestParam("id") String id,
@@ -86,7 +81,4 @@ public class FunctionalTrainingController {
 
         return "redirect:/admin/functionalTraining";
     }
-
-    
-
 }

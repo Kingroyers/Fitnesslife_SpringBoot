@@ -13,7 +13,7 @@ public class GlobalExceptionHandler {
     public String handleUserNotFoundException(UserNotFoundException ex, Model model) {
         log.error("Usuario no encontrado: {}", ex.getMessage());
         model.addAttribute("error", ex.getMessage());
-        return "error/user-not-found"; // Crea esta vista o redirige a donde necesites
+        return "error/user-not-found";
     }
 
     @ExceptionHandler(Exception.class)

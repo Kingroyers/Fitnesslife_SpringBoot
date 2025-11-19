@@ -31,19 +31,19 @@ public class PlanStatusRestController {
     @GetMapping("/status")
     public ResponseEntity<Map<String, Object>> getPlanStatus(
             @AuthenticationPrincipal UserDetails userDetails) {
-        
+
         try {
             log.info("Consultando estado del plan para usuario: {}", userDetails.getUsername());
-            
+
             User user = userService.getUserOrThrow(userDetails.getUsername());
             Optional<Payment> activePaymentOpt = paymentService.getActivePayment(user.getId());
-            
+
             Map<String, Object> response = new HashMap<>();
-            
+
             if (activePaymentOpt.isPresent()) {
                 Payment activePayment = activePaymentOpt.get();
                 long daysRemaining = ChronoUnit.DAYS.between(LocalDateTime.now(), activePayment.getValidUntil());
-                
+
                 response.put("hasActivePlan", true);
                 response.put("planName", activePayment.getPlan().getPlanName());
                 response.put("validFrom", activePayment.getValidFrom());
@@ -55,9 +55,9 @@ public class PlanStatusRestController {
                 response.put("hasActivePlan", false);
                 response.put("message", "No tienes un plan activo");
             }
-            
+
             return ResponseEntity.ok(response);
-            
+
         } catch (Exception e) {
             log.error("Error consultando estado del plan", e);
             return ResponseEntity.internalServerError()

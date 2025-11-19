@@ -24,11 +24,9 @@ body {
 }
 
 .welcome-card {
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--secondary-color)
-  );
+  background: linear-gradient(135deg,
+      var(--primary-color),
+      var(--secondary-color));
   color: white;
   border-radius: 15px;
   padding: 2rem;
@@ -89,11 +87,9 @@ body {
 
 .class-card.active {
   border-left-color: var(--success-color);
-  background: linear-gradient(
-    to right,
-    rgba(16, 185, 129, 0.1),
-    var(--card-bg)
-  );
+  background: linear-gradient(to right,
+      rgba(16, 185, 129, 0.1),
+      var(--card-bg));
 }
 
 .class-card.upcoming {
@@ -133,11 +129,9 @@ body {
   width: 35px;
   height: 35px;
   border-radius: 50%;
-  background: linear-gradient(
-    135deg,
-    var(--primary-color),
-    var(--secondary-color)
-  );
+  background: linear-gradient(135deg,
+      var(--primary-color),
+      var(--secondary-color));
   display: inline-flex;
   align-items: center;
   justify-content: center;

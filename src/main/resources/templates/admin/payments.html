@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Pagos</title>
+    <link rel="icon" type="image/png" th:href="@{/img/icons/logo-fl.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap-icons.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/Dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/UserTable.css}">
+</head>
+
+<body>
+    <div class="d-flex flex-column flex-md-row vh-100">
+        <div th:replace="~{fragments/navdashboard.html :: sidebar}"></div>
+
+        <div class="container-fluid p-4 scroll-container" style="overflow: scroll;">
+            <div class="container">
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-file-invoice-dollar fa-2x text-primary mb-2"></i>
+                                <h3 class="mb-0" th:text="${totalPayments}">0</h3>
+                                <small class="text-muted">Total Pagos</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-check-circle fa-2x text-success mb-2"></i>
+                                <h3 class="mb-0" th:text="${acceptedPayments}">0</h3>
+                                <small class="text-muted">Aceptados</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                                <h3 class="mb-0" th:text="${pendingPayments}">0</h3>
+                                <small class="text-muted">Pendientes</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card text-center shadow-sm">
+                            <div class="card-body">
+                                <i class="fas fa-dollar-sign fa-2x text-success mb-2"></i>
+                                <h3 class="mb-0">$<span
+                                        th:text="${#numbers.formatDecimal(totalRevenue, 0, 'COMMA', 2, 'POINT')}">0</span>
+                                </h3>
+                                <small class="text-muted">Ingresos Totales</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container-custom">
+                    <div class="header-section d-flex justify-content-between align-items-center p-4">
+                        <div>
+                            <h2>Gestión de Pagos</h2>
+                            <p class="mb-0">Administra y visualiza todas las transacciones del sistema</p>
+                        </div>
+                    </div>
+
+                    <div class="table-section">
+                        <form method="get" action="/admin/payments" class="search-filter-bar mb-3">
+                            <div class="search-box">
+                                <i class="fas fa-search"></i>
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Buscar por usuario, email, transacción..." th:value="${searchTerm}">
+                            </div>
+                            <select name="status" class="filter-select form-select">
+                                <option value="">Todos los estados</option>
+                                <option value="ACCEPTED" th:selected="${statusFilter == 'ACCEPTED'}">Aceptado</option>
+                                <option value="PENDING" th:selected="${statusFilter == 'PENDING'}">Pendiente</option>
+                                <option value="REJECTED" th:selected="${statusFilter == 'REJECTED'}">Rechazado</option>
+                                <option value="FAILED" th:selected="${statusFilter == 'FAILED'}">Fallido</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-filter me-1"></i>Filtrar
+                            </button>
+                            <a th:href="@{/admin/payments}" class="btn btn-secondary">
+                                <i class="fas fa-times me-1"></i>Limpiar
+                            </a>
+                        </form>
+
+                        <div class="table-responsive" style="max-height: 60vh; overflow-y: auto;">
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Usuario</th>
+                                        <th>Plan</th>
+                                        <th>Monto</th>
+                                        <th>Estado</th>
+                                        <th>Transacción</th>
+                                        <th>Banco</th>
+                                        <th>Validez</th>
+                                        <th>Fecha Registro</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="payment : ${payments}">
+                                        <td>
+                                            <div class="user-info">
+                                                <img th:src="@{'https://i.pravatar.cc/150?img=' + ${payment.user.hashCode() % 70}}"
+                                                    alt="Avatar" class="avatar">
+                                                <div class="user-details">
+                                                    <h6 th:text="${payment.user.name} + ' ' + ${payment.user.lastname}">
+                                                    </h6>
+                                                    <small th:text="${payment.user.email}"></small>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="plan-badge" th:text="${payment.plan.planName}"></span>
+                                            <br />
+                                            <small class="text-muted">
+                                                <i class="fas fa-calendar me-1"></i>
+                                                <span th:text="${payment.plan.durationDays}"></span> días
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <strong class="text-success">
+                                                <span th:text="${payment.currency}"></span>
+                                                <span
+                                                    th:text="${#numbers.formatDecimal(payment.amount, 0, 'COMMA', 2, 'POINT')}"></span>
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <span th:if="${payment.status == 'ACCEPTED'}" class="badge bg-success">
+                                                <i class="fas fa-check-circle me-1"></i>Aceptado
+                                            </span>
+                                            <span th:if="${payment.status == 'PENDING'}"
+                                                class="badge bg-warning text-dark">
+                                                <i class="fas fa-clock me-1"></i>Pendiente
+                                            </span>
+                                            <span th:if="${payment.status == 'REJECTED'}" class="badge bg-danger">
+                                                <i class="fas fa-times-circle me-1"></i>Rechazado
+                                            </span>
+                                            <span th:if="${payment.status == 'FAILED'}" class="badge bg-secondary">
+                                                <i class="fas fa-exclamation-circle me-1"></i>Fallido
+                                            </span>
+                                            <br />
+                                            <small th:if="${payment.isActive()}" class="text-success">
+                                                <i class="fas fa-circle-check"></i> Activo
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <small class="text-muted">
+                                                <strong>ID:</strong>
+                                                <span
+                                                    th:text="${payment.transactionId != null ? payment.transactionId : 'N/A'}"></span>
+                                            </small>
+                                            <br />
+                                            <small class="text-muted" th:if="${payment.approvalCode != null}">
+                                                <strong>Aprobación:</strong>
+                                                <span th:text="${payment.approvalCode}"></span>
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <span th:if="${payment.bankName != null}">
+                                                <i class="fas fa-university me-1"></i>
+                                                <span th:text="${payment.bankName}"></span>
+                                            </span>
+                                            <br />
+                                            <small th:if="${payment.franchise != null}"
+                                                class="badge bg-light text-dark">
+                                                <span th:text="${payment.franchise}"></span>
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <div th:if="${payment.validFrom != null}">
+                                                <small class="text-muted">
+                                                    <i class="fas fa-calendar-check me-1"></i>
+                                                    <span
+                                                        th:text="${#temporals.format(payment.validFrom, 'dd/MM/yyyy')}"></span>
+                                                </small>
+                                                <br />
+                                                <small class="text-muted">
+                                                    <i class="fas fa-calendar-times me-1"></i>
+                                                    <span
+                                                        th:text="${#temporals.format(payment.validUntil, 'dd/MM/yyyy')}"></span>
+                                                </small>
+                                            </div>
+                                            <span th:unless="${payment.validFrom != null}" class="text-muted">
+                                                N/A
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark fw-normal"
+                                                th:text="${payment.createdAt != null ? #temporals.format(payment.createdAt, 'dd/MM/yyyy HH:mm') : 'N/A'}"></span>
+                                        </td>
+                                        <td class="text-center action-buttons">
+                                            <button class="btn btn-view btn-sm" title="Ver detalles"
+                                                th:attr="data-payment-id=${payment.id}"
+                                                onclick="viewPaymentDetails(this)" data-bs-toggle="modal"
+                                                data-bs-target="#viewPaymentModal">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                            <button class="btn btn-edit btn-sm btnEditStatus" title="Cambiar estado"
+                                                th:attr="data-payment-id=${payment.id},data-current-page=${currentPage},data-status-filter=${statusFilter},data-search-term=${searchTerm}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form th:action="@{/admin/payments/delete/{id}(id=${payment.id})}"
+                                                method="post" style="display:inline;">
+                                                <input type="hidden" name="page" th:value="${currentPage}" />
+                                                <input type="hidden" name="statusFilter" th:value="${statusFilter}" />
+                                                <input type="hidden" name="search" th:value="${searchTerm}" />
+                                                <button type="submit" class="btn btn-delete btn-sm" title="Eliminar"
+                                                    onclick="return confirm('¿Eliminar este pago? Esta acción no se puede deshacer.')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <div class="text-muted">
+                                Mostrando <strong th:text="${payments.size()}"></strong> de
+                                <strong th:text="${totalItems}"></strong> pagos
+                            </div>
+
+                            <nav th:if="${totalPages > 1}">
+                                <ul class="pagination mb-0">
+                                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/payments(page=0, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-double-left"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/payments(page=${currentPage - 1}, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-left"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                                        th:if="${i >= currentPage - 2 && i <= currentPage + 2}"
+                                        th:classappend="${i == currentPage} ? 'active'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/payments(page=${i}, status=${statusFilter}, search=${searchTerm})}"
+                                            th:text="${i + 1}">1</a>
+                                    </li>
+
+                                    <li class="page-item"
+                                        th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/payments(page=${currentPage + 1}, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-right"></i>
+                                        </a>
+                                    </li>
+
+                                    <li class="page-item"
+                                        th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
+                                        <a class="page-link"
+                                            th:href="@{/admin/payments(page=${totalPages - 1}, status=${statusFilter}, search=${searchTerm})}">
+                                            <i class="fas fa-angle-double-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="viewPaymentModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Detalles del Pago
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="paymentDetailsContent">
+                    <div class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editStatusModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Cambiar Estado del Pago
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editStatusForm" method="post">
+                    <input type="hidden" name="page" id="currentPageInput" />
+                    <input type="hidden" name="statusFilter" id="statusFilterInput" />
+                    <input type="hidden" name="search" id="searchTermInput" />
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Nuevo Estado
+                            </label>
+                            <select name="status" class="form-select" required>
+                                <option value="ACCEPTED">Aceptado</option>
+                                <option value="PENDING">Pendiente</option>
+                                <option value="REJECTED">Rechazado</option>
+                                <option value="FAILED">Fallido</option>
+                            </select>
+                        </div>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <small>Cambiar el estado puede afectar el acceso del usuario a su plan.</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="fas fa-times me-1"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-1"></i>Actualizar Estado
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/PaymentTable.js}"></script>
+</body>
+
+</html>

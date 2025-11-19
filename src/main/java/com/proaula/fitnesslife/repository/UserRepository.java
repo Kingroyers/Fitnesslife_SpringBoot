@@ -10,6 +10,4 @@ import com.proaula.fitnesslife.model.User;
 @Repository
 public interface UserRepository extends MongoRepository<User, String> {
     Optional<User> findByEmail(String email);
-
-    
 }

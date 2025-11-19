@@ -13,8 +13,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.proaula.fitnesslife.model.FunctionalTraining;
 import com.proaula.fitnesslife.model.User;
-import com.proaula.fitnesslife.repository.RoleRepository;
-import com.proaula.fitnesslife.repository.UserRepository;
 import com.proaula.fitnesslife.service.FunctionalTrainingService;
 import com.proaula.fitnesslife.service.RoleService;
 import com.proaula.fitnesslife.service.UserService;
@@ -56,13 +54,11 @@ public class DashboardController {
         return VIEW_USER;
     }
 
-    // esto funciona para cargar la vista de entrenamientos funcionales
     @GetMapping("/admin/functionalTraining")
     public String functionalTraining(Model model) {
         List<FunctionalTraining> trainings = service.getAllTrainings();
         LocalDate hoy = LocalDate.now(ZoneId.systemDefault());
 
-        // Filtrar clases de hoy
         List<FunctionalTraining> clasesDeHoy = trainings.stream()
                 .filter(t -> t.getDatetime() != null)
                 .filter(t -> {

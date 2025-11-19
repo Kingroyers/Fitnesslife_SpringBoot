@@ -1,3 +1,10 @@
+:root {
+    --bg-body: #1f212c;
+    --primary-color: #2c5bff;
+    --card-bg: #292c36;
+    --text-white: #ffffff;
+}
+
 .container-custom {
   background: white;
   border-radius: 20px;
@@ -7,14 +14,14 @@
 }
 
 .scroll-container {
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: #002a5650 #f7fafc;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #002a5650 #f7fafc;
 }
 
 .header-section {
-  background: linear-gradient(90deg, #2e1c7c, #040e83);
+  background: linear-gradient(90deg, var(--card-bg), var(--primary-color));
   color: white;
   padding: 50px 40px;
 }

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Planes</title>
+    <link rel="icon" type="image/png" th:href="@{/img/icons/logo-fl.png}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap-icons.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" th:href="@{/css/Dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/UserTable.css}">
+</head>
+
+<body>
+    <div class="d-flex flex-column flex-md-row vh-100">
+        <div th:replace="~{fragments/navdashboard.html :: sidebar}"></div>
+
+        <div class="container-fluid p-4 scroll-container" style="overflow: scroll;">
+            <div class="container">
+                <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-check-circle me-2"></i>
+                    <span th:text="${success}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+                <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fas fa-exclamation-circle me-2"></i>
+                    <span th:text="${error}"></span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+
+                <div class="container-custom">
+                    <div class="header-section d-flex justify-content-between align-items-center p-4">
+                        <div>
+                            <h2>Gestión de Planes</h2>
+                            <p class="mb-0">Administra y visualiza todos los planes de suscripción</p>
+                        </div>
+                        <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#createPlanModal">
+                            <i class="fas fa-plus me-2"></i>Nuevo Plan
+                        </button>
+                    </div>
+
+                    <div class="table-section">
+                        <div class="table-responsive" style="height: 70vh; overflow: scroll;">
+                            <table class="table table-custom">
+                                <thead>
+                                    <tr>
+                                        <th>Plan</th>
+                                        <th>Precio</th>
+                                        <th>Duración</th>
+                                        <th>Badge</th>
+                                        <th>Beneficios</th>
+                                        <th>Registro</th>
+                                        <th>Actualizado</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="plan : ${plans}">
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div>
+                                                    <h6 class="mb-0" th:text="${plan.planName}"></h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <strong class="text-success">
+                                                <span th:text="${plan.currency}"></span>
+                                                <span
+                                                    th:text="${#numbers.formatDecimal(plan.price, 0, 'COMMA', 2, 'POINT')}"></span>
+                                            </strong>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info text-dark">
+                                                <span th:text="${plan.durationDays}"></span> días
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="plan-badge" th:text="${plan.badge}"></span>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary"
+                                                th:attr="data-plan-id=${plan.id}" onclick="showBenefitsModal(this)"
+                                                data-bs-toggle="modal" data-bs-target="#benefitsModal">
+                                                <i class="fas fa-list me-1"></i>
+                                                Ver (<span
+                                                    th:text="${plan.benefits != null ? plan.benefits.size() : 0}"></span>)
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark fw-normal"
+                                                th:text="${plan.createdAt != null ? #temporals.format(plan.createdAt, 'dd/MM/yyyy HH:mm') : 'Sin registro'}"></span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-light text-dark fw-normal"
+                                                th:text="${plan.updatedAt != null ? #temporals.format(plan.updatedAt, 'dd/MM/yyyy HH:mm') : 'Nunca'}"></span>
+                                        </td>
+                                        <td class="text-center action-buttons">
+                                            <button class="btn btn-edit btn-sm btnEditar" title="Editar"
+                                                th:attr="data-plan-id=${plan.id}">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <form th:action="@{/admin/plans/delete/{id}(id=${plan.id})}" method="post"
+                                                style="display:inline;">
+                                                <button type="submit" class="btn btn-delete btn-sm" title="Eliminar"
+                                                    onclick="return confirm('¿Eliminar este plan?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <div class="text-muted">
+                                Cantidad de planes: <strong th:text="${plans.size()}"></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="createPlanModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Crear Nuevo Plan
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/admin/plans/create}" method="post">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Nombre del Plan
+                                </label>
+                                <input type="text" name="planName" class="form-control" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Precio
+                                </label>
+                                <input type="number" name="price" step="0.01" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Moneda
+                                </label>
+                                <select name="currency" class="form-select" required>
+                                    <option value="COP">COP</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Duración (días)
+                                </label>
+                                <input type="number" name="durationDays" class="form-control" required />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Badge
+                                </label>
+                                <select name="badge" class="form-select" required>
+                                    <option value="Básico">Básico</option>
+                                    <option value="Estándar">Estándar</option>
+                                    <option value="Premium">Premium</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Beneficios (uno por línea)
+                            </label>
+                            <textarea name="benefitsText" class="form-control" rows="5"
+                                placeholder="Ingrese cada beneficio en una línea nueva" required></textarea>
+                            <small class="text-muted">Separe cada beneficio con un salto de línea</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Crear Plan
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editPlanModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        Editar Plan
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form id="editPlanForm" method="post">
+                    <input type="hidden" id="editPlanId" name="id" />
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Nombre del Plan
+                                </label>
+                                <input type="text" id="editPlanName" name="planName" class="form-control" required />
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label fw-bold">
+                                    Precio
+                                </label>
+                                <input type="number" id="editPrice" name="price" step="0.01" class="form-control"
+                                    required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Moneda
+                                </label>
+                                <select id="editCurrency" name="currency" class="form-select" required>
+                                    <option value="COP">COP</option>
+                                    <option value="USD">USD</option>
+                                    <option value="EUR">EUR</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Duración (días)
+                                </label>
+                                <input type="number" id="editDurationDays" name="durationDays" class="form-control"
+                                    required />
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label fw-bold">
+                                    Badge
+                                </label>
+                                <select id="editBadge" name="badge" class="form-select" required>
+                                    <option value="Básico">Básico</option>
+                                    <option value="Estándar">Estándar</option>
+                                    <option value="Premium">Premium</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">
+                                Beneficios (uno por línea)
+                            </label>
+                            <textarea id="editBenefitsText" name="benefitsText" class="form-control" rows="5"
+                                placeholder="Ingrese cada beneficio en una línea nueva" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="benefitsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-list-check me-2"></i>Beneficios del Plan
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul id="benefitsList" class="list-group">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script th:src="@{/js/PlanTable.js}"></script>
+</body>
+
+</html>

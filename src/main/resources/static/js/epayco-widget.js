@@ -71,8 +71,8 @@ function openEpaycoCheckout(data) {
         lang: 'es',
         
         external: 'false',
-        response: 'https://allowed-tanks-gateway-dirt.trycloudflare.com/payment/response',
-        confirmation: 'https://allowed-tanks-gateway-dirt.trycloudflare.com/payment/confirmation',
+        response: 'https://mom-extremely-dig-rica.trycloudflare.com/payment/response',
+        confirmation: 'https://mom-extremely-dig-rica.trycloudflare.com/payment/confirmation',
         
         extra1: data.planId,
         extra2: data.userId,
