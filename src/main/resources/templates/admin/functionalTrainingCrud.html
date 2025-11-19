@@ -215,106 +215,151 @@
                 </div>
 
                 <div class="section-divider">
-                    <h3 style="color: var( --primary-color);">Todas las Clases
-                    </h3>
+                    <h3 style="color: var( --primary-color);">Todas las Clases</h3>
                     <div class="line"></div>
-                    <span class="section-badge" th:text="${#lists.size(trainings)} + ' clases'">0 clases</span>
+                    <span class="section-badge" th:text="${total} + ' clases'">0 clases</span>
                 </div>
 
-                <div class="classes-grid" style="gap: 4px; ">
-                    <div th:each="training : ${trainings}">
-                        <div class="">
-                            <div class="">
-
-                                <form id="updateForm-[[${training.id}]]" th:action="@{/trainings/update}" method="post"
-                                    th:object="${training}" class="training-form" style="min-width: 300px;">
-
-                                    <input type="hidden" name="id" th:value="${training.id}">
-
-                                    <div class="class-card">
-                                        <div class="card-header-gradient gradient-1">
-                                            <span class="class-title view-mode"
-                                                th:text="${training.nameTraining}"></span>
-                                            <input type="text" name="nameTraining" th:value="${training.nameTraining}"
-                                                class="edit-mode form-control" style="display:none;">
-
-                                            <div class="class-instructor mt-2">
-                                                <i class="bi bi-person-fill me-2"></i>
-                                                <span class="view-mode" th:text="${training.instructor}"></span>
-                                                <input type="text" name="instructor" th:value="${training.instructor}"
-                                                    class="edit-mode form-control" style="display:none;">
-                                            </div>
-                                        </div>
-
-                                        <div class="card-body">
-                                            <div class="info-item mb-2">
-                                                <div class="info-icon icon-blue"><i class="bi bi-calendar-event"></i>
-                                                </div>
-                                                <span class="view-mode"
-                                                    th:text="${training.datetime != null ? #dates.format(training.datetime, 'dd/MM/yyyy') : 'Sin fecha'}"></span>
-                                                <input type="date" name="date"
-                                                    th:value="${training.datetime != null ? #dates.format(training.datetime, 'yyyy-MM-dd') : ''}"
-                                                    class="edit-mode form-control" style="display:none;">
-                                            </div>
-
-                                            <div class="info-item mb-2">
-                                                <div class="info-icon icon-purple"><i class="bi bi-clock"></i></div>
-                                                <span class="view-mode"
-                                                    th:text="${training.datetime != null ? #dates.format(training.datetime, 'HH:mm') : 'Sin hora'}"></span>
-                                                <input type="time" name="time"
-                                                    th:value="${training.datetime != null ? #dates.format(training.datetime, 'HH:mm') : ''}"
-                                                    class="edit-mode form-control" style="display:none;">
-                                            </div>
-
-                                            <div class="info-item mb-2">
-                                                <div class="info-icon icon-green"><i class="bi bi-geo-alt-fill"></i>
-                                                </div>
-                                                <span class="view-mode" th:text="${training.room}"></span>
-                                                <input type="text" name="room" th:value="${training.room}"
-                                                    class="edit-mode form-control" style="display:none;">
-                                            </div>
-
-                                            <div class="progress-section mt-3">
-                                                <div class="progress-label">
-                                                    <span class="progress-label-text">Inscritos</span>
-                                                    <span class="progress-label-count"
-                                                        th:text="${training.userIds != null ? #lists.size(training.userIds) + '/' + training.maximumCapacity : '0/' + training.maximumCapacity}"></span>
-                                                </div>
-                                                <div class="progress">
-                                                    <div class="progress-bar gradient-1"
-                                                        th:style="${training.userIds != null ? 'width: ' + (#lists.size(training.userIds) * 100 / training.maximumCapacity) + '%' : 'width: 0%'}">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="action-buttons p-2 d-flex justify-content-between">
-                                            <button type="button" class="btn btn-edit">
-                                                <i class="bi bi-pencil me-2"></i>Editar
-                                            </button>
-                                            <button type="submit" class="btn btn-primary edit-mode"
-                                                style="display:none;">
-                                                <i class="bi bi-check2-circle me-2"></i>Guardar
-                                            </button>
-                                            <button type="button" class="btn btn-cancel edit-mode btn-secondary"
-                                                style="display:none;">
-                                                <i class="bi bi-x-circle me-2"></i>Cancelar
-                                            </button>
-
-                                            <button type="submit" class="btn btn-danger btn-sm"
-                                                th:formaction="@{/trainings/delete/{id}(id=${training.id})}"
-                                                onclick="return confirm('¿Eliminar este entrenamiento?')">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                </form>
-
-                            </div>
-                        </div>
+                <!-- AGREGA ESTOS BOTONES DE FILTRO AQUÍ -->
+                <div class="mb-3 d-flex justify-content-between align-items-center">
+                    <div class="btn-group" role="group">
+                        <a th:href="@{/admin/functionalTraining(filtro='hoy')}" class="btn"
+                            th:classappend="${filtro == 'hoy'} ? 'btn-primary' : 'btn-outline-primary'">
+                            Hoy
+                        </a>
+                        <a th:href="@{/admin/functionalTraining(filtro='semana')}" class="btn"
+                            th:classappend="${filtro == 'semana'} ? 'btn-primary' : 'btn-outline-primary'">
+                            Esta semana
+                        </a>
+                        <a th:href="@{/admin/functionalTraining(filtro='mes')}" class="btn"
+                            th:classappend="${filtro == 'mes'} ? 'btn-primary' : 'btn-outline-primary'">
+                            Este mes
+                        </a>
+                        <a th:href="@{/admin/functionalTraining(filtro='todas')}" class="btn"
+                            th:classappend="${filtro == 'todas'} ? 'btn-primary' : 'btn-outline-primary'">
+                            Todas
+                        </a>
                     </div>
                 </div>
+
+
+                <div class="d-flex justify-content-center align-items-center gap-2 mt-4 mb-4" th:if="${totalPages > 1}">
+
+                    <a th:href="@{/admin/functionalTraining(filtro=${filtro}, page=0)}"
+                        class="btn btn-sm btn-outline-secondary" th:classappend="${page == 0} ? 'disabled'">
+                        <i class="bi bi-chevron-double-left"></i>
+                    </a>
+
+
+                    <a th:href="@{/admin/functionalTraining(filtro=${filtro}, page=${page - 1})}"
+                        class="btn btn-sm btn-primary" th:classappend="${page == 0} ? 'disabled'">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+
+
+                    <div class="px-3 py-1 bg-light rounded">
+                        <strong>[[${page + 1}]]</strong> / [[${totalPages}]]
+                    </div>
+
+
+                    <a th:href="@{/admin/functionalTraining(filtro=${filtro}, page=${page + 1})}"
+                        class="btn btn-sm btn-primary" th:classappend="${page + 1 >= totalPages} ? 'disabled'">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+
+
+                    <a th:href="@{/admin/functionalTraining(filtro=${filtro}, page=${totalPages - 1})}"
+                        class="btn btn-sm btn-outline-secondary"
+                        th:classappend="${page + 1 >= totalPages} ? 'disabled'">
+                        <i class="bi bi-chevron-double-right"></i>
+                    </a>
+                </div>
+
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-3">
+                    <div class="col" th:each="training : ${trainings}">
+                        <form id="updateForm-[[${training.id}]]" th:action="@{/trainings/update}" method="post"
+                            th:object="${training}" class="training-form h-100">
+
+                            <input type="hidden" name="id" th:value="${training.id}">
+
+                            <div class="class-card h-100">
+                                <div class="card-header-gradient gradient-1">
+                                    <span class="class-title view-mode" th:text="${training.nameTraining}"></span>
+                                    <input type="text" name="nameTraining" th:value="${training.nameTraining}"
+                                        class="edit-mode form-control" style="display:none;">
+
+                                    <div class="class-instructor mt-2">
+                                        <i class="bi bi-person-fill me-2"></i>
+                                        <span class="view-mode" th:text="${training.instructor}"></span>
+                                        <input type="text" name="instructor" th:value="${training.instructor}"
+                                            class="edit-mode form-control" style="display:none;">
+                                    </div>
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="info-item mb-2">
+                                        <div class="info-icon icon-blue"><i class="bi bi-calendar-event"></i></div>
+                                        <span class="view-mode"
+                                            th:text="${training.datetime != null ? #dates.format(training.datetime, 'dd/MM/yyyy') : 'Sin fecha'}"></span>
+                                        <input type="date" name="date"
+                                            th:value="${training.datetime != null ? #dates.format(training.datetime, 'yyyy-MM-dd') : ''}"
+                                            class="edit-mode form-control" style="display:none;">
+                                    </div>
+
+                                    <div class="info-item mb-2">
+                                        <div class="info-icon icon-purple"><i class="bi bi-clock"></i></div>
+                                        <span class="view-mode"
+                                            th:text="${training.datetime != null ? #dates.format(training.datetime, 'HH:mm') : 'Sin hora'}"></span>
+                                        <input type="time" name="time"
+                                            th:value="${training.datetime != null ? #dates.format(training.datetime, 'HH:mm') : ''}"
+                                            class="edit-mode form-control" style="display:none;">
+                                    </div>
+
+                                    <div class="info-item mb-2">
+                                        <div class="info-icon icon-green"><i class="bi bi-geo-alt-fill"></i></div>
+                                        <span class="view-mode" th:text="${training.room}"></span>
+                                        <input type="text" name="room" th:value="${training.room}"
+                                            class="edit-mode form-control" style="display:none;">
+                                    </div>
+
+                                    <div class="progress-section mt-3">
+                                        <div class="progress-label">
+                                            <span class="progress-label-text">Inscritos</span>
+                                            <span class="progress-label-count"
+                                                th:text="${training.userIds != null ? #lists.size(training.userIds) + '/' + training.maximumCapacity : '0/' + training.maximumCapacity}"></span>
+                                        </div>
+                                        <div class="progress">
+                                            <div class="progress-bar gradient-1"
+                                                th:style="${training.userIds != null ? 'width: ' + (#lists.size(training.userIds) * 100 / training.maximumCapacity) + '%' : 'width: 0%'}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="action-buttons p-2 d-flex justify-content-between">
+                                    <button type="button" class="btn btn-edit">
+                                        <i class="bi bi-pencil me-2"></i>Editar
+                                    </button>
+                                    <button type="submit" class="btn btn-primary edit-mode" style="display:none;">
+                                        <i class="bi bi-check2-circle me-2"></i>Guardar
+                                    </button>
+                                    <button type="button" class="btn btn-cancel edit-mode btn-secondary"
+                                        style="display:none;">
+                                        <i class="bi bi-x-circle me-2"></i>Cancelar
+                                    </button>
+
+                                    <button type="submit" class="btn btn-danger btn-sm"
+                                        th:formaction="@{/trainings/delete/{id}(id=${training.id})}"
+                                        onclick="return confirm('¿Eliminar este entrenamiento?')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@ package com.proaula.fitnesslife.controller;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -58,10 +59,16 @@ public class DashboardController {
     }
 
     @GetMapping("/admin/functionalTraining")
-    public String functionalTraining(Model model) {
+    public String functionalTraining(
+            @RequestParam(required = false, defaultValue = "hoy") String filtro,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            Model model) {
+
         List<FunctionalTraining> trainings = service.getAllTrainings();
         LocalDate hoy = LocalDate.now(ZoneId.systemDefault());
 
+        // Clases de hoy (para la vista resumida)
         List<FunctionalTraining> clasesDeHoy = trainings.stream()
                 .filter(t -> t.getDatetime() != null)
                 .filter(t -> {
@@ -73,10 +80,60 @@ public class DashboardController {
                 .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
                 .toList();
 
+        // FILTRO - El problema está aquí
+        List<FunctionalTraining> clasesFiltradas;
+
+        if ("todas".equals(filtro)) { // CAMBIA ESTO - debe ser "todas" primero
+            clasesFiltradas = trainings.stream()
+                    .filter(t -> t.getDatetime() != null)
+                    .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
+                    .toList();
+        } else if ("hoy".equals(filtro)) {
+            clasesFiltradas = clasesDeHoy;
+        } else if ("semana".equals(filtro)) {
+            LocalDate finSemana = hoy.plusDays(7);
+            clasesFiltradas = trainings.stream()
+                    .filter(t -> t.getDatetime() != null)
+                    .filter(t -> {
+                        LocalDate fechaClase = t.getDatetime().toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
+                        return !fechaClase.isBefore(hoy) && !fechaClase.isAfter(finSemana);
+                    })
+                    .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
+                    .toList();
+        } else { // "mes"
+            LocalDate finMes = hoy.plusMonths(1);
+            clasesFiltradas = trainings.stream()
+                    .filter(t -> t.getDatetime() != null)
+                    .filter(t -> {
+                        LocalDate fechaClase = t.getDatetime().toInstant()
+                                .atZone(ZoneId.systemDefault())
+                                .toLocalDate();
+                        return !fechaClase.isBefore(hoy) && !fechaClase.isAfter(finMes);
+                    })
+                    .sorted(Comparator.comparing(FunctionalTraining::getDatetime))
+                    .toList();
+        }
+
+        // PAGINACIÓN
+        int total = clasesFiltradas.size();
+        int totalPages = (int) Math.ceil((double) total / size);
+        int start = page * size;
+        int end = Math.min(start + size, total);
+
+        List<FunctionalTraining> clasesPaginadas = (start < total)
+                ? clasesFiltradas.subList(start, end)
+                : Collections.emptyList();
+
         model.addAttribute("currentPage", "clases");
         model.addAttribute("clases", clasesDeHoy);
-        model.addAttribute("trainings", trainings);
+        model.addAttribute("trainings", clasesPaginadas);
         model.addAttribute("training", new FunctionalTraining());
+        model.addAttribute("filtro", filtro);
+        model.addAttribute("page", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("total", total);
 
         return VIEW_FUNCTIONALTRAINING;
     }
