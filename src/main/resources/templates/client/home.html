@@ -5,17 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <!-- Bootstrap -->
+    <link rel="icon" type="image/png" th:href="@{/img/icons/logo-fl.png}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
-    <!-- Custom CSS -->
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/home.css">
 </head>
 
 <body>
-    <!-- Top Navbar -->
     <th:block th:insert="~{fragments/top-navbar}"></th:block>
 
     <a href="/dashboard" sec:authorize="hasRole('ADMIN')" class="btn btn-primary"
@@ -23,10 +20,8 @@
         <i class="bi bi-person-lock"></i>
     </a>
 
-    <!-- Dashboard Container -->
     <div class="dashboard-container">
 
-        <!-- Upcoming Classes Section -->
         <div class="classes-carousel-wrapper">
             <div class="section-header">
                 <h2 class="section-title">
@@ -82,18 +77,14 @@
                             <div
                                 th:if="${#lists.size(training.userIds) < training.maximumCapacity and training.status != 'Inactive'}">
 
-
-                                <!--  No mostrar botones si ya finalizó -->
                                 <div th:if="${training.status != 'Inactive'}">
 
-                                    <!-- Botón solo si NO está inscrito -->
                                     <form th:if="${!training.userIds.contains(identification)}"
                                         th:action="@{/inscribirme/{id}(id=${training.idFunctionalTraining})}"
                                         method="post">
                                         <button class="class-action-btn">Inscribirme</button>
                                     </form>
 
-                                    <!-- Texto si ya está inscrito -->
                                     <button th:if="${training.userIds.contains(identification)}"
                                         class="class-action-btn"
                                         style="background: #28a745; opacity: 0.7; cursor: not-allowed;" disabled>
@@ -113,7 +104,6 @@
 
         </div>
 
-        <!-- Our Collection (Workouts) Section -->
         <div class="workouts-section">
             <div class="section-header">
                 <h2 class="section-title">
@@ -123,7 +113,6 @@
             <hr class="section-divider">
 
             <div class="workouts-grid">
-                <!-- Workout Card 1 -->
                 <a href="https://www.youtube.com/watch?v=oCtrksNCiKk" target="_blank" class="workout-card">
                     <div class="workout-content">
                         <h3 class="workout-title">Espalda y Hombros</h3>
@@ -141,7 +130,6 @@
                     <img src="/img/class1.png" alt="Espalda" class="workout-image">
                 </a>
 
-                <!-- Workout Card 2 -->
                 <a href="https://www.youtube.com/watch?v=VB09kLgJDo0" target="_blank" class="workout-card">
                     <div class="workout-content">
                         <h3 class="workout-title">Pecho y Abdomen</h3>
@@ -159,7 +147,6 @@
                     <img src="/img/class2.png" alt="Abdomen" class="workout-image">
                 </a>
 
-                <!-- Workout Card 3 -->
                 <a href="https://www.youtube.com/watch?v=_hkUNgX9e54" target="_blank" class="workout-card">
                     <div class="workout-content">
                         <h3 class="workout-title">Brazo</h3>
@@ -177,7 +164,6 @@
                     <img src="/img/class3.png" alt="Biceps" class="workout-image">
                 </a>
 
-                <!-- Workout Card 4 -->
                 <a href="https://www.youtube.com/watch?v=LFR7BPbLmTc" target="_blank" class="workout-card">
                     <div class="workout-content">
                         <h3 class="workout-title">Pierna y Glúteos</h3>
@@ -197,7 +183,6 @@
             </div>
         </div>
 
-        <!-- Our Team Section -->
         <div class="team-section">
             <div class="section-header">
                 <h2 class="section-title">
@@ -207,7 +192,6 @@
             <hr class="section-divider">
 
             <div class="team-grid">
-                <!-- Trainer 1 -->
                 <div class="team-card">
                     <img src="https://ui-avatars.com/api/?name=Maria+Lopez&background=2c5bff&color=fff&size=128"
                         alt="María López" class="team-avatar">
@@ -216,7 +200,6 @@
                     <p class="team-specialty">Yoga & Pilates</p>
                 </div>
 
-                <!-- Trainer 2 -->
                 <div class="team-card">
                     <img src="https://ui-avatars.com/api/?name=Carlos+Ruiz&background=2c5bff&color=fff&size=128"
                         alt="Carlos Ruiz" class="team-avatar">
@@ -225,7 +208,6 @@
                     <p class="team-specialty">Spinning & Cardio</p>
                 </div>
 
-                <!-- Trainer 3 -->
                 <div class="team-card">
                     <img src="https://ui-avatars.com/api/?name=Ana+Garcia&background=2c5bff&color=fff&size=128"
                         alt="Ana García" class="team-avatar">
@@ -234,7 +216,6 @@
                     <p class="team-specialty">Planes Alimenticios</p>
                 </div>
 
-                <!-- Trainer 4 -->
                 <div class="team-card">
                     <img src="https://ui-avatars.com/api/?name=Juan+Perez&background=2c5bff&color=fff&size=128"
                         alt="Juan Pérez" class="team-avatar">
@@ -245,7 +226,6 @@
             </div>
         </div>
 
-        <!-- My Scheduled Classes Section -->
         <div class="scheduled-carousel" id="clases">
             <div class="scheduled-card" th:each="confirmedClass : ${confirmedClasses}">
                 <span class="scheduled-status">
@@ -296,10 +276,8 @@
 
     </div>
 
-    <!-- Bottom Navbar -->
     <div th:replace="fragments/bottom-navbar :: bottom-navbar"></div>
 
-    <!-- Bootstrap JS -->
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
 </body>
 

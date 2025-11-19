@@ -4,10 +4,8 @@ import java.security.Principal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +18,6 @@ import com.proaula.fitnesslife.model.User;
 import com.proaula.fitnesslife.repository.UserRepository;
 import com.proaula.fitnesslife.service.FunctionalTrainingService;
 import com.proaula.fitnesslife.service.UserService;
-
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -42,10 +38,6 @@ public class PageController {
     private static final String VIEW_USER_PROFILE = "client/user-profile";
     private static final String VIEW_TRAINER = "trainer/trainer-profile";
 
-    /**
-     * Este método se ejecuta ANTES de cada request en este controlador
-     * Carga automáticamente el usuario autenticado en el modelo
-     */
     @ModelAttribute
     public void addUserToModel(Model model, Principal principal) {
         if (principal != null) {
@@ -136,7 +128,6 @@ public class PageController {
                 .filter(c -> c.getInstructor().equalsIgnoreCase(nombreCompleto))
                 .toList();
 
-        // Filtrar clases según fecha
         List<FunctionalTraining> clasesHoy = todas.stream()
                 .filter(c -> c.getDatetime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().isEqual(hoy))
                 .toList();

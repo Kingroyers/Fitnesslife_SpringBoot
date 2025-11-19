@@ -4,8 +4,11 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +16,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.proaula.fitnesslife.model.FunctionalTraining;
 import com.proaula.fitnesslife.model.User;
-import com.proaula.fitnesslife.repository.RoleRepository;
-import com.proaula.fitnesslife.repository.UserRepository;
 import com.proaula.fitnesslife.service.FunctionalTrainingService;
 import com.proaula.fitnesslife.service.RoleService;
 import com.proaula.fitnesslife.service.UserService;
@@ -56,13 +57,11 @@ public class DashboardController {
         return VIEW_USER;
     }
 
-    // esto funciona para cargar la vista de entrenamientos funcionales
     @GetMapping("/admin/functionalTraining")
     public String functionalTraining(Model model) {
         List<FunctionalTraining> trainings = service.getAllTrainings();
         LocalDate hoy = LocalDate.now(ZoneId.systemDefault());
 
-        // Filtrar clases de hoy
         List<FunctionalTraining> clasesDeHoy = trainings.stream()
                 .filter(t -> t.getDatetime() != null)
                 .filter(t -> {
@@ -95,4 +94,35 @@ public class DashboardController {
         return "redirect:/admin/userTable";
     }
 
+    @PostMapping("/admin/users/delete/{id}")
+    public String deleteUser(@PathVariable("id") String id,
+            RedirectAttributes redirectAttributes,
+            @AuthenticationPrincipal UserDetails currentUser) {
+        try {
+            Optional<User> userOpt = userService.findById(id);
+
+            if (userOpt.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "Usuario no encontrado");
+                return "redirect:/admin/userTable";
+            }
+
+            User user = userOpt.get();
+
+            // Verificar que no se esté eliminando a sí mismo
+            if (user.getEmail().equals(currentUser.getUsername())) {
+                redirectAttributes.addFlashAttribute("error", "No puedes eliminarte a ti mismo");
+                return "redirect:/admin/userTable";
+            }
+
+            // Eliminar el usuario
+            userService.deleteById(id);
+
+            redirectAttributes.addFlashAttribute("success", "Usuario eliminado exitosamente");
+
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar el usuario: " + e.getMessage());
+        }
+
+        return "redirect:/admin/userTable";
+    }
 }

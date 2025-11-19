@@ -1,5 +1,3 @@
-/* Var */
-
 :root {
     --bg-body: #1f212c;
     --primary-color: #2c5bff;
@@ -12,8 +10,6 @@ body {
     min-height: 100vh;
     color: var(--text-white);
 }
-
-/* Profile Header */
 
 .profile-background {
     background: radial-gradient(125% 125% at 50% 10%, #101116 40%, #2c5bff 100%);
@@ -60,8 +56,6 @@ body {
     text-transform: capitalize;
 }
 
-/* Plan Card */
-
 .plan-card {
     background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
     border-radius: 20px;
@@ -105,8 +99,6 @@ body {
 .plan-status i {
     font-size: 16px;
 }
-
-/* Info Cards */
 
 .info-cards-container {
     padding: 0 1.5rem 6rem 1.5rem;
@@ -173,8 +165,6 @@ body {
     word-break: break-word;
 }
 
-/* Edit Profile Button */
-
 .edit-profile-btn {
     background: var(--primary-color);
     color: var(--text-white);
@@ -208,8 +198,6 @@ body {
 .edit-profile-btn i {
     font-size: 18px;
 }
-
-/* Responsive */
 
 @media (max-width: 768px) {
     .profile-background {

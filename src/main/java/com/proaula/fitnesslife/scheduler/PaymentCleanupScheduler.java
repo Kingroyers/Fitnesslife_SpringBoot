@@ -25,41 +25,41 @@ public class PaymentCleanupScheduler {
     @Transactional
     public void cleanupExpiredPlans() {
         log.info("Iniciando limpieza de planes expirados");
-        
+
         try {
             LocalDateTime now = LocalDateTime.now();
-            
+
             List<Payment> expiredPayments = paymentRepository.findExpiredPayments(now);
-            
+
             log.info("Se encontraron {} planes expirados", expiredPayments.size());
-            
+
             for (Payment payment : expiredPayments) {
                 try {
                     User user = payment.getUser();
-                    
-                    if (user.getPlan() != null && 
-                        user.getPlan().equals(payment.getPlan().getPlanName())) {
-                        
-                        log.info("Removiendo plan expirado '{}' del usuario: {}", 
-                            payment.getPlan().getPlanName(), 
-                            user.getEmail());
-                        
+
+                    if (user.getPlan() != null &&
+                            user.getPlan().equals(payment.getPlan().getPlanName())) {
+
+                        log.info("Removiendo plan expirado '{}' del usuario: {}",
+                                payment.getPlan().getPlanName(),
+                                user.getEmail());
+
                         user.setPlan(null);
                         userService.save(user);
-                        
+
                         payment.setStatus("EXPIRED");
                         paymentRepository.save(payment);
-                        
+
                         log.info("Plan removido exitosamente para usuario: {}", user.getEmail());
                     }
-                    
+
                 } catch (Exception e) {
                     log.error("Error procesando pago expirado ID: {}", payment.getId(), e);
                 }
             }
-            
+
             log.info("Limpieza de planes expirados completada");
-            
+
         } catch (Exception e) {
             log.error("Error en limpieza de planes expirados", e);
         }

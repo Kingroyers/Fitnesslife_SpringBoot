@@ -25,11 +25,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/index", "/login", "/register",
-                                "/css/**", "/js/**", "/img/**", "/fonts/**", "/payment/confirmation", "/payment/response", "/trainings/save", "/api/payment/status/**")
+                                "/css/**", "/js/**", "/img/**", "/fonts/**", "/payment/confirmation",
+                                "/payment/response", "/api/payment/status/**")
                         .permitAll()
-                        .requestMatchers("/dashboard/**", "/admin/**, /trainer/**").hasRole("ADMIN") // 👈 admin
-                        .requestMatchers("/client/**", "/trainer/**").hasRole("TRAINER") // 👈 admin
-                        .requestMatchers("/client/**", "/api/plan/**").hasRole("USER") // 👈 solo user
+                        .requestMatchers("/dashboard/**", "/admin/**, /trainer/**").hasRole("ADMIN")
+                        .requestMatchers("/client/**", "/trainer/**").hasRole("TRAINER")
+                        .requestMatchers("/client/**", "/api/plan/**").hasRole("USER")
                         .anyRequest().authenticated())
 
                 .formLogin(form -> form
@@ -72,8 +73,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authenticationManagerBuilder =
-                http.getSharedObject(AuthenticationManagerBuilder.class);
+        AuthenticationManagerBuilder authenticationManagerBuilder = http
+                .getSharedObject(AuthenticationManagerBuilder.class);
 
         authenticationManagerBuilder
                 .userDetailsService(userDetailsService)

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Usuarios</title>
+    <link rel="icon" type="image/png" th:href="@{/img/icons/logo-fl.png}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/Bootstrap/bootstrap-icons.css}">
@@ -12,11 +13,10 @@
     <link rel="stylesheet" th:href="@{/css/Dashboard.css}">
     <link rel="stylesheet" th:href="@{/css/UserTable.css}">
     <link rel="stylesheet" th:href="@{/css/functionalTrinincrud.css}">
-    
+
 </head>
 
 <body>
-
     <div class="d-flex flex-column flex-md-row vh-100">
 
         <div th:replace="fragments/navdashboard.html :: sidebar"></div>
@@ -26,7 +26,7 @@
                 <div class="container-custom">
                     <div class="header-section d-flex justify-content-between align-items-center p-4">
                         <div>
-                            <h2><i class="fas fa-users me-2"></i>Gestión de Usuarios</h2>
+                            <h2>Gestión de Usuarios</h2>
                             <p class="mb-0">Administra y visualiza todos los usuarios del sistema</p>
                         </div>
 
@@ -34,7 +34,7 @@
 
                     <div class="table-section">
 
-                        <div class="table-responsive"  style="height: 70vh; overflow: scroll;">
+                        <div class="table-responsive" style="height: 70vh; overflow: scroll;">
                             <table class="table table-custom">
                                 <thead>
                                     <tr>
@@ -52,12 +52,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- 🔹 Iterar sobre los usuarios -->
                                     <tr th:each="user : ${users}">
                                         <td>
                                             <div class="user-info">
-                                                <img th:src="@{'https://i.pravatar.cc/150?img=' + ${user.hashCode() % 70}}"
-                                                    alt="Avatar" class="avatar">
+                                                <img th:if="${currentUser != null and currentUser.photoProfile != null and !currentUser.photoProfile.isEmpty()}"
+                                                    th:src="${currentUser.photoProfile}" alt="User Avatar"
+                                                    class="user-avatar">
+                                                <img th:unless="${currentUser != null and user.photoProfile != null and !user.photoProfile.isEmpty()}"
+                                                    th:src="'https://ui-avatars.com/api/?name=' + ${user.name} + '+' + ${user.lastname} + '&background=2c5bff&color=fff&size=128'"
+                                                    alt="User Avatar" class="user-avatar">
                                                 <div class="user-details">
                                                     <h6 th:text="${user.name} + ' ' + ${user.lastname}"></h6>
                                                     <small th:text="${user.email}"></small>
@@ -65,7 +68,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <strong th:text="${user.identification}"></strong>
+                                            <strong class="badge bg-light text-dark fw-normal" th:text="${user.identification}"></strong>
                                         </td>
                                         <td>
                                             <div>
@@ -147,21 +150,18 @@
         </div>
     </div>
 
-
-
-    <!-- Modal para Editar Rol -->
     <div class="modal fade" id="editRoleModal" tabindex="-1" aria-labelledby="editRoleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="editRoleModalLabel">
-                        <i class="fas fa-user-edit me-2"></i>Editar Rol de Usuario
+                        Editar Rol de Usuario
                     </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="editRoleForm" th:action="@{/update-role}" method="post">
                     <div class="modal-body">
-                        <input type="hidden" id="userId" name="id"> <!-- 👈 Cambiado a name="id" -->
+                        <input type="hidden" id="userId" name="id">
 
                         <div class="mb-3">
                             <label class="form-label fw-bold">Usuario</label>
@@ -177,7 +177,7 @@
 
                         <div class="mb-3">
                             <label for="userRole" class="form-label fw-bold">
-                                <i class="fas fa-user-tag me-1"></i>Rol
+                                Rol
                             </label>
                             <select id="userRole" name="role" class="form-select" required>
                                 <option th:each="rol : ${roles}" th:value="${rol.nombre}" th:text="${rol.nombre}">
@@ -193,10 +193,10 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                            <i class="fas fa-times me-1"></i>Cancelar
+                            Cancelar
                         </button>
                         <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-save me-1"></i>Guardar Cambios
+                            Guardar Cambios
                         </button>
                     </div>
                 </form>
@@ -204,14 +204,11 @@
         </div>
     </div>
 
-
-    <!-- Bootstrap JS (con Popper) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script th:src="@{/js/UserTable.js}"></script>
 
-
     <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-
 </body>
 
 </html>

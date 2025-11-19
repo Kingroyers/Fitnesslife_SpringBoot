@@ -19,17 +19,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Plan {
-    
+
     @Id
     private String id;
-    
+
     private String planName;
     private Double price;
     private String currency;
     private Integer durationDays;
     private String badge;
     private List<String> benefits;
-    
+
     @CreatedDate
     private LocalDateTime createdAt;
 

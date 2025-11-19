@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Error del Sistema</title>
 </head>
+
 <body>
     <h1>¡Algo salió mal!</h1>
     <p>Hubo un error inesperado al procesar tu solicitud. Por favor, inténtalo de nuevo.</p>
     <p th:if="${error}" th:text="${error}"></p>
     <a href="/">Volver a Inicio</a>
 </body>
+
 </html>

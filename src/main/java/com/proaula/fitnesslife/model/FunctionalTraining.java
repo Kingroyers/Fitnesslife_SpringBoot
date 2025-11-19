@@ -38,7 +38,6 @@ public class FunctionalTraining {
 
     private String room;
 
-    // Relación con usuarios inscritos
     private List<Long> userIds = new ArrayList<>();
 
     public FunctionalTraining() {
@@ -147,7 +146,7 @@ public class FunctionalTraining {
     }
 
     public void setRoom(String room) {
-        this.room = room;   
+        this.room = room;
     }
 
     public List<Long> getUserIds() {

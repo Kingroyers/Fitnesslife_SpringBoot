@@ -1,5 +1,3 @@
-/* Var */
-
 :root {
     --bg-body: #1f212c;
     --primary-color: #2c5bff;
@@ -14,8 +12,6 @@ body {
     color: var(--text-white);
 }
 
-/* Main Container */
-
 .response-container {
     padding: 2rem 1.5rem 8rem 1.5rem;
     min-height: calc(100vh - 80px);
@@ -23,8 +19,6 @@ body {
     align-items: center;
     justify-content: center;
 }
-
-/* Response Card */
 
 .response-card {
     background: linear-gradient(135deg, var(--card-bg) 0%, #1f212c 100%);
@@ -47,8 +41,6 @@ body {
     height: 4px;
     background: linear-gradient(90deg, var(--success-color) 0%, #4CAF50 100%);
 }
-
-/* Success Icon */
 
 .response-icon-wrapper {
     display: flex;
@@ -82,16 +74,16 @@ body {
         transform: scale(0);
         opacity: 0;
     }
+
     50% {
         transform: scale(1.1);
     }
+
     100% {
         transform: scale(1);
         opacity: 1;
     }
 }
-
-/* Title */
 
 .response-title {
     font-size: 26px;
@@ -100,8 +92,6 @@ body {
     text-align: center;
     margin: 0 0 2rem 0;
 }
-
-/* Transaction Details */
 
 .transaction-details {
     background: rgba(255, 255, 255, 0.03);
@@ -161,8 +151,6 @@ body {
     color: var(--success-color);
 }
 
-/* Return Button */
-
 .return-btn {
     background: var(--primary-color);
     color: var(--text-white);
@@ -190,8 +178,6 @@ body {
 .return-btn i {
     font-size: 20px;
 }
-
-/* Responsive */
 
 @media (max-width: 768px) {
     .response-container {

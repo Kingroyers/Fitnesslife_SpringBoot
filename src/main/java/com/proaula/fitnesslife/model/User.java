@@ -42,11 +42,12 @@ public class User implements Serializable {
 
     private LocalDateTime lastLogin;
 
-    public User() {}
+    public User() {
+    }
 
     public User(String id, Long identification, String name, String lastname, String sex, LocalDate birthDate,
-                String bloodType, String email, String phone, String password, String photoProfile,
-                String role, String plan, boolean isActive, String qrCodePath, LocalDateTime lastLogin) {
+            String bloodType, String email, String phone, String password, String photoProfile,
+            String role, String plan, boolean isActive, String qrCodePath, LocalDateTime lastLogin) {
 
         this.id = id;
         this.identification = identification;

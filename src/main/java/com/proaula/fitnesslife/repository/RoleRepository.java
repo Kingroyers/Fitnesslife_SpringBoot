@@ -7,6 +7,5 @@ import com.proaula.fitnesslife.model.Role;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-
      Role findByNombre(String nombre);
 }

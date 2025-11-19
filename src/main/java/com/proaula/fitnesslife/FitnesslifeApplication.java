@@ -8,7 +8,7 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 
 @EnableMongoAuditing
 @SpringBootApplication
-@EnableRedisHttpSession // <- hace que las sesiones HTTP se guarden en Redis
+@EnableRedisHttpSession
 @EnableScheduling
 public class FitnesslifeApplication {
 

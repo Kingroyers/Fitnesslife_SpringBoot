@@ -8,12 +8,12 @@ import java.util.Optional;
 
 @Repository
 public interface FunctionalTrainingRepository extends MongoRepository<FunctionalTraining, String> {
-    
-    Optional<FunctionalTraining> findByIdFunctionalTraining(String id);
-    Optional<FunctionalTraining> findByIdFunctionalTraining(int idFunctionalTraining);
-    void deleteByIdFunctionalTraining(int idFunctionalTraining);
-    
 
-    
+    Optional<FunctionalTraining> findByIdFunctionalTraining(String id);
+
+    Optional<FunctionalTraining> findByIdFunctionalTraining(int idFunctionalTraining);
+
+    void deleteByIdFunctionalTraining(int idFunctionalTraining);
+
     boolean existsByIdFunctionalTraining(int idFunctionalTraining);
 }

@@ -1,3 +1,10 @@
+:root {
+    --bg-body: #1f212c;
+    --primary-color: #2c5bff;
+    --card-bg: #292c36;
+    --text-white: #ffffff;
+}
+
 .container-custom {
   background: white;
   border-radius: 20px;
@@ -7,14 +14,14 @@
 }
 
 .scroll-container {
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: thin;
-    scrollbar-color: #002a5650 #f7fafc;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  scrollbar-color: #002a5650 #f7fafc;
 }
 
 .header-section {
-  background: linear-gradient(90deg, #2e1c7c, #040e83);
+  background: linear-gradient(90deg, var(--card-bg), var(--primary-color));
   color: white;
   padding: 50px 40px;
 }
@@ -305,4 +312,73 @@
   padding: 12px;
   background-color: #f8f9fa;
   border-radius: 8px;
+}
+
+ .user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.user-info:hover {
+    background-color: #e9ecef;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.user-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #2c5bff;
+    flex-shrink: 0;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0; /* Permite que el texto se trunque correctamente */
+}
+
+.user-details h6 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #212529;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.user-details small {
+    font-size: 0.875rem;
+    color: #6c757d;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+    .user-info {
+        padding: 0.75rem;
+    }
+    
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .user-details h6 {
+        font-size: 0.9rem;
+    }
+    
+    .user-details small {
+        font-size: 0.8rem;
+    }
 }

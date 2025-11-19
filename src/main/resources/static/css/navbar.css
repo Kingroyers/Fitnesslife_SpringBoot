@@ -1,8 +1,4 @@
-/* Fonts */
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
-/* Var */
 
 :root {
     --bg-body: #1f212c;
@@ -34,7 +30,6 @@ body {
     min-height: 100vh;
 }
 
-/* Top Nav Bar */
 .top-navbar {
     background: radial-gradient(125% 125% at 50% 10%, #101116 40%, #2c5bff 100%);
     padding: 1rem 1.5rem;
@@ -83,7 +78,6 @@ body {
     font-size: 24px;
 }
 
-/* Offcanvas Menu */
 .offcanvas {
     background: linear-gradient(135deg, #1f212c 0%, #101116 100%);
     color: white;
@@ -212,7 +206,6 @@ body {
     background: #1e4ad9;
 }
 
-/* Modal Photo Upload */
 .photo-modal {
     background: var(--bg-body);
     color: #ffffff;
@@ -271,8 +264,6 @@ body {
     color: #ffffff;
 }
 
-
-/*  Bottom Nav Bar  */
 .bottom-navbar {
     position: fixed;
     bottom: 8px;
@@ -321,8 +312,6 @@ body {
 .bottom-navbar__link:hover img {
     filter: brightness(0) saturate(100%) invert(38%) sepia(89%) saturate(3446%) hue-rotate(221deg) brightness(102%) contrast(101%) drop-shadow(0 0 8px #2c5bff);
 }
-
-/* Responsive */
 
 @media (max-width: 768px) {
     .top-navbar {

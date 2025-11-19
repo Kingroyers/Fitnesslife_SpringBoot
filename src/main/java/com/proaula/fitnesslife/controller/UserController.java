@@ -64,7 +64,7 @@ public class UserController {
         return "redirect:/login?registered";
     }
 
-    @PostMapping("/inscribirme/{idFunctionalTraining}") // inscribirme a una clase
+    @PostMapping("/inscribirme/{idFunctionalTraining}")
     public String inscribirme(@PathVariable int idFunctionalTraining, Principal principal) {
 
         User user = userRepo.findByEmail(principal.getName()).orElseThrow();
@@ -91,7 +91,6 @@ public class UserController {
     public String actualizarPerfil(@ModelAttribute User userForm, Principal principal) {
         User user = userRepo.findByEmail(principal.getName()).orElseThrow();
 
-        // Solo actualizamos los campos que se pueden editar
         user.setName(userForm.getName());
         user.setLastname(userForm.getLastname());
         user.setPhone(userForm.getPhone());

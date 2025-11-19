@@ -1,8 +1,4 @@
-/* Fonts */
-
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
-/* Var */
 
 :root {
     --bg-body: #1f212c;
@@ -101,8 +97,6 @@ nav.bg-gym ul li.register a {
     border-radius: 4px;
 }
 
-/* Hero */
-
 #hero {
     padding: 140px 0;
     position: relative;
@@ -181,8 +175,6 @@ nav.bg-gym ul li.register a {
 .hero-text-mobile {
     display: none;
 }
-
-/* Services */
 
 #services {
     width: 100%;
@@ -267,8 +259,6 @@ nav.bg-gym ul li.register a {
     border-bottom: 2px solid #d3d3d3;
 }
 
-/* Classes */
-
 #classes {
     width: 100%;
     position: relative;
@@ -331,8 +321,6 @@ nav.bg-gym ul li.register a {
     font-size: 16px;
     margin: 0;
 }
-
-/* Memberships */
 
 #memberships {
     width: 100%;
@@ -398,8 +386,6 @@ nav.bg-gym ul li.register a {
 .card-plan .plan-benefits span {
     color: #d3d3d3;
 }
-
-/* Comments */
 
 #comments {
     text-align: center;
@@ -492,8 +478,6 @@ nav.bg-gym ul li.register a {
     background-color: #ffff;
 }
 
-/* Footer */
-
 footer {
     background: #292c36;
 }
@@ -517,8 +501,6 @@ footer img {
 .p-footer {
     text-align: center;
 }
-
-/* Responsive */
 
 @media screen and (min-width:320px) and (max-width:990px) {
     header nav button.navbar-toggler {

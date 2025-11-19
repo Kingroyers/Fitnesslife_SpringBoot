@@ -13,7 +13,6 @@ public class Role {
     @Column(nullable = false, unique = true)
     private String nombre;
 
-    // Constructores
     public Role() {
     }
 
@@ -21,7 +20,6 @@ public class Role {
         this.nombre = nombre;
     }
 
-    // Getters y setters
     public Integer getId() {
         return id;
     }
@@ -33,7 +31,7 @@ public class Role {
     public String getNombre() {
         return nombre;
     }
-    
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }

@@ -26,7 +26,7 @@ public class UserService {
 
     public User getUserOrThrow(String email) {
         return findByEmail(email)
-            .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado: " + email));
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado: " + email));
     }
 
     public Optional<User> findById(String id) {
@@ -36,7 +36,7 @@ public class UserService {
 
     public User getUserByIdOrThrow(String id) {
         return findById(id)
-            .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con ID: " + id));
+                .orElseThrow(() -> new UserNotFoundException("Usuario no encontrado con ID: " + id));
     }
 
     @Transactional
@@ -45,20 +45,26 @@ public class UserService {
         return userRepository.save(user);
     }
 
-
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-
     public void updateUserRole(String id, String role) {
 
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
-        
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
+
         user.setRole(role);
-        user.setUpdatedAt(LocalDateTime.now()); // Actualizar fecha de modificación
-        
+        user.setUpdatedAt(LocalDateTime.now());
+
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void deleteById(String id) {
+        log.debug("Eliminando usuario con ID: {}", id);
+        User user = getUserByIdOrThrow(id);
+        userRepository.delete(user);
+        log.info("Usuario eliminado exitosamente: {}", user.getEmail());
     }
 }

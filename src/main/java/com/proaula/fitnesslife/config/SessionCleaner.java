@@ -17,8 +17,6 @@ public class SessionCleaner {
             sessionRegistry.getAllSessions(principal, false)
                     .forEach(sessionInfo -> sessionInfo.expireNow());
         });
-        System.out.println("🧹 Todas las sesiones activas fueron invalidadas al iniciar la aplicación.");
+        System.out.println("Todas las sesiones activas fueron invalidadas al iniciar la aplicación.");
     }
-
-    
 }

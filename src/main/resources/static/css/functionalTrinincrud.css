@@ -18,7 +18,7 @@
 }
 
 body {
-  
+
   color: var(--text-primary);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -29,9 +29,8 @@ body {
   margin: 0 auto;
 }
 
-/* Header */
 .page-header {
-  background: linear-gradient(135deg, var(--primary-color), #1a73e8);
+  background: linear-gradient(90deg, var(--card-bg), var(--primary-color));
   border-radius: 20px;
   padding: 2.5rem;
   margin-bottom: 3rem;
@@ -66,7 +65,6 @@ body {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
 }
 
-/* Section Divider */
 .section-divider {
   display: flex;
   align-items: center;
@@ -98,7 +96,6 @@ body {
   border: 1px solid rgba(44, 91, 255, 0.3);
 }
 
-/* Cards Grid */
 .classes-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -106,7 +103,6 @@ body {
   margin-bottom: 3rem;
 }
 
-/* Class Card */
 .class-card {
   background: var(--card-bg);
   border-radius: 16px;
@@ -138,11 +134,9 @@ body {
   right: -50%;
   width: 200%;
   height: 200%;
-  background: radial-gradient(
-    circle,
-    rgba(255, 255, 255, 0.1) 0%,
-    transparent 70%
-  );
+  background: radial-gradient(circle,
+      rgba(255, 255, 255, 0.1) 0%,
+      transparent 70%);
   pointer-events: none;
 }
 
@@ -208,7 +202,6 @@ body {
   font-weight: 500;
 }
 
-/* Progress Section */
 .progress-section {
   margin-top: 1.5rem;
   padding-top: 1rem;
@@ -246,7 +239,6 @@ body {
   transition: width 0.3s ease;
 }
 
-/* Action Buttons */
 .action-buttons {
   padding: 1rem 1.5rem;
   background: rgba(0, 0, 0, 0.2);
@@ -289,7 +281,6 @@ body {
   border-color: var(--danger-color);
 }
 
-/* Modal Styles */
 .modal-content {
   background: var(--card-bg);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -369,7 +360,6 @@ body {
   display: none !important;
 }
 
-/* Empty State */
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -387,7 +377,6 @@ body {
   margin-bottom: 0.5rem;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
   .main-container {
     padding: 1rem;
